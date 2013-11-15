@@ -3,7 +3,7 @@ from pygame.locals import *
 
 def load_image(file):
     '''Loads an image with transparency'''
-    file = os.path.join('data', 'images', file)
+    file = os.path.join('..','data', 'images', file)
     try:
         image = pygame.image.load(file)
     except pygame.error:
