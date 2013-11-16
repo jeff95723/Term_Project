@@ -1,7 +1,7 @@
 import pygame, os
 from pygame.locals import *
 
-def load_image(file):
+def load_image(file, scale = 1):
     '''Loads an image with transparency'''
     file = os.path.join('..','data', 'images', file)
     try:
