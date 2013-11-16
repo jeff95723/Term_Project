@@ -61,20 +61,4 @@ class Listener(object):
         '''
         pass
 
-'''Testing'''
-if __name__ == '__main__':
 
-    e = Event()
-    print e
-
-    em = EventManager()
-
-    class Test(Listener):
-        def notify(self, event):
-            print 'I have recieved a ' + str(event)
-
-    test = Test(em)
-
-    em.post(e)
-    em.unregister(test)
-    em.post(e)
