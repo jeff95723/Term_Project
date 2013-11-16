@@ -1,14 +1,20 @@
 import pygame, os
 from pygame.locals import *
+'''Used for loading a file to pygame'''
 
-def load_image(file, scale = 1):
+def load_image(fileName, scale = 1):
     '''Loads an image with transparency'''
-    file = os.path.join('..','data', 'images', file)
+    file = os.path.join('..','data', 'images','', fileName)
+    print file
     try:
         image = pygame.image.load(file)
     except pygame.error:
-        raise SystemExit, 'Image, "%s" not found' %(file)
-    return image.convert_alpha()
+        pygame.quit()
+        raise SystemExit, 'Image, "%s" not found' %(fileName)
+
+    image = pygame.transform.scale(image.convert_alpha(), ((int(scale*image.get_width())),
+                                   int(scale*image.get_height())))
+    return image
 
 
 def load_images(*files):
@@ -18,9 +24,18 @@ def load_images(*files):
     return imgs
 
 
+def load_images_alpha(*files):
+    imgs = []
+    for file in files:
+        imgs.append(load_images())
 
 
-#def load_images_alpha(*files):
-#    imgs = []
-#    for file in files:
-#        imgs.append(load_images())
+def load_sound(file):
+    file = os.path.join('..','data', 'images', file)
+    try:
+        sound = pygame.mixer.Sound(file)
+    except pygame.error:
+        pygame.quit()
+        raise SystemExit, 'Failed to load sound %s' %file
+    return sound
+
