@@ -1,3 +1,4 @@
+from weakref import WeakKeyDictionary
 class Event(object):
     ''' Events that can be handled by EventManager
     '''
@@ -14,6 +15,18 @@ class Event(object):
         '''
         return self.name + 'Event'
 
+    def attributes(self):
+        result = ''
+        for attr in self.__dict__.keys():
+            if attr[:2] == '__':
+                result = result + '\tattr %s=\n' %attr
+            else:
+                result = result + '\tattr %s=%s\n' %(attr, self.__dict__[attr])
+        return result
+
+    def hasAttribute(self, attr):
+        return attr in self.__dict__.keys()
+
 
 
 class EventManager(object):
@@ -21,7 +34,6 @@ class EventManager(object):
         '''
         Set up a dictionary to hold references to listeners
         '''
-        from weakref import WeakKeyDictionary
         self.listeners = WeakKeyDictionary()
 
     def register(self, listener):

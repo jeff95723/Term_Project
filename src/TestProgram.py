@@ -1,4 +1,4 @@
-import Event
+import Event, pygame
 
 class TickGeneratorController(Event.Listener):
     def __init__(self, manager):
@@ -17,8 +17,23 @@ class TickGeneratorController(Event.Listener):
             self.clock.tick(30)
 
     def notify(self, event):
-        if event.quit:
+        if event.hasAttribute('quit'):
             self.running = False
+
+
+class QuitAtGoalController(Event.Listener):
+    def __init__(self, manager):
+        self.manager = manager
+        self.manager.register(self)
+
+        FPS = 30
+        self.stopAfterTick = 5*FPS
+
+    def notify(self, event):
+        if event.hasAttribute('tick') and event.tick >= self.stopAfterTick:
+            event = Event.Event()
+            event.quit = False
+            self.manager.post(event)
 
 
 class EventLoggerView(Event.Listener):
@@ -28,7 +43,7 @@ class EventLoggerView(Event.Listener):
     '''
     def notify(self, event):
         print event
-        print event.attibutes()
+        print event.attributes()
 
 
 class FibonacciModel(Event.Listener):
@@ -38,26 +53,26 @@ class FibonacciModel(Event.Listener):
     '''
     def __init__(self, manager):
         Event.Listener.__init__(self, manager)
-        self.manager = manager
         self.last = 0
         self.current = 1
 
-        event = Event.Event()
-        event.number = 1
-        manager.post(event)
+        print "NUMBER: %s" %self.current
 
     def notify(self, event):
         self.last, self.current = self.current, self.last+self.current
 
-        event = Event.Event()
-        event.number = self.current
-        self.manager.post(event)
+        print "Number: %s" % self.current
+        #event = Event.Event()
+        #event.number = self.current
+        #self.manager.post(event)
 
 def main():
     manager = Event.EventManager()
     model = FibonacciModel(manager)
     view = EventLoggerView(manager)
     controller = TickGeneratorController(manager)
+
+    stop = QuitAtGoalController(manager)
 
     controller.run()
 
