@@ -21,8 +21,25 @@ class TickGeneratorController(Event.Listener):
             self.running = False
 
 
+class QuitController(Event.Listener):
+    def __init__(self, manager, goalAttribute, goalValue):
+        self.manager = manager
+        self.manager.register(self)
+
+        self.goalAttribute = goalAttribute
+        self.goalValue = goalValue
+
+
+    def notify(self, event):
+        if event.hasAttribute(self.goalAttribute):
+            if event[self.goalAttribute] >= self.goalValue:
+                event = Event.Event()
+                event.quit = False
+                self.manager.post(event)
+
+
 class QuitAtGoalController(Event.Listener):
-    def __init__(self, manager):
+    def __init__(self, manager, goalAttribute, goalValue):
         self.manager = manager
         self.manager.register(self)
 
@@ -34,7 +51,6 @@ class QuitAtGoalController(Event.Listener):
             event = Event.Event()
             event.quit = False
             self.manager.post(event)
-
 
 class EventLoggerView(Event.Listener):
     '''
@@ -53,18 +69,21 @@ class FibonacciModel(Event.Listener):
     '''
     def __init__(self, manager):
         Event.Listener.__init__(self, manager)
+        self.manager = manager
+
         self.last = 0
         self.current = 1
 
-        print "NUMBER: %s" %self.current
+        event = Event.Event()
+        event.number = 1
+        manager.post(event)
 
     def notify(self, event):
-        self.last, self.current = self.current, self.last+self.current
-
-        print "Number: %s" % self.current
-        #event = Event.Event()
-        #event.number = self.current
-        #self.manager.post(event)
+        if event.hasAttribute('tick'):
+            self.last, self.current = self.current, self.last + self.current
+            event = Event.Event()
+            event.number = self.current
+            self.manager.post(event)
 
 def main():
     manager = Event.EventManager()
@@ -72,7 +91,8 @@ def main():
     view = EventLoggerView(manager)
     controller = TickGeneratorController(manager)
 
-    stop = QuitAtGoalController(manager)
+    #stop1 = QuitController(manager, 'tick', 30*5)
+    stop2 = QuitController(manager, 'number', 1000)
 
     controller.run()
 

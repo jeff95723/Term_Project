@@ -5,7 +5,6 @@ from pygame.locals import *
 def load_image(fileName, scale = 1):
     '''Loads an image with transparency'''
     file = os.path.join('..','data', 'images','', fileName)
-    print file
     try:
         image = pygame.image.load(file)
     except pygame.error:
@@ -15,6 +14,18 @@ def load_image(fileName, scale = 1):
     image = pygame.transform.scale(image.convert_alpha(), ((int(scale*image.get_width())),
                                    int(scale*image.get_height())))
     return image
+
+def load_image_smooth(fileName, scale = 1):
+    '''Loads an image with smooth scaling'''
+    file = os.path.join('..', 'data', 'images', fileName)
+    try:
+        image = pygame.image.load(file)
+    except pygame.error:
+        pygame.quit()
+        raise SystemExit, "Image, %s not found" %(fileName)
+    image = pygame.transform.smoothScale(image.convert_alpha(),((int(scale*image.get_width())),
+                                                                int(scale*image.get_height())))
+
 
 
 def load_images(*files):
