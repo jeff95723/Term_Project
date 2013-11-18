@@ -23,8 +23,10 @@ def load_image_smooth(fileName, scale = 1):
     except pygame.error:
         pygame.quit()
         raise SystemExit, "Image, %s not found" %(fileName)
-    image = pygame.transform.smoothScale(image.convert_alpha(),((int(scale*image.get_width())),
+    image = pygame.transform.smoothscale(image.convert_alpha(),((int(scale*image.get_width())),
                                                                 int(scale*image.get_height())))
+
+    return image
 
 
 
