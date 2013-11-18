@@ -24,7 +24,6 @@ def checkKeys(data):
         #print 'Down Pressed'
 
 def checkMouse(data):
-    data.mouseX, data.mouseY = pygame.mouse.get_pos()
     if data.mouseX < 100 and data.mouseY < 100:
         moveMap(data, (30,30))
 
@@ -68,6 +67,7 @@ def moveMap(data,(dx,dy)):
 
 
 def timerFired(data):
+    data.mouseX, data.mouseY = pygame.mouse.get_pos()
     redrawAll(data)
     data.clock.tick(50)
     checkKeys(data)
@@ -78,8 +78,10 @@ def timerFired(data):
             data.mode = 'quit'
 
 def redrawAll(data):
+
     data.screen.fill((0,0,0))
     data.screen.blit(data.map,(data.mapX,data.mapY))
+    data.screen.blit(data.pointerImage, (data.mouseX, data.mouseY))
     pygame.display.flip()
 
 def init(data):
@@ -88,6 +90,9 @@ def init(data):
     data.map = load.load_image_smooth(data.mapFileName, 1.5)
     data.mapX = 0
     data.mapY = 0
+    PointerFile = 'Other/Pointer.png'
+    data.pointerImage = load.load_image(PointerFile,1)
+    pygame.mouse.set_visible(False)
 
 def run():
     pygame.init()
