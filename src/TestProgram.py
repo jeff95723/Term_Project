@@ -1,10 +1,27 @@
 import Event, pygame
 #test
 
+class QuitEvent(Event.Event):
+    kind = 'quit'
+    def __init__(self, quitter = True):
+        Event.Event.__init__(self)
+        self.name = 'Quit'
+        self.quit = quitter
+        self.sync = False
+
+class FibonacciEvent(Event.Event):
+    kind = 'fibonacci'
+
+    def __init__(self, number = None):
+        Event.Event.__init__(self)
+        self.name = "Fibonacci"
+        self.fibonacci = number
+
 class TickGeneratorController(Event.Listener):
+    FPS = 30
     def __init__(self, manager):
         self.manager = manager
-        self.manager.register(self)
+        self.manager.register(QuitEvent.kind, self)
 
         self.running = True
 
@@ -12,46 +29,28 @@ class TickGeneratorController(Event.Listener):
 
     def run(self):
         while self.running:
-            event = Event.Event()
-            event.tick = pygame.time.get_ticks()
-            self.manager.post(event)
-            self.clock.tick(30)
+            self.manager.post(Event.TickEvent(pygame.time.get_ticks()))
+            self.clock.tick(self.FPS)
 
     def notify(self, event):
-        if event.hasAttribute('quit'):
+        if event[QuitEvent.kind]:
             self.running = False
 
 
 class QuitController(Event.Listener):
     def __init__(self, manager, goalAttribute, goalValue):
         self.manager = manager
-        self.manager.register(self)
+        self.manager.register(goalAttribute, self)
 
         self.goalAttribute = goalAttribute
         self.goalValue = goalValue
 
 
     def notify(self, event):
-        if event.hasAttribute(self.goalAttribute):
-            if event[self.goalAttribute] >= self.goalValue:
-                event = Event.Event()
-                event.quit = False
-                self.manager.post(event)
-
-
-class QuitAtGoalController(Event.Listener):
-    def __init__(self, manager, goalAttribute, goalValue):
-        self.manager = manager
-        self.manager.register(self)
-
-        FPS = 30
-        self.stopAfterTick = 5*FPS
-
-    def notify(self, event):
-        if event.hasAttribute('tick') and event.tick >= self.stopAfterTick:
-            event = Event.Event()
-            event.quit = False
+        if event[self.goalAttribute] >= self.goalValue:
+            event = QuitEvent()
             self.manager.post(event)
+
 
 class EventLoggerView(Event.Listener):
     '''
@@ -75,25 +74,24 @@ class FibonacciModel(Event.Listener):
         self.last = 0
         self.current = 1
 
-        event = Event.Event()
-        event.number = 1
-        manager.post(event)
+        manager.post(FibonacciEvent(self.current))
 
     def notify(self, event):
-        if event.hasAttribute('tick'):
-            self.last, self.current = self.current, self.last + self.current
-            event = Event.Event()
-            event.number = self.current
-            self.manager.post(event)
+        self.last, self.current = self.current, self.last + self.current
+        self.manager.post(FibonacciEvent(self.current))
 
 def main():
-    manager = Event.EventManager()
+    manager = Event.Manager()
+    manager.add(Event.TickEvent.kind)
+    manager.add(FibonacciEvent.kind)
+    manager.add(QuitEvent.kind)
+
     model = FibonacciModel(manager)
     view = EventLoggerView(manager)
     controller = TickGeneratorController(manager)
 
-    #stop1 = QuitController(manager, 'tick', 30*5)
-    stop2 = QuitController(manager, 'number', 1000)
+    #stop1 = QuitController(manager, Event.TickEvent.kind, TickGeneratorController.FPS * 50)
+    stop2 = QuitController(manager, FibonacciEvent.kind, 1000)
 
     controller.run()
 

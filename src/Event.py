@@ -134,7 +134,7 @@ class Listener(object):
         '''
         Register with the manager automatically
         '''
-        manager.register(self)
+        manager.registerAll(self)
 
     def notify(self, event):
         '''
