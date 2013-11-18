@@ -28,6 +28,15 @@ def load_image_smooth(fileName, scale = 1):
 
     return image
 
+def load_dumb(fileName):
+    file = os.path.join('..', 'data', 'images', fileName)
+    try:
+        image = pygame.image.load(file)
+    except pygame.error:
+        pygame.quit()
+        raise SystemExit, "Image, %s not found" %(fileName)
+    return image.convert()
+
 
 
 def load_images(*files):

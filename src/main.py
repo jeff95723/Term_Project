@@ -27,25 +27,25 @@ def checkMouse(data):
     if data.mouseX < 100 and data.mouseY < 100:
         moveMap(data, (30,30))
 
-    elif data.mouseX < 100 and data.mouseY > data.screenSize[1] - 100:
+    elif data.mouseX < 100 and data.ViewSize[1] > data.mouseY > data.ViewSize[1] - 100:
         moveMap(data, (30,-30))
 
-    elif data.mouseX > data.screenSize[0] - 100 and data.mouseY < 100:
+    elif data.mouseX > data.ViewSize[0] - 100 and data.mouseY < 100:
         moveMap(data, (-30,30))
 
-    elif data.mouseX > data.screenSize[0] - 100 and data.mouseY > data.screenSize[1] - 100:
+    elif data.mouseX > data.ViewSize[0] - 100 and data.ViewSize[1] > data.mouseY > data.ViewSize[1] - 100:
         moveMap(data, (-30,-30))
 
-    elif data.mouseX < 100 and (100< data.mouseY < data.screenSize[1] - 100):
+    elif data.mouseX < 100 and (100< data.mouseY < data.ViewSize[1] - 100):
             moveMap(data, (30,0))
 
-    elif data.mouseX > data.screenSize[0] - 100 and (100< data.mouseY < data.screenSize[1] - 100):
+    elif data.mouseX > data.ViewSize[0] - 100 and (100< data.mouseY < data.ViewSize[1] - 100):
             moveMap(data, (-30,0))
 
-    elif data.mouseY < 100 and (100< data.mouseX < data.screenSize[0] - 100):
+    elif data.mouseY < 100 and (100< data.mouseX < data.ViewSize[0] - 100):
             moveMap(data, (0,30))
 
-    elif data.mouseY > data.screenSize[1] - 100 and (100< data.mouseX < data.screenSize[0] - 100):
+    elif data.ViewSize[1] > data.mouseY > data.ViewSize[1] - 100 and (100< data.mouseX < data.ViewSize[0] - 100):
             moveMap(data, (0,-30))
 
 
@@ -69,7 +69,7 @@ def moveMap(data,(dx,dy)):
 def timerFired(data):
     data.mouseX, data.mouseY = pygame.mouse.get_pos()
     redrawAll(data)
-    data.clock.tick(50)
+    data.clock.tick(500)
     checkKeys(data)
     checkMouse(data)
     for event in pygame.event.get():
@@ -91,8 +91,9 @@ def init(data):
     data.mapX = 0
     data.mapY = 0
     PointerFile = 'Other/Pointer.png'
-    data.pointerImage = load.load_image(PointerFile,1)
+    data.pointerImage = load.load_image(PointerFile)
     pygame.mouse.set_visible(False)
+
 
 def run():
     pygame.init()
@@ -100,17 +101,18 @@ def run():
     class Struct:pass
     data = Struct()
 
-    data.screenSize = (1000,1000)
-    data.screen = pygame.display.set_mode(data.screenSize)
+    data.ViewSize = (1000, 700)
+    data.MenuSize = (data.ViewSize[0], 300)
+    data.screen = pygame.display.set_mode((data.ViewSize[0],data.MenuSize[1] + data.ViewSize[1]))
     pygame.display.set_caption('Test')
 
     data.clock = pygame.time.Clock()
     init(data)
-    timerFired(data)
     while 1:
         if data.mode == 'quit':
             exit()
         timerFired(data)
+
 
 
 run()
