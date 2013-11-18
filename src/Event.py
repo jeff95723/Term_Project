@@ -9,6 +9,7 @@ class Event(object):
         Set the name of the event, Subclass may have other attributes
         '''
         self.name = 'Generic'
+        self.sync = 'True'
 
     def __repr__(self):
         '''
@@ -45,7 +46,6 @@ class TickEvent(Event):
         '''Set the name and the tick properities'''
         self.name = 'Tick'
         self.tick = time
-        self.sync = True
 
 
 class EventManager(object):
@@ -83,16 +83,16 @@ class Manager(object):
         self.managers = {}
         self.events = []
 
-    def register(self, kind, listener):
-        self.add(kind)
-        self.managers[kind].register(listener)
+    def register(self, clazz, listener):
+        self.add(clazz)
+        self.managers[clazz.kind].register(listener)
 
-    def add(self, kind):
-        if not kind in self.managers:
-            self.managers[kind] = EventManager()
+    def add(self, clazz):
+        if not clazz.kind in self.managers:
+            self.managers[clazz.kind] = EventManager()
 
-    def drop(self, kind):
-        self.managers[kind] = None
+    def drop(self, clazz):
+        self.managers[clazz.kind] = None
 
     def registerAll(self, listener):
         '''
@@ -101,9 +101,9 @@ class Manager(object):
         for kind in self.managers:
             self.managers[kind].register(listener)
 
-    def unregister(self, kind, listener):
-        if kind in self.managers:
-            self.managers[kind].unregiseter(listener)
+    def unregister(self, clazz, listener):
+        if clazz.kind in self.managers:
+            self.managers[clazz.kind].unregiseter(listener)
 
     def unregisterAll(self, listener):
         for kind in self.managers:
@@ -122,8 +122,8 @@ class Manager(object):
                 if event.sync:
                     self.events.append(event)
                 else:
-                    for m in self.managers:
-                        self.managers[m].post(event)
+                    for event.kind in self.managers:
+                        self.managers[event.kind].post(event)
 
 class Listener(object):
     '''
