@@ -69,7 +69,7 @@ def moveMap(data,(dx,dy)):
 def timerFired(data):
     data.mouseX, data.mouseY = pygame.mouse.get_pos()
     redrawAll(data)
-    data.clock.tick(500)
+    data.clock.tick(60)
     checkKeys(data)
     checkMouse(data)
     for event in pygame.event.get():
@@ -103,7 +103,7 @@ def run():
 
     data.ViewSize = (1000, 700)
     data.MenuSize = (data.ViewSize[0], 300)
-    data.screen = pygame.display.set_mode((data.ViewSize[0],data.MenuSize[1] + data.ViewSize[1]))
+    data.screen = pygame.display.set_mode((data.ViewSize[0],data.MenuSize[1] + data.ViewSize[1]),HWSURFACE)
     pygame.display.set_caption('Test')
 
     data.clock = pygame.time.Clock()
