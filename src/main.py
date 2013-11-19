@@ -13,42 +13,42 @@ def checkKeys(data):
     keyStatus = pygame.key.get_pressed()
     if keyStatus[K_RIGHT] == 1:
 
-        data.map.move((-30,0))
+        data.map.move((-data.cellWidth,0))
         #print 'Right Pressed'
     if keyStatus[K_LEFT] == 1:
-        data.map.move((30,0))
+        data.map.move((data.cellWidth,0))
         #print 'Left Pressed'
     if keyStatus[K_UP] == 1:
-        data.map.move((0,30))
+        data.map.move((0,data.cellHeight))
         #print 'Up Pressed'
     if keyStatus[K_DOWN] == 1:
-        data.map.move((0,-30))
+        data.map.move((0,-48))
         #print 'Down Pressed'
 
 def checkMouse(data):
     if data.mouseX < data.AutoScrollWidth and data.mouseY < data.AutoScrollWidth:
-        data.map.move((30,30))
+        data.map.move((data.cellWidth,data.cellHeight))
 
     elif data.mouseX < data.AutoScrollWidth and data.ViewSize[1] > data.mouseY > data.ViewSize[1] - data.AutoScrollWidth:
-        data.map.move((30,-30))
+        data.map.move((data.cellWidth,-48))
 
     elif data.mouseX > data.ViewSize[0] - data.AutoScrollWidth and data.mouseY < data.AutoScrollWidth:
-        data.map.move((-30,30))
+        data.map.move((-data.cellWidth,data.cellHeight))
 
     elif data.mouseX > data.ViewSize[0] - data.AutoScrollWidth and data.ViewSize[1] > data.mouseY > data.ViewSize[1] - data.AutoScrollWidth:
-        data.map.move((-30,-30))
+        data.map.move((-data.cellWidth,-48))
 
     elif data.mouseX < data.AutoScrollWidth and (data.AutoScrollWidth< data.mouseY < data.ViewSize[1] - data.AutoScrollWidth):
-            data.map.move((30,0))
+            data.map.move((data.cellWidth,0))
 
     elif data.mouseX > data.ViewSize[0] - data.AutoScrollWidth and (data.AutoScrollWidth< data.mouseY < data.ViewSize[1] - data.AutoScrollWidth):
-            data.map.move((-30,0))
+            data.map.move((-data.cellWidth,0))
 
     elif data.mouseY < data.AutoScrollWidth and (data.AutoScrollWidth< data.mouseX < data.ViewSize[0] - data.AutoScrollWidth):
-            data.map.move((0,30))
+            data.map.move((0,data.cellHeight))
 
     elif data.ViewSize[1] > data.mouseY > data.ViewSize[1] - data.AutoScrollWidth and (data.AutoScrollWidth< data.mouseX < data.ViewSize[0] - data.AutoScrollWidth):
-            data.map.move((0,-30))
+            data.map.move((0,-48))
 
 
 
@@ -74,6 +74,7 @@ def redrawAll(data):
 def init(data):
     data.mode = 'run'
     data.map = map.map('PamirPlateau.jpg', 128,128,scale = 1.5)
+    data.map.drawGrid()
     data.cellWidth, data.cellHeight = data.map.getCellsize()
     PointerFile = 'Other/Pointer.png'
     data.pointerImage = load.load_image(PointerFile)

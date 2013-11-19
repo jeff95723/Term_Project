@@ -35,6 +35,15 @@ class map(object):
    def getCellsize(self):
        return (self.width/self.cols, self.height/self.rows)
 
+   def drawGrid(self):
+       rows, cols = self.rows, self.cols
+       cW, cH = self.getCellsize()
+       for row in xrange(rows):
+           pygame.draw.lines(self.image, (0,0,0),False, [(0,row * cH),(self.width,row * cH)])
+       for col in xrange(cols):
+           pygame.draw.lines(self.image, (0,0,0),False, [(col * cW, 0),(col * cW, self.height)])
+
+
 
 ################################################################################
 # test
