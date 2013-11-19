@@ -32,18 +32,10 @@ class map(object):
        if self.y < -self.height + self.displayHeight:
            self.y = -self.height + self.displayHeight
 
+   def getCellsize(self):
+       return (self.width/self.cols, self.height/self.rows)
+
 
 ################################################################################
 # test
 ################################################################################
-if __name__ == '__main__'
-    pygame.init()
-    screen = pygame.display.set_mode((1000,1000))
-    map1 = map('PamirPlateau.jpg', 128,128,scale = 1.5)
-    i = 0
-    while i < 500:
-        map1.draw(screen)
-        pygame.display.flip()
-        print map1.rect
-        print (map1.width, map1.height)
-        i +=1
