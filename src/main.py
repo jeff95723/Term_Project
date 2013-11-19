@@ -55,12 +55,12 @@ def moveMap(data,(dx,dy)):
     data.mapY += dy
     if data.mapX > 0:
         data.mapX = 0
-    elif data.mapX < -4096:
-        data.mapX = -4096
+    elif data.mapX < -4096*1.5+1000:
+        data.mapX = -4096*1.5+1000
     if data.mapY > 0:
         data.mapY = 0
-    if data.mapY < -4096:
-        data.mapY = -4096
+    if data.mapY < -4096*1.5+1000:
+        data.mapY = -4096*1.5+1000
 
 
 
