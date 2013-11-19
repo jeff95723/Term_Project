@@ -24,28 +24,28 @@ def checkKeys(data):
         #print 'Down Pressed'
 
 def checkMouse(data):
-    if data.mouseX < 100 and data.mouseY < 100:
+    if data.mouseX < data.AutoScrollWidth and data.mouseY < data.AutoScrollWidth:
         moveMap(data, (30,30))
 
-    elif data.mouseX < 100 and data.ViewSize[1] > data.mouseY > data.ViewSize[1] - 100:
+    elif data.mouseX < data.AutoScrollWidth and data.ViewSize[1] > data.mouseY > data.ViewSize[1] - data.AutoScrollWidth:
         moveMap(data, (30,-30))
 
-    elif data.mouseX > data.ViewSize[0] - 100 and data.mouseY < 100:
+    elif data.mouseX > data.ViewSize[0] - data.AutoScrollWidth and data.mouseY < data.AutoScrollWidth:
         moveMap(data, (-30,30))
 
-    elif data.mouseX > data.ViewSize[0] - 100 and data.ViewSize[1] > data.mouseY > data.ViewSize[1] - 100:
+    elif data.mouseX > data.ViewSize[0] - data.AutoScrollWidth and data.ViewSize[1] > data.mouseY > data.ViewSize[1] - data.AutoScrollWidth:
         moveMap(data, (-30,-30))
 
-    elif data.mouseX < 100 and (100< data.mouseY < data.ViewSize[1] - 100):
+    elif data.mouseX < data.AutoScrollWidth and (data.AutoScrollWidth< data.mouseY < data.ViewSize[1] - data.AutoScrollWidth):
             moveMap(data, (30,0))
 
-    elif data.mouseX > data.ViewSize[0] - 100 and (100< data.mouseY < data.ViewSize[1] - 100):
+    elif data.mouseX > data.ViewSize[0] - data.AutoScrollWidth and (data.AutoScrollWidth< data.mouseY < data.ViewSize[1] - data.AutoScrollWidth):
             moveMap(data, (-30,0))
 
-    elif data.mouseY < 100 and (100< data.mouseX < data.ViewSize[0] - 100):
+    elif data.mouseY < data.AutoScrollWidth and (data.AutoScrollWidth< data.mouseX < data.ViewSize[0] - data.AutoScrollWidth):
             moveMap(data, (0,30))
 
-    elif data.ViewSize[1] > data.mouseY > data.ViewSize[1] - 100 and (100< data.mouseX < data.ViewSize[0] - 100):
+    elif data.ViewSize[1] > data.mouseY > data.ViewSize[1] - data.AutoScrollWidth and (data.AutoScrollWidth< data.mouseX < data.ViewSize[0] - data.AutoScrollWidth):
             moveMap(data, (0,-30))
 
 
@@ -93,6 +93,7 @@ def init(data):
     PointerFile = 'Other/Pointer.png'
     data.pointerImage = load.load_image(PointerFile)
     pygame.mouse.set_visible(False)
+    data.AutoScrollWidth = 75
 
 
 def run():
