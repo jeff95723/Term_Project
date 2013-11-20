@@ -7,7 +7,23 @@ import load
 import map
 
 def mousePressed(data):
-    pass
+    row, col = mouse2RC(data)
+    print row,col
+    if data.board[row][col] == 0:
+        data.board[row][col] = 1
+        data.map.drawBlock(row, col)
+    elif data.board[row][col] == 1:
+        data.board[row][col] = 0
+        data.map.undrawBlock(row,col)
+    boardFile = 'board.txt'
+    with open(boardFile,'w+') as data.f:
+        data.f.write(str(data.board))
+
+def mouse2RC(data):
+    x,y = pygame.mouse.get_pos()
+    row = (y - data.map.y)/data.cellHeight
+    col = (x - data.map.x)/data.cellWidth
+    return (row,col)
 
 def checkKeys(data):
     keyStatus = pygame.key.get_pressed()
@@ -22,7 +38,7 @@ def checkKeys(data):
         data.map.move((0,data.cellHeight))
         #print 'Up Pressed'
     if keyStatus[K_DOWN] == 1:
-        data.map.move((0,-48))
+        data.map.move((0,-data.cellHeight))
         #print 'Down Pressed'
 
 def checkMouse(data):
@@ -30,13 +46,13 @@ def checkMouse(data):
         data.map.move((data.cellWidth,data.cellHeight))
 
     elif data.mouseX < data.AutoScrollWidth and data.ViewSize[1] > data.mouseY > data.ViewSize[1] - data.AutoScrollWidth:
-        data.map.move((data.cellWidth,-48))
+        data.map.move((data.cellWidth,-data.cellHeight))
 
     elif data.mouseX > data.ViewSize[0] - data.AutoScrollWidth and data.mouseY < data.AutoScrollWidth:
         data.map.move((-data.cellWidth,data.cellHeight))
 
     elif data.mouseX > data.ViewSize[0] - data.AutoScrollWidth and data.ViewSize[1] > data.mouseY > data.ViewSize[1] - data.AutoScrollWidth:
-        data.map.move((-data.cellWidth,-48))
+        data.map.move((-data.cellWidth,-data.cellHeight))
 
     elif data.mouseX < data.AutoScrollWidth and (data.AutoScrollWidth< data.mouseY < data.ViewSize[1] - data.AutoScrollWidth):
             data.map.move((data.cellWidth,0))
@@ -48,7 +64,7 @@ def checkMouse(data):
             data.map.move((0,data.cellHeight))
 
     elif data.ViewSize[1] > data.mouseY > data.ViewSize[1] - data.AutoScrollWidth and (data.AutoScrollWidth< data.mouseX < data.ViewSize[0] - data.AutoScrollWidth):
-            data.map.move((0,-48))
+            data.map.move((0,-data.cellHeight))
 
 
 
@@ -63,6 +79,8 @@ def timerFired(data):
         if (event.type == pygame.QUIT):
             pygame.quit()
             data.mode = 'quit'
+        elif (event.type == pygame.MOUSEBUTTONDOWN):
+            mousePressed(data)
 
 def redrawAll(data):
 
@@ -81,6 +99,8 @@ def init(data):
     pygame.mouse.set_visible(False)
     data.AutoScrollWidth = 75
 
+    data.board = [[0] * (data.map.cols) for i in xrange(data.map.rows)]
+
 
 def run():
     pygame.init()
@@ -88,8 +108,8 @@ def run():
     class Struct:pass
     data = Struct()
 
-    data.ViewSize = ( 960, 640)
-    data.MenuSize = (data.ViewSize[0], 320)
+    data.ViewSize = ( 960, 960)
+    data.MenuSize = (data.ViewSize[0], 0)
     data.screen = pygame.display.set_mode((data.ViewSize[0],data.MenuSize[1] + data.ViewSize[1]),HWSURFACE)
     pygame.display.set_caption('Test')
 
