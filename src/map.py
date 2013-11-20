@@ -43,6 +43,7 @@ class map(object):
     def undrawBlock(self,row,col):
         cW, cH = self.getCellsize()
         self.image.blit(self.original,(col*cW,row*cH),pygame.Rect(col*cW,row*cH,cW,cH))
+        self.drawGrid()
 
 
 

@@ -4,7 +4,7 @@ from pygame.locals import *
 
 def load_image(fileName, scale = 1):
     '''Loads an image with transparency'''
-    file = os.path.join('..','data', 'images','', fileName)
+    file = os.path.join('..','data', 'images', fileName)
     try:
         image = pygame.image.load(file)
     except pygame.error:
@@ -60,4 +60,10 @@ def load_sound(file):
         pygame.quit()
         raise SystemExit, 'Failed to load sound %s' %file
     return sound
+
+def load_map_data(fileName):
+    file = os.path.join('..', 'data', 'mapData',fileName)
+    with open(file, 'r') as f:
+        content = f.read()
+    return eval(content)
 

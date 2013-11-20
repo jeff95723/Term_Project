@@ -7,17 +7,7 @@ import load
 import map
 
 def mousePressed(data):
-    row, col = mouse2RC(data)
-    print row,col
-    if data.board[row][col] == 0:
-        data.board[row][col] = 1
-        data.map.drawBlock(row, col)
-    elif data.board[row][col] == 1:
-        data.board[row][col] = 0
-        data.map.undrawBlock(row,col)
-    boardFile = 'board.txt'
-    with open(boardFile,'w+') as data.f:
-        data.f.write(str(data.board))
+    pass
 
 def mouse2RC(data):
     x,y = pygame.mouse.get_pos()
@@ -99,7 +89,7 @@ def init(data):
     pygame.mouse.set_visible(False)
     data.AutoScrollWidth = 75
 
-    data.board = [[0] * (data.map.cols) for i in xrange(data.map.rows)]
+    data.board = load.load_map_data('fastest.txt')
 
 
 def run():
@@ -108,8 +98,8 @@ def run():
     class Struct:pass
     data = Struct()
 
-    data.ViewSize = ( 960, 960)
-    data.MenuSize = (data.ViewSize[0], 0)
+    data.ViewSize = ( 960, 640)
+    data.MenuSize = (data.ViewSize[0], 320)
     data.screen = pygame.display.set_mode((data.ViewSize[0],data.MenuSize[1] + data.ViewSize[1]),HWSURFACE)
     pygame.display.set_caption('Test')
 
