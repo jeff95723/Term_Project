@@ -81,15 +81,17 @@ def redrawAll(data):
 
 def init(data):
     data.mode = 'run'
+
     data.map = map.map('fastest.jpg', 64, 64,scale = 1.5)
     data.map.drawGrid()
+    data.board = load.load_map_data('fastest.txt')
     data.cellWidth, data.cellHeight = data.map.getCellsize()
+
+
     PointerFile = 'Other/Pointer.png'
     data.pointerImage = load.load_image(PointerFile)
     pygame.mouse.set_visible(False)
     data.AutoScrollWidth = 75
-
-    data.board = load.load_map_data('fastest.txt')
 
 
 def run():
