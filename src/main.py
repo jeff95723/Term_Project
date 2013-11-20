@@ -73,7 +73,7 @@ def redrawAll(data):
 
 def init(data):
     data.mode = 'run'
-    data.map = map.map('PamirPlateau.jpg', 128,128,scale = 1.5)
+    data.map = map.map('fastest.jpg', 64, 64,scale = 1.5)
     data.map.drawGrid()
     data.cellWidth, data.cellHeight = data.map.getCellsize()
     PointerFile = 'Other/Pointer.png'
@@ -95,7 +95,6 @@ def run():
 
     data.clock = pygame.time.Clock()
     init(data)
-    print data.map.getCellsize()
     while 1:
         if data.mode == 'quit':
             exit()
