@@ -5,9 +5,10 @@ import load
 
 class map(object):
 
-    def __init__(self, file, rows, cols, scale):
-        self.image = load.load_image_smooth(fileName = 'maps/%s' %file, scale = scale)
-        self.original= load.load_image_smooth(fileName = 'maps/%s' %file, scale = scale)
+    def __init__(self, mapName, rows, cols, scale):
+        self.image = load.load_image_smooth(fileName = 'maps/%s.jpg' %mapName, scale = scale)
+        self.original= load.load_image_smooth(fileName = 'maps/%s.jpg' %mapName, scale = scale)
+        self.board = load.load_map_data(fileName = mapName + '.txt')
         self.rows = rows
         self.cols = cols
         self.x = 0
@@ -43,7 +44,6 @@ class map(object):
     def undrawBlock(self,row,col):
         cW, cH = self.getCellsize()
         self.image.blit(self.original,(col*cW,row*cH),pygame.Rect(col*cW,row*cH,cW,cH))
-        self.drawGrid()
 
 
 
@@ -57,6 +57,3 @@ class map(object):
 
 
 
-################################################################################
-# test
-################################################################################

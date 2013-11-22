@@ -5,6 +5,8 @@ from sys import exit
 
 import load
 import map
+import Building
+import ProtossBuildings
 
 def mousePressed(data):
     pass
@@ -57,8 +59,6 @@ def checkMouse(data):
             data.map.move((0,-data.cellHeight))
 
 
-
-
 def timerFired(data):
     data.mouseX, data.mouseY = pygame.mouse.get_pos()
     redrawAll(data)
@@ -72,19 +72,29 @@ def timerFired(data):
         elif (event.type == pygame.MOUSEBUTTONDOWN):
             mousePressed(data)
 
+def drawGrid(data):
+    cW, cH = data.map.getCellsize()
+    # get the width and height of the screen
+    rows, cols = (data.ViewSize[1])/cH,data.ViewSize[0]/cW
+    display = pygame.display.get_surface()
+    width, height = pygame.Surface.get_size(display)
+    for row in xrange(rows):
+        pygame.draw.lines(data.screen, (0,0,0),False, [(0,row * cH),(width,row * cH)])
+    for col in xrange(cols):
+        pygame.draw.lines(data.screen, (0,0,0),False, [(col * cW, 0),(col * cW, height)])
+
 def redrawAll(data):
 
     data.screen.fill((0,0,0))
     data.map.draw(data.screen)
+    drawGrid(data)
     data.screen.blit(data.pointerImage, (data.mouseX, data.mouseY))
     pygame.display.flip()
 
 def init(data):
     data.mode = 'run'
 
-    data.map = map.map('fastest.jpg', 64, 64,scale = 1.5)
-    data.map.drawGrid()
-    data.board = load.load_map_data('fastest.txt')
+    data.map = map.map('fastest', 64, 64,scale = 1.5)
     data.cellWidth, data.cellHeight = data.map.getCellsize()
 
 
@@ -93,6 +103,26 @@ def init(data):
     pygame.mouse.set_visible(False)
     data.AutoScrollWidth = 75
 
+    data.buildings = Building.building.buildings
+    data.buildingSurface = pygame.Surface((data.map.width,data.map.height))
+    Building.building.addBuildingSurface(data.map.image)
+    nexus = ProtossBuildings.Nexus(8,9, data.map)
+    gas = ProtossBuildings.Gas(8,3,data.map)
+    by = ProtossBuildings.CyberneticsCore(15,0, data.map)
+    vf = ProtossBuildings.FleetBeacon(15,3,data.map)
+    bf = ProtossBuildings.Forge(15,6,data.map)
+    bg = ProtossBuildings.Gateway(15,9, data.map)
+    vo = ProtossBuildings.Observatory(15,12,data.map)
+    bc = ProtossBuildings.Cannon(18,0,data.map)
+    bp = ProtossBuildings.Pylon(18,2,data.map)
+    vr = ProtossBuildings.RoboticsFacility(15,15,data.map)
+    vb = ProtossBuildings.RoboticsSupportBay(12,0, data.map)
+    vs = ProtossBuildings.Stargate(12,3, data.map)
+    vt = ProtossBuildings.TemplarArchives(12,6, data.map)
+    vc = ProtossBuildings.TwilightCouncil(12,9,data.map)
+    va = ProtossBuildings.ArbiterTribunal(12,12,data.map)
+
+    Building.building.drawAllBuildings(0)
 
 def run():
     pygame.init()
@@ -100,9 +130,8 @@ def run():
     class Struct:pass
     data = Struct()
 
-    data.ViewSize = ( 960, 640)
-    data.MenuSize = (data.ViewSize[0], 320)
-    data.screen = pygame.display.set_mode((data.ViewSize[0],data.MenuSize[1] + data.ViewSize[1]),HWSURFACE)
+    data.ViewSize = ( 960, 960)
+    data.screen = pygame.display.set_mode((data.ViewSize),HWSURFACE)
     pygame.display.set_caption('Test')
 
     data.clock = pygame.time.Clock()
