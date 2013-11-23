@@ -32,6 +32,10 @@ def checkKeys(data):
     if keyStatus[K_DOWN] == 1:
         data.map.move((0,-data.cellHeight))
         #print 'Down Pressed'
+    if keyStatus[K_z] == 1:
+        print ' Next Round !'
+        print Building.building.finishedBuildings
+        Building.building.nextRound()
 
 def checkMouse(data):
     if data.mouseX < data.AutoScrollWidth and data.mouseY < data.AutoScrollWidth:
@@ -87,6 +91,7 @@ def redrawAll(data):
 
     data.screen.fill((0,0,0))
     data.map.draw(data.screen)
+    Building.building.drawAllBuildings(0)
     drawGrid(data)
     data.screen.blit(data.pointerImage, (data.mouseX, data.mouseY))
     pygame.display.flip()
@@ -122,7 +127,6 @@ def init(data):
     vc = ProtossBuildings.TwilightCouncil(12,9,data.map)
     va = ProtossBuildings.ArbiterTribunal(12,12,data.map)
 
-    Building.building.drawAllBuildings(0)
 
 def run():
     pygame.init()

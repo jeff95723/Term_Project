@@ -20,14 +20,20 @@ class building(object):
 
     @classmethod
     def drawAllBuildings(cls, buildingSurfaceIndex):
-        '''
-        for building in cls.buildingBuildings:
-            building.drawUnfinishedBuilding(buildingSurfaceIndex)
-        for building in cls.finishedBuildings:
-            building.drawBuilding(buildingSurfaceIndex)
-        '''
-        for building in cls.buildings:
-            building.drawBuilding(buildingSurfaceIndex)
+        '''BUG HERE'''
+        for bld in cls.buildings:
+            if bld in cls.buildingBuildings:
+                bld.drawUnfinishedBuilding(0)
+            else:
+                bld.drawBuilding(0)
+
+    @classmethod
+    def nextRound(cls):
+        for bld in cls.buildings:
+            bld.buildRound -= 1
+            if bld.buildRound == 0:
+                building.buildingBuildings.remove(bld)
+                building.finishedBuildings.append(bld)
 
     def __init__(self, row, col, sizeRow, sizeCol,imageName, Map):
         self.row = row

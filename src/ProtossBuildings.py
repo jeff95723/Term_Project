@@ -9,6 +9,10 @@ class ProtossBuilding(Building.building):
         unfinishedBuildingImage = load.load_image('Buildings/Protoss/ProtossCore.png')
         super(ProtossBuilding,self).drawUnfinishedBuilding(buildingSurfaceIndex,unfinishedBuildingImage)
 
+    def __init__(self, row, col, sizeRow, sizeCol, imageName, Map):
+        super(ProtossBuilding, self).__init__(row, col, sizeRow, sizeCol, imageName, Map)
+        self.buildRound = 3
+
 class Nexus(ProtossBuilding):
     def __init__(self, row, col, Map):
         imageName = 'Protoss/Nexus.gif'
