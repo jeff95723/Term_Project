@@ -91,7 +91,7 @@ def redrawAll(data):
 
     data.screen.fill((0,0,0))
     data.map.draw(data.screen)
-    Building.building.drawAllBuildings(0)
+    ProtossBuildings.ProtossBuilding.drawAllBuildings(0)
     drawGrid(data)
     data.screen.blit(data.pointerImage, (data.mouseX, data.mouseY))
     pygame.display.flip()

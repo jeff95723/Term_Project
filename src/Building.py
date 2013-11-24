@@ -9,6 +9,7 @@ class building(object):
     finishedBuildings = []
     # the surfaces for buildings for each player
     buildingSurfaces = []
+    originalSurface = None
 
     @classmethod
     def getAllBuildings(cls):
@@ -20,7 +21,6 @@ class building(object):
 
     @classmethod
     def drawAllBuildings(cls, buildingSurfaceIndex):
-        '''BUG HERE'''
         for bld in cls.buildings:
             if bld in cls.buildingBuildings:
                 bld.drawUnfinishedBuilding(0)
@@ -33,6 +33,7 @@ class building(object):
             bld.buildRound -= 1
             if bld.buildRound == 0:
                 building.buildingBuildings.remove(bld)
+                bld.undrawBuilding(0)
                 building.finishedBuildings.append(bld)
 
     def __init__(self, row, col, sizeRow, sizeCol,imageName, Map):
@@ -46,8 +47,13 @@ class building(object):
         # set the x, y error for the image
         self.xerror = 10
         self.yerror = 0
+
+
         building.buildings.append(self)
         building.buildingBuildings.append(self)
+        building.originalSurface = Map.original
+
+
 
     def __eq__(self, other):
         return type(self) == type(other) and (self.row,self.col) == (other.row,other.col)
@@ -66,11 +72,16 @@ class building(object):
     def drawUnfinishedBuilding(self, buildingSurfaceIndex, unfinishedBuildingImage):
         surface = building.buildingSurfaces[buildingSurfaceIndex]
         cellWidth, cellHeight = self.Map.getCellsize()
-        x = cellWidth * self.col + self.xerror
-        y = cellHeight * self.row + self.yerror
+        x = cellWidth * self.col
+        y = cellHeight * self.row
         surface.blit(unfinishedBuildingImage,(x,y))
 
         for r in xrange(self.sizeRow):
             for c in xrange(self.sizeCol):
                 self.Map.board[self.row + r][self.col + c] = 1
+
+    def undrawBuilding(self, buildingSurfaceIndex):
+        '''Each building class for each race must implement this function'''
+        pass
+
 

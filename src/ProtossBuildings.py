@@ -5,9 +5,26 @@ import Building
 import load
 
 class ProtossBuilding(Building.building):
+    protossBuildings = []
+    unfinishedBuildingImage = None
+
+    @classmethod
+    def getAllProtossBuildings(cls):
+        return cls.protossBuildings
+
+
     def drawUnfinishedBuilding(self, buildingSurfaceIndex):
         unfinishedBuildingImage = load.load_image('Buildings/Protoss/ProtossCore.png')
+        ProtossBuilding.unfinishedBuildingImage = unfinishedBuildingImage
         super(ProtossBuilding,self).drawUnfinishedBuilding(buildingSurfaceIndex,unfinishedBuildingImage)
+        ProtossBuilding.protossBuildings.append(self)
+
+    def undrawBuilding(self, buildingSurfaceIndex):
+        rect = ProtossBuilding.unfinishedBuildingImage.get_rect()
+        cW, cH = self.Map.getCellsize()
+        surface = ProtossBuilding.buildingSurfaces[buildingSurfaceIndex]
+        surface.blit(ProtossBuilding.originalSurface,(self.col*cW,self.row*cH),
+                     pygame.Rect(self.col*cW,self.row*cH,rect[2],rect[3]))
 
     def __init__(self, row, col, sizeRow, sizeCol, imageName, Map):
         super(ProtossBuilding, self).__init__(row, col, sizeRow, sizeCol, imageName, Map)
