@@ -7,6 +7,7 @@ import load
 import map
 import Building
 import ProtossBuildings
+import Unit
 
 def mousePressed(data):
     pass
@@ -91,7 +92,7 @@ def redrawAll(data):
 
     data.screen.fill((0,0,0))
     data.map.draw(data.screen)
-    ProtossBuildings.ProtossBuilding.drawAllBuildings(0)
+    ProtossBuildings.ProtossBuilding.drawAllBuildings()
     drawGrid(data)
     data.screen.blit(data.pointerImage, (data.mouseX, data.mouseY))
     pygame.display.flip()
@@ -109,23 +110,22 @@ def init(data):
     data.AutoScrollWidth = 75
 
     data.buildings = Building.building.buildings
-    data.buildingSurface = pygame.Surface((data.map.width,data.map.height))
-    Building.building.addBuildingSurface(data.map.image)
-    nexus = ProtossBuildings.Nexus(8,9, data.map)
-    gas = ProtossBuildings.Gas(8,3,data.map)
-    by = ProtossBuildings.CyberneticsCore(15,0, data.map)
-    vf = ProtossBuildings.FleetBeacon(15,3,data.map)
-    bf = ProtossBuildings.Forge(15,6,data.map)
-    bg = ProtossBuildings.Gateway(15,9, data.map)
-    vo = ProtossBuildings.Observatory(15,12,data.map)
-    bc = ProtossBuildings.Cannon(18,0,data.map)
-    bp = ProtossBuildings.Pylon(18,2,data.map)
-    vr = ProtossBuildings.RoboticsFacility(15,15,data.map)
-    vb = ProtossBuildings.RoboticsSupportBay(12,0, data.map)
-    vs = ProtossBuildings.Stargate(12,3, data.map)
-    vt = ProtossBuildings.TemplarArchives(12,6, data.map)
-    vc = ProtossBuildings.TwilightCouncil(12,9,data.map)
-    va = ProtossBuildings.ArbiterTribunal(12,12,data.map)
+    Building.building.setMap(data.map)
+    nexus = ProtossBuildings.Nexus(8, 9)
+    gas = ProtossBuildings.Gas(8, 3)
+    by = ProtossBuildings.CyberneticsCore(15, 0)
+    vf = ProtossBuildings.FleetBeacon(15, 3)
+    bf = ProtossBuildings.Forge(15, 6)
+    bg = ProtossBuildings.Gateway(15, 9)
+    vo = ProtossBuildings.Observatory(15, 12)
+    bc = ProtossBuildings.Cannon(18, 0)
+    bp = ProtossBuildings.Pylon(18, 2)
+    vr = ProtossBuildings.RoboticsFacility(15, 15)
+    vb = ProtossBuildings.RoboticsSupportBay(12, 0)
+    vs = ProtossBuildings.Stargate(12, 3)
+    vt = ProtossBuildings.TemplarArchives(12, 6)
+    vc = ProtossBuildings.TwilightCouncil(12, 9)
+    va = ProtossBuildings.ArbiterTribunal(12, 12)
 
 
 def run():
