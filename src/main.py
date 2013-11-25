@@ -11,9 +11,11 @@ import Unit
 
 def mousePressed(data):
     row, col = mouse2RC(data)
-    print 'Selected: ',
-    print data.map.board[row][col],
-    print 'at ' + str(row)+ ',' + str(col)
+    mouseStatus = pygame.mouse.get_pressed()
+    if mouseStatus[0] == 1:
+        data.selected = data.map.board[row][col]
+    elif mouseStatus[2] == 1:
+        data.selected = None
 
 
 def mouse2RC(data):
@@ -105,9 +107,9 @@ def redrawAll(data):
     data.screen.fill((0,0,0))
     data.map.draw(data.screen)
     ProtossBuildings.ProtossBuilding.drawAllBuildings()
-    print data.zealot.checkGroundMoves(6)
     Unit.Unit.drawAllUnits()
-    data.zealot.drawMoves((0,200,0,100))
+    if isinstance(data.selected,Unit.Unit):
+        data.selected.drawMoves((0,200,0,100))
     drawGrid(data)
     #data.screen.blit(data.pointerImage, (data.mouseX, data.mouseY))
     pygame.display.flip()
@@ -123,6 +125,8 @@ def init(data):
     data.pointerImage = load.load_image(PointerFile)
     #pygame.mouse.set_visible(False)
     data.AutoScrollWidth = 75
+
+    data.selected = None
 
     data.buildings = Building.building.buildings
     Building.building.setMap(data.map)

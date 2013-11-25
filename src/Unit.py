@@ -80,7 +80,8 @@ class Unit(object):
             if self.sizeRow == 1 or self.sizeCol == 1:
                 result = self.checkGroundMovesInDir(range-1,self.row+dir[0], self.col + dir[1], dir)
             else:
-                result = self.checkGroundMovesInDirForBigUnits(range-1,self.row + dir[0], self.col+ dir[1], dir)
+                result = self.checkGroundMovesInDirForBigUnits(range-max(self.sizeCol,self.sizeRow),self.row + self.sizeRow * dir[0],
+                                                               self.col+ self.sizeCol* dir[1], dir)
 
             if result != None:
                 groundMoves.extend(result)
