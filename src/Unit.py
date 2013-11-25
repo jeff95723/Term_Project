@@ -78,9 +78,9 @@ class Unit(object):
         groundMoves = []
         for dir in dirs:
             if self.sizeRow == 1 or self.sizeCol == 1:
-                result = self.checkGroundMovesInDir(range-1,self.row, self.col, dir)
+                result = self.checkGroundMovesInDir(range-1,self.row+dir[0], self.col + dir[1], dir)
             else:
-                result = self.checkGroundMovesInDirForBigUnits(range-1,self.row, self.col, dir)
+                result = self.checkGroundMovesInDirForBigUnits(range-1,self.row + dir[0], self.col+ dir[1], dir)
 
             if result != None:
                 groundMoves.extend(result)
@@ -152,10 +152,18 @@ class Unit(object):
                      pygame.Rect(self.col*cW,self.row*cH,rect[2],rect[3]))
 
     def drawMoves(self,color):
+        cW,cH = self.Map.getCellsize()
+        screen = self.screen
+        block = pygame.Surface((cW,cH),pygame.SRCALPHA)
+        block.fill(color)
+
         for (row,col) in self.checkGroundMoves(self.MovRange):
             for r in xrange(self.sizeRow):
                 for c in xrange(self.sizeCol):
-                    self.Map.drawBlock(row+r,col+c,color)
+                    localX = (col+c)*cW- abs(self.Map.x)
+                    localY = (row+r)*cH- abs(self.Map.y)
+                    self.screen.blit(block,(localX,localY))
+                    #self.Map.drawBlock(row+r,col+c,color)
 
 
 

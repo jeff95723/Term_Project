@@ -105,8 +105,9 @@ def redrawAll(data):
     data.screen.fill((0,0,0))
     data.map.draw(data.screen)
     ProtossBuildings.ProtossBuilding.drawAllBuildings()
-    data.zealot.drawMoves((0,200,0,100))
+    print data.zealot.checkGroundMoves(6)
     Unit.Unit.drawAllUnits()
+    data.zealot.drawMoves((0,200,0,100))
     drawGrid(data)
     #data.screen.blit(data.pointerImage, (data.mouseX, data.mouseY))
     pygame.display.flip()
@@ -127,6 +128,7 @@ def init(data):
     Building.building.setMap(data.map)
     Unit.Unit.setMap(data.map)
     Unit.Unit.setScreen(data.screen)
+    '''
     nexus = ProtossBuildings.Nexus(8, 9)
     gas = ProtossBuildings.Gas(8, 3)
     by = ProtossBuildings.CyberneticsCore(15, 0)
@@ -142,6 +144,7 @@ def init(data):
     vt = ProtossBuildings.TemplarArchives(12, 6)
     vc = ProtossBuildings.TwilightCouncil(12, 9)
     va = ProtossBuildings.ArbiterTribunal(12, 12)
+    '''
     data.zealot = Unit.Unit(8, 7,1,1,100,100,2,0,10,1,6,'Protoss/Zealot.gif')
     data.archon = Unit.Unit(4,4,2,2,10,300,3,0,30,3,6,'Protoss/Archon.gif')
 
