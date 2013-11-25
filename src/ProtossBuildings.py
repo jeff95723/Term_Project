@@ -14,7 +14,8 @@ class ProtossBuilding(Building.building):
 
 
     def drawUnfinishedBuilding(self):
-        unfinishedBuildingImage = load.load_image('Buildings/Protoss/ProtossCore.png')
+        scale = min(self.sizeCol, self.sizeRow)/2.0
+        unfinishedBuildingImage = load.load_image('Buildings/Protoss/ProtossCore.png',scale = scale)
         ProtossBuilding.unfinishedBuildingImage = unfinishedBuildingImage
         super(ProtossBuilding, self).drawUnfinishedBuilding(unfinishedBuildingImage)
         ProtossBuilding.protossBuildings.append(self)

@@ -105,8 +105,7 @@ def redrawAll(data):
     data.screen.fill((0,0,0))
     data.map.draw(data.screen)
     ProtossBuildings.ProtossBuilding.drawAllBuildings()
-    for (row,col) in data.zealot.checkGroundMoves(6):
-        data.map.drawBlock(row, col)
+    data.zealot.drawMoves((0,200,0,100))
     Unit.Unit.drawAllUnits()
     drawGrid(data)
     #data.screen.blit(data.pointerImage, (data.mouseX, data.mouseY))
@@ -143,8 +142,8 @@ def init(data):
     vt = ProtossBuildings.TemplarArchives(12, 6)
     vc = ProtossBuildings.TwilightCouncil(12, 9)
     va = ProtossBuildings.ArbiterTribunal(12, 12)
-    data.zealot = Unit.Unit(8, 7,100,100,2,0,10,1,6,'Protoss/Zealot.gif')
-    print data.zealot.checkGroundMoves(6)
+    data.zealot = Unit.Unit(8, 7,1,1,100,100,2,0,10,1,6,'Protoss/Zealot.gif')
+    data.archon = Unit.Unit(4,4,2,2,10,300,3,0,30,3,6,'Protoss/Archon.gif')
 
 
 def run():

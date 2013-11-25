@@ -37,9 +37,12 @@ class map(object):
     def getCellsize(self):
         return (self.width/self.cols, self.height/self.rows)
 
-    def drawBlock(self,row, col):
+    def drawBlock(self,row, col, color):
         cW, cH = self.getCellsize()
-        pygame.draw.rect(self.image,(250,0,0),(col*cW,row*cH,cW, cH))
+        block = pygame.Surface((cW,cH),pygame.SRCALPHA)
+        block.fill(color)
+        self.image.blit(block,(col*cW, row*cH))
+        #pygame.draw.rect(self.image,color,(col*cW,row*cH,cW, cH))
 
     def undrawBlock(self,row,col):
         cW, cH = self.getCellsize()
