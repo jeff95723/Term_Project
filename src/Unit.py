@@ -5,6 +5,9 @@ import load
 class Unit(object):
     Units = []
     Map = None
+    mapSurface = None
+    originalSurface = None
+    screen = None
 
     @classmethod
     def getUnits(cls):
@@ -13,19 +16,47 @@ class Unit(object):
     @classmethod
     def setMap(cls, Map):
         cls.Map = Map
+        cls.mapSurface = Map.image
+        cls.originalSurface = Map.original
 
-    def __init__(self,row,col,health,sheild,sheildRegen,healthRegen, attack, AttRange, MovRange, image):
+    @classmethod
+    def setScreen(cls,screen):
+        cls.screen = screen
+
+    @classmethod
+    def drawAllUnits(cls):
+        for unt in cls.Units:
+            unt.drawUnit()
+
+    def __init__(self,row,col,health,sheild,sheildRegen,healthRegen, attack, AttRange, MovRange, imageName):
         self.row = row
         self.col = col
+        self.sizeRow = 1
+        self.sizeCol = 1
+
         self.health = health
         self.sheild = sheild
         self.sheildRegen = sheildRegen
         self.healthRegen = healthRegen
+
         self.attack = attack
         self.AttRange = AttRange
         self.MovRange = MovRange
+
         self.AirUnit = False
-        self.image = image
+
+        self.image = load.load_image_smooth('Units/' + imageName, 1.5)
+        self.xerror = 0
+        self.yerror = 0
+        self.Map = Unit.Map
+
+
+
+        Unit.Units.append(self)
+
+    def __eq__(self, other):
+        return type(self) == type(other) and (self.row,self.col) == (other.row,other.col)
+
 
     def move(self, DestRow, DestCol):
         if self.AirUnit:
@@ -35,36 +66,67 @@ class Unit(object):
             if dRow + dCol <= self.moveRange and board[DestRow][DestCol] == 0:
                 self.row = DestRow
                 self.col = DestCol
-                return True
+                self.undrawUnit()
 
-        return False
+        # ground unit
+        else:
+            pass
+
 
     def checkGroundMoves(self, range):
         dirs = [(1,0),(-1,0),(0,1),(0,-1)]
         groundMoves = []
         for dir in dirs:
-            groundMoves.extend(self.checkGroundMovesInDir(range, dir))
-        return groundMoves
+            result = self.checkGroundMovesInDir(range-1,self.row, self.col, dir)
+            if result != None:
+                groundMoves.extend(result)
+        groundMoves = list(set(groundMoves))
+        if (self.row, self.col) in groundMoves:
+            groundMoves.remove((self.row,self.col))
+        return sorted(groundMoves)
 
 
-    def checkGroundMovesInDir(self, range, (drow, dcol)):
+    def checkGroundMovesInDir(self, range, row, col, (drow, dcol)):
         board = Unit.Map.board
-        if range == 0:
-            return (self.row, self.col)
-        elif board[self.row + drow][self.col + dcol] != 0:
+        if (row) >= len(board) or (row) < 0 \
+                 or (col) >= len(board[0]) or (col) < 0:
             return None
+        elif board[row][col] != 0:
+            return None
+
+        elif range == 0:
+            return [(row, col)]
+
         else:
             possibleMoves = [ ]
-            dirs = [(drow,dcol), (-drow,dcol), (drow,-dcol)]
+            dirs = [(1,0),(-1,0),(0,1),(0,-1)]
             for dir in dirs:
-                result = self.checkGroundMovesInDir(range-1,dir)
-                if result != None:
-                    possibleMoves.extend(result)
+                if dir != (-drow,-dcol):
+                    result = self.checkGroundMovesInDir(range-1,row+dir[0], col + dir[1],dir)
+                    if result != None:
+                        possibleMoves.extend(result + [(row,col)])
             return possibleMoves
 
     def drawUnit(self):
-        mapSurface = self.Map.image
-        pass
+        surface = Unit.mapSurface
+        cellWidth, cellHeight = self.Map.getCellsize()
+        x = cellWidth * self.col + self.xerror
+        y = cellHeight * self.row + self.yerror
+        surface.blit(self.image,(x,y))
+
+        for r in xrange(self.sizeRow):
+            for c in xrange(self.sizeCol):
+                self.Map.board[self.row + r][self.col + c] = self
+
+    def undrawUnit(self):
+        rect = self.image.get_rect()
+        cW,cH = self.Map.getCellsize()
+        surface = Unit.mapSurface
+        surface.blit(Unit.originalSurface,(self.col*cW,self.row*cH),
+                     pygame.Rect(self.col*cW,self.row*cH,rect[2],rect[3]))
+
+
+
 
 
 

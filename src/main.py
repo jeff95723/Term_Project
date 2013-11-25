@@ -10,7 +10,11 @@ import ProtossBuildings
 import Unit
 
 def mousePressed(data):
-    pass
+    row, col = mouse2RC(data)
+    print 'Selected: ',
+    print data.map.board[row][col],
+    print 'at ' + str(row)+ ',' + str(col)
+
 
 def mouse2RC(data):
     x,y = pygame.mouse.get_pos()
@@ -33,12 +37,18 @@ def checkKeys(data):
     if keyStatus[K_DOWN] == 1:
         data.map.move((0,-data.cellHeight))
         #print 'Down Pressed'
+
+    # for testing purposes
     if keyStatus[K_z] == 1:
-        print ' Next Round !'
-        print Building.building.finishedBuildings
+        #print ' Next Round !'
+        #print Building.building.finishedBuildings
         Building.building.nextRound()
+    if keyStatus[K_x] == 1:
+        data.zealot.undrawUnit()
 
 def checkMouse(data):
+
+    # check auto-scrolling
     if data.mouseX < data.AutoScrollWidth and data.mouseY < data.AutoScrollWidth:
         data.map.move((data.cellWidth,data.cellHeight))
 
@@ -62,6 +72,8 @@ def checkMouse(data):
 
     elif data.ViewSize[1] > data.mouseY > data.ViewSize[1] - data.AutoScrollWidth and (data.AutoScrollWidth< data.mouseX < data.ViewSize[0] - data.AutoScrollWidth):
             data.map.move((0,-data.cellHeight))
+
+
 
 
 def timerFired(data):
@@ -93,8 +105,11 @@ def redrawAll(data):
     data.screen.fill((0,0,0))
     data.map.draw(data.screen)
     ProtossBuildings.ProtossBuilding.drawAllBuildings()
+    for (row,col) in data.zealot.checkGroundMoves(6):
+        data.map.drawBlock(row, col)
+    Unit.Unit.drawAllUnits()
     drawGrid(data)
-    data.screen.blit(data.pointerImage, (data.mouseX, data.mouseY))
+    #data.screen.blit(data.pointerImage, (data.mouseX, data.mouseY))
     pygame.display.flip()
 
 def init(data):
@@ -106,11 +121,13 @@ def init(data):
 
     PointerFile = 'Other/Pointer.png'
     data.pointerImage = load.load_image(PointerFile)
-    pygame.mouse.set_visible(False)
+    #pygame.mouse.set_visible(False)
     data.AutoScrollWidth = 75
 
     data.buildings = Building.building.buildings
     Building.building.setMap(data.map)
+    Unit.Unit.setMap(data.map)
+    Unit.Unit.setScreen(data.screen)
     nexus = ProtossBuildings.Nexus(8, 9)
     gas = ProtossBuildings.Gas(8, 3)
     by = ProtossBuildings.CyberneticsCore(15, 0)
@@ -126,6 +143,8 @@ def init(data):
     vt = ProtossBuildings.TemplarArchives(12, 6)
     vc = ProtossBuildings.TwilightCouncil(12, 9)
     va = ProtossBuildings.ArbiterTribunal(12, 12)
+    data.zealot = Unit.Unit(8, 7,100,100,2,0,10,1,6,'Protoss/Zealot.gif')
+    print data.zealot.checkGroundMoves(6)
 
 
 def run():

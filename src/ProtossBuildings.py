@@ -7,7 +7,6 @@ import load
 class ProtossBuilding(Building.building):
     protossBuildings = []
     unfinishedBuildingImage = None
-    #mapSurface = Building.building.mapSurface
 
     @classmethod
     def getAllProtossBuildings(cls):
