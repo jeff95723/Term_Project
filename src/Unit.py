@@ -24,6 +24,11 @@ class Unit(object):
         cls.screen = screen
 
     @classmethod
+    def nextRound(cls):
+        for unt in cls.Units:
+            unt.canMove = True
+
+    @classmethod
     def drawAllUnits(cls):
         for unt in cls.Units:
             unt.drawUnit()
@@ -42,6 +47,7 @@ class Unit(object):
         self.attack = attack
         self.AttRange = AttRange
         self.MovRange = MovRange
+        self.canMove = True
 
         self.AirUnit = False
 
@@ -64,13 +70,20 @@ class Unit(object):
             dCol = DestCol - self.col
             board = Unit.Map.board
             if dRow + dCol <= self.moveRange and board[DestRow][DestCol] == 0:
+                self.Map.board[self.row][self.col] = 0
+                self.undrawUnit()
                 self.row = DestRow
                 self.col = DestCol
-                self.undrawUnit()
+                self.canMove = False
 
         # ground unit
         else:
-            pass
+            if (DestRow,DestCol) in self.checkGroundMoves(self.MovRange):
+                self.Map.board[self.row][self.col] = 0
+                self.undrawUnit()
+                self.row = DestRow
+                self.col = DestCol
+                self.canMove = False
 
 
     def checkGroundMoves(self, range):

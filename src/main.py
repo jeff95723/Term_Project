@@ -13,7 +13,17 @@ def mousePressed(data):
     row, col = mouse2RC(data)
     mouseStatus = pygame.mouse.get_pressed()
     if mouseStatus[0] == 1:
-        data.selected = data.map.board[row][col]
+        if data.map.board[row][col] == 0:
+            # if the previous selection is a unit, move that unit if possible
+            if isinstance(data.selected,Unit.Unit):
+                data.selected.move(row,col)
+        elif isinstance(data.map.board[row][col],Unit.Unit):
+            # if the previously selected is a unit, if now display the range
+            data.selected = data.map.board[row][col]
+        elif isinstance(data.map.board[row][col],Building.building):
+            print 'selected a building'
+        else:
+            data.selected = data.map.board[row][col]
     elif mouseStatus[2] == 1:
         data.selected = None
 
@@ -42,9 +52,10 @@ def checkKeys(data):
 
     # for testing purposes
     if keyStatus[K_z] == 1:
-        #print ' Next Round !'
+        print ' Next Round !'
         #print Building.building.finishedBuildings
         Building.building.nextRound()
+        Unit.Unit.nextRound()
     if keyStatus[K_x] == 1:
         data.zealot.undrawUnit()
 
@@ -109,8 +120,9 @@ def redrawAll(data):
     ProtossBuildings.ProtossBuilding.drawAllBuildings()
     Unit.Unit.drawAllUnits()
     if isinstance(data.selected,Unit.Unit):
-        data.selected.drawMoves((0,200,0,100))
-    drawGrid(data)
+        if data.selected.canMove:
+            data.selected.drawMoves((0,200,0,100))
+    #drawGrid(data)
     #data.screen.blit(data.pointerImage, (data.mouseX, data.mouseY))
     pygame.display.flip()
 
