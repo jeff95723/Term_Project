@@ -61,6 +61,12 @@ def load_sound(file):
         raise SystemExit, 'Failed to load sound %s' %file
     return sound
 
+def load_sounds(*files):
+    snds = []
+    for file in files:
+        snds.append(load_sound(file))
+    return snds
+
 def load_map_data(fileName):
     file = os.path.join('..', 'data', 'mapData',fileName)
     with open(file, 'r') as f:

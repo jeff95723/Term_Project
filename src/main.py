@@ -7,6 +7,7 @@ import load
 import map
 import Building
 import ProtossBuildings
+import ProtossUnit
 import Unit
 
 def mousePressed(data):
@@ -161,7 +162,8 @@ def init(data):
     vc = ProtossBuildings.TwilightCouncil(12, 9)
     va = ProtossBuildings.ArbiterTribunal(12, 12)
     '''
-    data.zealot = Unit.Unit(8, 7,1,1,100,100,2,0,10,1,6,'Protoss/Zealot.gif')
+    #data.zealot = Unit.Unit(8, 7,1,1,100,100,2,0,10,1,6,'Protoss/Zealot.gif')
+    data.zealot = ProtossUnit.Zealot(8,9)
     data.archon = Unit.Unit(4,4,2,2,10,300,3,0,30,3,6,'Protoss/Archon.gif')
 
 
