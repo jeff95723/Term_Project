@@ -57,7 +57,7 @@ class DarkTemplar(ProtossUnit):
         imageName = 'Dark Templar.gif'
         super(DarkTemplar,self).__init__(row,col,1,1,80,40,5,0,40,1,6,imageName)
         Trimage = self.image.copy()
-        alpha = 10
+        alpha = 100
         Trimage.fill((255,255,255,alpha), None, pygame.BLEND_RGBA_MULT)
         self.image = Trimage
         sounds = load.load_sounds_in_Folder('Protoss/DarkTemplar/')

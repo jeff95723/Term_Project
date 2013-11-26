@@ -49,6 +49,7 @@ class map(object):
         self.image.blit(self.original,(col*cW,row*cH),pygame.Rect(col*cW,row*cH,cW,cH))
 
     def drawGrid(self):
+
         rows, cols = self.rows, self.cols
         cW, cH = self.getCellsize()
         for row in xrange(rows):
@@ -56,5 +57,8 @@ class map(object):
         for col in xrange(cols):
             pygame.draw.lines(self.image, (0,0,0),False, [(col * cW, 0),(col * cW, self.height)])
 
+    def resetMap(self):
+
+        self.image.blit(self.original,(abs(self.x),abs(self.y)), (abs(self.x),abs(self.y), self.displayWidth, self.displayHeight))
 
 

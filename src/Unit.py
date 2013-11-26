@@ -82,7 +82,7 @@ class Unit(object):
                 for r in xrange(self.sizeRow):
                     for c in xrange(self.sizeCol):
                         self.Map.board[self.row+r][self.col+c] = 0
-                self.undrawUnit()
+                #self.undrawUnit()
                 self.row = DestRow
                 self.col = DestCol
                 self.canMove = False
@@ -93,7 +93,7 @@ class Unit(object):
                 for r in xrange(self.sizeRow):
                     for c in xrange(self.sizeCol):
                         self.Map.board[self.row+r][self.col+c] = 0
-                self.undrawUnit()
+                #self.undrawUnit()
                 self.row = DestRow
                 self.col = DestCol
                 self.canMove = False

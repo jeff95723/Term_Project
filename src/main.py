@@ -92,7 +92,7 @@ def checkMouse(data):
 def timerFired(data):
     data.mouseX, data.mouseY = pygame.mouse.get_pos()
     redrawAll(data)
-    data.clock.tick(60)
+    data.clock.tick(30)
     checkKeys(data)
     checkMouse(data)
     for event in pygame.event.get():
@@ -125,10 +125,10 @@ def drawMenu(data):
 
 def redrawAll(data):
 
-    data.screen.fill((0,0,0))
-    data.map.draw(data.screen)
+    data.map.resetMap()
     ProtossBuildings.ProtossBuilding.drawAllBuildings()
     Unit.Unit.drawAllUnits()
+    data.map.draw(data.screen)
     if isinstance(data.selected,Unit.Unit):
         if data.selected.canMove:
             data.selected.drawMoves((0,200,0,100))
