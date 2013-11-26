@@ -17,17 +17,18 @@ def mousePressed(data):
         if data.map.board[row][col] == 0:
             # if the previous selection is a unit, move that unit if possible
             if isinstance(data.selected,Unit.Unit):
-                data.selected.move(row,col)
+                if data.selected.canMove:
+                    data.selected.move(row,col)
         elif isinstance(data.map.board[row][col],Unit.Unit):
             # if the previously selected is a unit, if now display the range
             data.selected = data.map.board[row][col]
+            data.selected.playSound(data.selected.idleSounds)
         elif isinstance(data.map.board[row][col],Building.building):
             print 'selected a building'
         else:
             data.selected = data.map.board[row][col]
     elif mouseStatus[2] == 1:
         data.selected = None
-
 
 def mouse2RC(data):
     x,y = pygame.mouse.get_pos()
@@ -57,6 +58,7 @@ def checkKeys(data):
         #print Building.building.finishedBuildings
         Building.building.nextRound()
         Unit.Unit.nextRound()
+        data.selected = None
     if keyStatus[K_x] == 1:
         data.zealot.undrawUnit()
 
@@ -87,9 +89,6 @@ def checkMouse(data):
     elif data.ViewSize[1] > data.mouseY > data.ViewSize[1] - data.AutoScrollWidth and (data.AutoScrollWidth< data.mouseX < data.ViewSize[0] - data.AutoScrollWidth):
             data.map.move((0,-data.cellHeight))
 
-
-
-
 def timerFired(data):
     data.mouseX, data.mouseY = pygame.mouse.get_pos()
     redrawAll(data)
@@ -114,6 +113,16 @@ def drawGrid(data):
     for col in xrange(cols):
         pygame.draw.lines(data.screen, (0,0,0),False, [(col * cW, 0),(col * cW, height)])
 
+def drawMenu(data):
+    MenuFile = 'Other/Menu/Protoss Menu.png'
+    MenuImage = load.load_image(MenuFile)
+    Menu_h = MenuImage.get_height()
+    #print Menu_h
+    ScreenHeight = data.screen.get_height()
+    #print ScreenHeight
+    Menu_y = ScreenHeight - Menu_h
+    data.screen.blit(MenuImage,(0,Menu_y))
+
 def redrawAll(data):
 
     data.screen.fill((0,0,0))
@@ -123,7 +132,8 @@ def redrawAll(data):
     if isinstance(data.selected,Unit.Unit):
         if data.selected.canMove:
             data.selected.drawMoves((0,200,0,100))
-    #drawGrid(data)
+    drawMenu(data)
+    drawGrid(data)
     #data.screen.blit(data.pointerImage, (data.mouseX, data.mouseY))
     pygame.display.flip()
 
@@ -139,36 +149,22 @@ def init(data):
     #pygame.mouse.set_visible(False)
     data.AutoScrollWidth = 75
 
+
     data.selected = None
 
     data.buildings = Building.building.buildings
     Building.building.setMap(data.map)
     Unit.Unit.setMap(data.map)
     Unit.Unit.setScreen(data.screen)
-    '''
-    nexus = ProtossBuildings.Nexus(8, 9)
-    gas = ProtossBuildings.Gas(8, 3)
-    by = ProtossBuildings.CyberneticsCore(15, 0)
-    vf = ProtossBuildings.FleetBeacon(15, 3)
-    bf = ProtossBuildings.Forge(15, 6)
-    bg = ProtossBuildings.Gateway(15, 9)
-    vo = ProtossBuildings.Observatory(15, 12)
-    bc = ProtossBuildings.Cannon(18, 0)
-    bp = ProtossBuildings.Pylon(18, 2)
-    vr = ProtossBuildings.RoboticsFacility(15, 15)
-    vb = ProtossBuildings.RoboticsSupportBay(12, 0)
-    vs = ProtossBuildings.Stargate(12, 3)
-    vt = ProtossBuildings.TemplarArchives(12, 6)
-    vc = ProtossBuildings.TwilightCouncil(12, 9)
-    va = ProtossBuildings.ArbiterTribunal(12, 12)
-    '''
-    #data.zealot = Unit.Unit(8, 7,1,1,100,100,2,0,10,1,6,'Protoss/Zealot.gif')
-    data.zealot = ProtossUnit.Zealot(8,9)
-    data.archon = Unit.Unit(4,4,2,2,10,300,3,0,30,3,6,'Protoss/Archon.gif')
-
+    data.zealot = ProtossUnit.Zealot(1,1)
+    data.archon = ProtossUnit.Archon(3,3)
+    data.darkTemplar = ProtossUnit.DarkTemplar(5,0)
+    data.Dragoon = ProtossUnit.Dragoon(6,0)
+    data.Probe = ProtossUnit.Probe(8,0)
 
 def run():
     pygame.init()
+    pygame.mixer.init()
 
     class Struct:pass
     data = Struct()
@@ -183,7 +179,6 @@ def run():
         if data.mode == 'quit':
             exit()
         timerFired(data)
-
 
 
 run()

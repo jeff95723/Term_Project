@@ -48,8 +48,6 @@ class map(object):
         cW, cH = self.getCellsize()
         self.image.blit(self.original,(col*cW,row*cH),pygame.Rect(col*cW,row*cH,cW,cH))
 
-
-
     def drawGrid(self):
         rows, cols = self.rows, self.cols
         cW, cH = self.getCellsize()

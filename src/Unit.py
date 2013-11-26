@@ -1,9 +1,11 @@
 import pygame
 from pygame.locals import *
 import load
+import random
 
 class Unit(object):
     Units = []
+    Drawed = False
     Map = None
     mapSurface = None
     originalSurface = None
@@ -27,13 +29,18 @@ class Unit(object):
     def nextRound(cls):
         for unt in cls.Units:
             unt.canMove = True
+        Unit.Drawed = False
+
 
     @classmethod
     def drawAllUnits(cls):
+        #if Unit.Drawed == False:
         for unt in cls.Units:
             unt.drawUnit()
+        Unit.Drawed = True
 
     def __init__(self,row,col,sizeRow, sizeCol,health,sheild,sheildRegen,healthRegen, attack, AttRange, MovRange, imageName):
+
         self.row = row
         self.col = col
         self.sizeRow = sizeRow
@@ -44,18 +51,20 @@ class Unit(object):
         self.sheildRegen = sheildRegen
         self.healthRegen = healthRegen
 
+        self.population = 0
+
         self.attack = attack
         self.AttRange = AttRange
         self.MovRange = MovRange
         self.canMove = True
 
         self.AirUnit = False
+        self.stealth = False
 
         self.image = load.load_image_smooth('Units/' + imageName, 1.5)
         self.xerror = 0
         self.yerror = 0
         self.Map = Unit.Map
-
 
 
         Unit.Units.append(self)
@@ -70,7 +79,9 @@ class Unit(object):
             dCol = DestCol - self.col
             board = Unit.Map.board
             if dRow + dCol <= self.moveRange and board[DestRow][DestCol] == 0:
-                self.Map.board[self.row][self.col] = 0
+                for r in xrange(self.sizeRow):
+                    for c in xrange(self.sizeCol):
+                        self.Map.board[self.row+r][self.col+c] = 0
                 self.undrawUnit()
                 self.row = DestRow
                 self.col = DestCol
@@ -79,7 +90,9 @@ class Unit(object):
         # ground unit
         else:
             if (DestRow,DestCol) in self.checkGroundMoves(self.MovRange):
-                self.Map.board[self.row][self.col] = 0
+                for r in xrange(self.sizeRow):
+                    for c in xrange(self.sizeCol):
+                        self.Map.board[self.row+r][self.col+c] = 0
                 self.undrawUnit()
                 self.row = DestRow
                 self.col = DestCol
@@ -162,8 +175,8 @@ class Unit(object):
         rect = self.image.get_rect()
         cW,cH = self.Map.getCellsize()
         surface = Unit.mapSurface
-        surface.blit(Unit.originalSurface,(self.col*cW,self.row*cH),
-                     pygame.Rect(self.col*cW,self.row*cH,rect[2],rect[3]))
+        surface.blit(Unit.originalSurface,(self.col*cW+self.xerror,self.row*cH+self.yerror),
+                     pygame.Rect(self.col*cW+self.xerror,self.row*cH+self.yerror,rect[2],rect[3]))
 
     def drawMoves(self,color):
         cW,cH = self.Map.getCellsize()
@@ -178,6 +191,12 @@ class Unit(object):
                     localY = (row+r)*cH- abs(self.Map.y)
                     self.screen.blit(block,(localX,localY))
                     #self.Map.drawBlock(row+r,col+c,color)
+
+    def playSound(self,soundList):
+        sound = random.choice(soundList)
+        sound.play()
+
+
 
 
 

@@ -48,7 +48,6 @@ class Gas(ProtossBuilding):
         self.yerror = -30
         self.buildRound = 1
 
-
 class CyberneticsCore(ProtossBuilding):
     def __init__(self, row, col):
         imageName = 'Protoss/Cybernetics Core.gif'
@@ -94,7 +93,6 @@ class Cannon(ProtossBuilding):
         self.yerror = 40
         self.buildRound = 1
 
-
 class Pylon(ProtossBuilding):
     def __init__(self, row, col):
         imageName = 'Protoss/Pylon.gif'
@@ -103,7 +101,6 @@ class Pylon(ProtossBuilding):
         self.yerror = 0
         self.buildRound = 1
 
-
 class RoboticsFacility(ProtossBuilding):
     def __init__(self, row, col):
         imageName = 'Protoss/Robotics Facility.gif'
@@ -111,14 +108,12 @@ class RoboticsFacility(ProtossBuilding):
         self.xerror = 0
         self.yerror = 0
 
-
 class RoboticsSupportBay(ProtossBuilding):
     def __init__(self, row, col):
         imageName = 'Protoss/Robotics Support Bay.gif'
         super(RoboticsSupportBay, self).__init__(row, col, 3, 3, imageName)
         self.xerror = 0
         self.yerror = 10
-
 
 class Stargate(ProtossBuilding):
     def __init__(self, row, col):
@@ -128,7 +123,6 @@ class Stargate(ProtossBuilding):
         self.xerror = 0
         self.yerror = 0
 
-
 class TemplarArchives(ProtossBuilding):
     def __init__(self, row, col):
         imageName = 'Protoss/Templar Archives.gif'
@@ -136,15 +130,12 @@ class TemplarArchives(ProtossBuilding):
         self.xerror = -10
         self.yerror = 0
 
-
 class TwilightCouncil(ProtossBuilding):
     def __init__(self, row, col):
         imageName = 'Protoss/Citadel of Adun.gif'
         super(TwilightCouncil, self).__init__(row, col, 3, 3, imageName)
         self.xerror = 0
         self.yerror = 10
-
-
 
 class ArbiterTribunal(ProtossBuilding):
     def __init__(self, row, col):
