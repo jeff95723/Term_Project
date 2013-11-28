@@ -41,21 +41,6 @@ def mousePressed(data):
             data.selected = None
 
     # if the mouse is in the minimap region
-    elif mouseRegion == 1:
-        mMapx, mMapy = Menu.getMiniMapOrigin()
-        if mouseStatus[0] == 1:
-            data.ViewBox.x = data.mouseX - 20
-            data.ViewBox.y = data.mouseY - 20
-            if data.ViewBox.x < mMapx:
-                data.ViewBox.x = mMapx
-            if data.ViewBox.x > mMapx + 128:
-                data.ViewBox.x = mMapx + 128
-            if data.ViewBox.y < mMapy:
-                data.ViewBox.y = mMapy
-            if data.ViewBox.y > mMapy + 128:
-                data.ViewBox.y = mMapy + 128
-            data.map.x = (mMapx - data.ViewBox.x)*24
-            data.map.y = (mMapy - data.ViewBox.y)*24
 
 
 def mouse2RC(data):
@@ -117,11 +102,37 @@ def checkAutoScroll(data):
     elif data.ViewSize[1] > data.mouseY > data.ViewSize[1] - data.AutoScrollWidth and (data.AutoScrollWidth< data.mouseX < data.ViewSize[0] - data.AutoScrollWidth):
             data.map.move((0,-data.cellHeight))
 
+def checkMiniMapScroll(data):
+    mouseStatus = pygame.mouse.get_pressed()
+    mouseRegion = Menu.checkRegion(data)
+    if mouseRegion == 1:
+        mMapx, mMapy = Menu.getMiniMapOrigin()
+        if mouseStatus[0] == 1:
+            DestX, DestY = data.mouseX - 20, data.mouseY-20
+            data.ViewBox.x = DestX - mMapx
+            data.ViewBox.y = DestY - mMapy
+            if data.ViewBox.x < 0:
+                data.ViewBox.x = 0
+            if data.ViewBox.x > 128-40:
+                data.ViewBox.x = 128-40
+            if data.ViewBox.y < 0:
+                data.ViewBox.y = 0
+            if data.ViewBox.y > 128-40:
+                data.ViewBox.y = 128-40
+            data.map.x =  -(data.ViewBox.x)*24
+            data.map.y = -(data.ViewBox.y)*24
+
+def updateMiniMap(data):
+    data.ViewBox.x = -data.map.x/24.0
+    data.ViewBox.y = -data.map.y/24.0
+
 def timerFired(data):
     data.mouseX, data.mouseY = pygame.mouse.get_pos()
     redrawAll(data)
     data.clock.tick(30)
     checkKeys(data)
+    checkMiniMapScroll(data)
+    updateMiniMap(data)
     checkAutoScroll(data)
     print Menu.checkRegion(data)
     for event in pygame.event.get():
