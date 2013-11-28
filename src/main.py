@@ -14,27 +14,49 @@ import Menu
 def mousePressed(data):
     row, col = mouse2RC(data)
     mouseStatus = pygame.mouse.get_pressed()
-    if mouseStatus[0] == 1:
-        if data.map.board[row][col] == 0:
-            # if the previous selection is a unit, move that unit if possible
-            if isinstance(data.selected,Unit.Unit):
-                if data.selected.canMove:
-                    data.selected.move(row,col)
-        elif data.map.board[row][col] == 1:
-            # if the previous selection is a unit, move that unit if possible
-            if isinstance(data.selected,Unit.Unit):
-                if data.selected.canMove and data.selected.AirUnit:
-                    data.selected.move(row,col)
-        elif isinstance(data.map.board[row][col],Unit.Unit):
-            # if the previously selected is a unit, if now display the range
-            data.selected = data.map.board[row][col]
-            data.selected.playSound(data.selected.idleSounds)
-        elif isinstance(data.map.board[row][col],Building.building):
-            print 'selected a building'
-        else:
-            data.selected = data.map.board[row][col]
-    elif mouseStatus[2] == 1:
-        data.selected = None
+    mouseRegion = Menu.checkRegion(data)
+
+    # if in unit selection region
+    if mouseRegion == 0:
+        if mouseStatus[0] == 1:
+            if data.map.board[row][col] == 0:
+                # if the previous selection is a unit, move that unit if possible
+                if isinstance(data.selected,Unit.Unit):
+                    if data.selected.canMove:
+                        data.selected.move(row,col)
+            elif data.map.board[row][col] == 1:
+                # if the previous selection is a unit, move that unit if possible
+                if isinstance(data.selected,Unit.Unit):
+                    if data.selected.canMove and data.selected.AirUnit:
+                        data.selected.move(row,col)
+            elif isinstance(data.map.board[row][col],Unit.Unit):
+                # if the previously selected is a unit, if now display the range
+                data.selected = data.map.board[row][col]
+                data.selected.playSound(data.selected.idleSounds)
+            elif isinstance(data.map.board[row][col],Building.building):
+                print 'selected a building'
+            else:
+                data.selected = data.map.board[row][col]
+        elif mouseStatus[2] == 1:
+            data.selected = None
+
+    # if the mouse is in the minimap region
+    elif mouseRegion == 1:
+        mMapx, mMapy = Menu.getMiniMapOrigin()
+        if mouseStatus[0] == 1:
+            data.ViewBox.x = data.mouseX - 20
+            data.ViewBox.y = data.mouseY - 20
+            if data.ViewBox.x < mMapx:
+                data.ViewBox.x = mMapx
+            if data.ViewBox.x > mMapx + 128:
+                data.ViewBox.x = mMapx + 128
+            if data.ViewBox.y < mMapy:
+                data.ViewBox.y = mMapy
+            if data.ViewBox.y > mMapy + 128:
+                data.ViewBox.y = mMapy + 128
+            data.map.x = (mMapx - data.ViewBox.x)*24
+            data.map.y = (mMapy - data.ViewBox.y)*24
+
 
 def mouse2RC(data):
     x,y = pygame.mouse.get_pos()
@@ -68,7 +90,7 @@ def checkKeys(data):
     if keyStatus[K_x] == 1:
         data.zealot.undrawUnit()
 
-def checkMouse(data):
+def checkAutoScroll(data):
 
     # check auto-scrolling
     if data.mouseX < data.AutoScrollWidth and data.mouseY < data.AutoScrollWidth:
@@ -97,11 +119,11 @@ def checkMouse(data):
 
 def timerFired(data):
     data.mouseX, data.mouseY = pygame.mouse.get_pos()
-    print data.mouseX, data.mouseY
     redrawAll(data)
     data.clock.tick(30)
     checkKeys(data)
-    checkMouse(data)
+    checkAutoScroll(data)
+    print Menu.checkRegion(data)
     for event in pygame.event.get():
         if (event.type == pygame.QUIT):
             pygame.quit()
@@ -124,8 +146,10 @@ def drawMenu(data):
     MenuFile = 'Other/Menu/Protoss Menu.png'
     MenuImage = load.load_image(MenuFile)
     Menu_h = MenuImage.get_height()
+    data.MenuHeight = Menu_h
     #print Menu_h
     ScreenHeight = data.screen.get_height()
+    data.ScreenHeight = ScreenHeight
     #print ScreenHeight
     Menu_y = ScreenHeight - Menu_h
     data.screen.blit(MenuImage,(0,Menu_y))
@@ -145,6 +169,7 @@ def redrawAll(data):
     Menu.drawMenu(data.screen, data.selected)
     Unit.Unit.drawAllUnitsOnMiniMap()
     Building.building.drawAllBuildingsOnMiniMap()
+    data.ViewBox.draw()
     #data.screen.blit(data.pointerImage, (data.mouseX, data.mouseY))
     pygame.display.flip()
 
@@ -159,6 +184,8 @@ def init(data):
     data.pointerImage = load.load_image(PointerFile)
     #pygame.mouse.set_visible(False)
     data.AutoScrollWidth = 20
+
+    data.ViewBox = Menu.ViewBox(data.map)
 
 
     data.selected = None

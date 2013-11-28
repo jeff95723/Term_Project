@@ -23,13 +23,32 @@ def drawMiniMapCell(screen,row, col,color):
     mapX, mapY = getMiniMapOrigin()
     screen.blit(minimapCell,(mapX+col*cellW,mapY + row*cellH))
 
+def checkRegion(data):
+    # 0 for the unit selection region, 1 for the minimap region,
+    #2 for the order selection region, 3 for next round button region
+    # 4 for pause button region
+    x,y = data.mouseX, data.mouseY
+    mMapx, mMapy = getMiniMapOrigin()
+    if y < data.ScreenHeight - data.MenuHeight:
+        return 0
+    elif mMapx < x < mMapx + 128 and mMapy < y < mMapy + 128:
+        return  1
+    elif 756 < x < 944 and 782 < y < 952:
+        return 2
+    elif 106<x<201 and 726<y<756:
+        return 3
+    elif 626<x<714 and 831<y<854:
+        return 4
+
 class ViewBox(object):
-    def __init__(self, screen):
+    def __init__(self, map):
         self.x = 0
         self.y = 0
-        self.screen = screen
+        self.screen = map.display
+        self.map = map
 
-# Need to FINISH HERE
     def draw(self):
-        pointList = [(self.x,self.y)]
-        pygame.draw.lines(self.screen, (255,255,255),pointList)
+        miniMapX, miniMapY = getMiniMapOrigin()
+        drawX, drawY = miniMapX+self.x, miniMapY + self.y
+        pointList = [(drawX,drawY),(drawX,drawY + 40),(drawX +40,drawY+40),(drawX + 40,drawY)]
+        pygame.draw.lines(self.screen, (200,200,200),1,pointList, 1)
