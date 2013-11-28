@@ -15,7 +15,6 @@ def getMiniMapOrigin():
     return (40, 795)
 
 def drawAvatar(screen, obj):
-
     image = obj.Avatar
     screen.blit(image,(628,868))
 
@@ -42,6 +41,12 @@ def drawText(screen, obj):
         MoveRangeStr = 'Move Range: ' + str(obj.MovRange)
         AttackRangeStr = 'Attack Range: ' + str(obj.AttRange)
         AttackStr = 'Attack: ' + str(obj.attack)
+        MoveRange = SmallFont.render(MoveRangeStr, 1, InfoWhite)
+        AttackRange = SmallFont.render(AttackRangeStr,1,InfoWhite)
+        Attack = SmallFont.render(AttackStr,1,InfoWhite)
+        screen.blit(MoveRange,(320,902))
+        screen.blit(AttackRange,(320,915))
+        screen.blit(Attack, (320,931))
 
         if obj.stealth:
             stealthStr = 'Stealth Unit'
@@ -56,14 +61,8 @@ def drawText(screen, obj):
 
     Name = Namefont.render(Namestring,1,InfoWhite)
     Health = SmallFont.render(healthStr,1,HealthGreen)
-    MoveRange = SmallFont.render(MoveRangeStr, 1, InfoWhite)
-    AttackRange = SmallFont.render(AttackRangeStr,1,InfoWhite)
-    Attack = SmallFont.render(AttackStr,1,InfoWhite)
     screen.blit(Name,(358,830))
     screen.blit(Health,(247,918))
-    screen.blit(MoveRange,(320,902))
-    screen.blit(AttackRange,(320,915))
-    screen.blit(Attack, (320,931))
 
 def drawMiniMapCell(screen,row, col,color):
     minimapCell = pygame.Surface((2,2))

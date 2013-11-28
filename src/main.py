@@ -24,17 +24,21 @@ def mousePressed(data):
                 if isinstance(data.selected,Unit.Unit):
                     if data.selected.canMove:
                         data.selected.move(row,col)
+                else:
+                    data.selected = None
             elif data.map.board[row][col] == 1:
                 # if the previous selection is a unit, move that unit if possible
                 if isinstance(data.selected,Unit.Unit):
                     if data.selected.canMove and data.selected.AirUnit:
                         data.selected.move(row,col)
+                else:
+                    data.selected = None
             elif isinstance(data.map.board[row][col],Unit.Unit):
                 # if the previously selected is a unit, if now display the range
                 data.selected = data.map.board[row][col]
                 data.selected.playSound(data.selected.idleSounds)
             elif isinstance(data.map.board[row][col],Building.building):
-                print 'selected a building'
+                data.selected = data.map.board[row][col]
             else:
                 data.selected = data.map.board[row][col]
         elif mouseStatus[2] == 1:
@@ -211,7 +215,7 @@ def init(data):
     data.Dragoon = ProtossUnit.Dragoon(6,0)
     data.Arbiter = ProtossUnit.Arbiter(0,20)
     data.Probe = ProtossUnit.Probe(8,0)
-    data.Nexus = ProtossBuildings.Nexus(20,20)
+    data.Nexus = ProtossBuildings.Nexus(20, 20)
 
 
 def run():

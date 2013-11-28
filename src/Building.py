@@ -49,7 +49,7 @@ class building(object):
                 for c in xrange(bld.sizeCol):
                     Menu.drawMiniMapCell(building.screen,bld.row+r, bld.col+c,(0,200,0))
 
-    def __init__(self, row, col, sizeRow, sizeCol, imageName):
+    def __init__(self, row, col, sizeRow, sizeCol, health, sheild, healthRegen, sheildRegen, imageName):
         self.row = row
         self.col = col
         self.sizeRow = sizeRow
@@ -57,6 +57,10 @@ class building(object):
         self.image = load.load_image_smooth('Buildings/' + imageName, 1.5)
         self.Map = building.Map
 
+        self.health = health
+        self.CURhealth = health
+        self.sheild = sheild
+        self.CURsheild = sheild
         # set the x, y error for the image
         self.xerror = 10
         self.yerror = 0
