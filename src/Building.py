@@ -2,6 +2,7 @@ import pygame
 from pygame.locals import *
 
 import load
+import Menu
 
 class building(object):
     buildings = []
@@ -21,6 +22,8 @@ class building(object):
         building.mapSurface=Map.image
         building.originalSurface = Map.original
         building.Map = Map
+        building.screen = Map.display
+
 
     @classmethod
     def drawAllBuildings(cls):
@@ -38,6 +41,13 @@ class building(object):
                 building.buildingBuildings.remove(bld)
                 bld.undrawUnfinishedBuilding()
                 building.finishedBuildings.append(bld)
+
+    @classmethod
+    def drawAllBuildingsOnMiniMap(cls):
+        for bld in cls.buildings:
+            for r in xrange(bld.sizeRow):
+                for c in xrange(bld.sizeCol):
+                    Menu.drawMiniMapCell(building.screen,bld.row+r, bld.col+c,(0,200,0))
 
     def __init__(self, row, col, sizeRow, sizeCol, imageName):
         self.row = row

@@ -2,6 +2,7 @@ import pygame
 from pygame.locals import *
 import load
 import random
+import Menu
 
 class Unit(object):
     Units = []
@@ -34,10 +35,15 @@ class Unit(object):
 
     @classmethod
     def drawAllUnits(cls):
-        #if Unit.Drawed == False:
         for unt in cls.Units:
             unt.drawUnit()
-        Unit.Drawed = True
+
+    @classmethod
+    def drawAllUnitsOnMiniMap(cls):
+        for unt in cls.Units:
+            for r in xrange(unt.sizeRow):
+                for c in xrange(unt.sizeCol):
+                    Menu.drawMiniMapCell(Unit.screen,unt.row+r, unt.col+c,(0,200,0))
 
     def __init__(self,row,col,sizeRow, sizeCol,health,sheild,sheildRegen,healthRegen, attack, AttRange, MovRange, imageName):
 
@@ -239,7 +245,12 @@ class Unit(object):
 
         for r in xrange(self.sizeRow):
             for c in xrange(self.sizeCol):
+                # set the data on map board
                 self.Map.board[self.row + r][self.col + c] = self
+                # draw the unit on the mini map
+
+
+
 
 
     def undrawUnit(self):

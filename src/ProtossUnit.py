@@ -12,6 +12,7 @@ class ProtossUnit(Unit.Unit):
     def __init__(self,row,col,sizeRow, sizeCol,health,sheild,sheildRegen,healthRegen, attack, AttRange, MovRange, imageName):
         imageName = 'Protoss/' + imageName
         super(ProtossUnit,self).__init__(row,col,sizeRow,sizeCol,health,sheild,sheildRegen,healthRegen,attack,AttRange,MovRange,imageName)
+        self.Avatar = load.load_avatar(imageName)
 
         ProtossUnit.ProtossUnits.append(self)
 

@@ -30,6 +30,7 @@ class ProtossBuilding(Building.building):
     def __init__(self, row, col, sizeRow, sizeCol, imageName):
         super(ProtossBuilding, self).__init__(row, col, sizeRow, sizeCol, imageName)
         self.buildRound = 3
+        self.Avatar = load.load_avatar('Protoss/Advisor.gif')
 
 class Nexus(ProtossBuilding):
     def __init__(self, row, col):

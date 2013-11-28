@@ -9,6 +9,7 @@ import Building
 import ProtossBuildings
 import ProtossUnit
 import Unit
+import Menu
 
 def mousePressed(data):
     row, col = mouse2RC(data)
@@ -96,7 +97,7 @@ def checkMouse(data):
 
 def timerFired(data):
     data.mouseX, data.mouseY = pygame.mouse.get_pos()
-    print data.Arbiter.tile_cache
+    print data.mouseX, data.mouseY
     redrawAll(data)
     data.clock.tick(30)
     checkKeys(data)
@@ -128,6 +129,7 @@ def drawMenu(data):
     #print ScreenHeight
     Menu_y = ScreenHeight - Menu_h
     data.screen.blit(MenuImage,(0,Menu_y))
+    data.screen.blit(data.map.mini_map,(40,795))
 
 def redrawAll(data):
 
@@ -140,6 +142,9 @@ def redrawAll(data):
             data.selected.drawMoves((0,200,0,100))
     drawGrid(data)
     drawMenu(data)
+    Menu.drawMenu(data.screen, data.selected)
+    Unit.Unit.drawAllUnitsOnMiniMap()
+    Building.building.drawAllBuildingsOnMiniMap()
     #data.screen.blit(data.pointerImage, (data.mouseX, data.mouseY))
     pygame.display.flip()
 
@@ -153,7 +158,7 @@ def init(data):
     PointerFile = 'Other/Pointer.png'
     data.pointerImage = load.load_image(PointerFile)
     #pygame.mouse.set_visible(False)
-    data.AutoScrollWidth = 75
+    data.AutoScrollWidth = 20
 
 
     data.selected = None
@@ -168,6 +173,7 @@ def init(data):
     data.Dragoon = ProtossUnit.Dragoon(6,0)
     data.Arbiter = ProtossUnit.Arbiter(0,20)
     data.Probe = ProtossUnit.Probe(8,0)
+    data.Nexus = ProtossBuildings.Nexus(20,20)
 
 def run():
     pygame.init()

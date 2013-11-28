@@ -8,6 +8,7 @@ class map(object):
     def __init__(self, mapName, rows, cols, scale):
         self.image = load.load_image_smooth(fileName = 'maps/%s.jpg' %mapName, scale = scale)
         self.original= load.load_image_smooth(fileName = 'maps/%s.jpg' %mapName, scale = scale)
+        self.mini_map = load.load_image_smooth(fileName = 'maps/%s.jpg' %mapName, scale = 1.0/16)
         self.board = load.load_map_data(fileName = mapName + '.txt')
         self.rows = rows
         self.cols = cols

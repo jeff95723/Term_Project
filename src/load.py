@@ -52,6 +52,10 @@ def load_images_alpha(*files):
     for file in files:
         imgs.append(load_images())
 
+def load_avatar(fileName):
+    imageName = 'Avatars/' + fileName
+    return  load_image(imageName,1.2)
+
 
 def load_sound(file):
     file = os.path.join('..','data', 'sound', file)
