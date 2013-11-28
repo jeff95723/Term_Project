@@ -128,13 +128,13 @@ def updateMiniMap(data):
 
 def timerFired(data):
     data.mouseX, data.mouseY = pygame.mouse.get_pos()
+    print data.mouseX, data.mouseY
     redrawAll(data)
     data.clock.tick(30)
     checkKeys(data)
     checkMiniMapScroll(data)
     updateMiniMap(data)
     checkAutoScroll(data)
-    print Menu.checkRegion(data)
     for event in pygame.event.get():
         if (event.type == pygame.QUIT):
             pygame.quit()
@@ -175,7 +175,7 @@ def redrawAll(data):
     if isinstance(data.selected,Unit.Unit):
         if data.selected.canMove:
             data.selected.drawMoves((0,200,0,100))
-    drawGrid(data)
+    #drawGrid(data)
     drawMenu(data)
     Menu.drawMenu(data.screen, data.selected)
     Unit.Unit.drawAllUnitsOnMiniMap()
@@ -212,6 +212,7 @@ def init(data):
     data.Arbiter = ProtossUnit.Arbiter(0,20)
     data.Probe = ProtossUnit.Probe(8,0)
     data.Nexus = ProtossBuildings.Nexus(20,20)
+
 
 def run():
     pygame.init()

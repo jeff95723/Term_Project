@@ -8,13 +8,62 @@ import Building
 def drawMenu(screen,obj):
     if isinstance(obj,Unit.Unit) or isinstance(obj, Building.building):
         drawAvatar(screen, obj)
+        drawIcon(screen,obj)
+        drawText(screen, obj)
 
 def getMiniMapOrigin():
     return (40, 795)
 
 def drawAvatar(screen, obj):
+
     image = obj.Avatar
     screen.blit(image,(628,868))
+
+def drawIcon(screen, obj):
+    image = obj.image
+    imageW, imageH = image.get_size()
+    scale = 75.0/max(imageW,imageH)
+    icon = pygame.transform.smoothscale(image,(int(scale*imageW), int(scale*imageH)))
+    screen.blit(icon, (235,835))
+
+def drawText(screen, obj):
+    Namefont = pygame.font.SysFont('monospace', 25, bold = True)
+    SmallFont= pygame.font.SysFont('monospace', 15, bold = True)
+
+    SheildBlue = (102,218,239)
+    HealthGreen = (7,149,1)
+    InfoWhite = (255,255,255)
+
+    Namestring = str(type(obj))
+    Namestring = Namestring.split('.')[-1][:-2]
+    healthStr = str(obj.CURhealth) + '/' + str(obj.health)
+
+    if isinstance(obj,Unit.Unit):
+        MoveRangeStr = 'Move Range: ' + str(obj.MovRange)
+        AttackRangeStr = 'Attack Range: ' + str(obj.AttRange)
+        AttackStr = 'Attack: ' + str(obj.attack)
+
+        if obj.stealth:
+            stealthStr = 'Stealth Unit'
+            stealth = SmallFont.render(stealthStr,1, SheildBlue)
+            screen.blit(stealth,(320,869))
+
+
+    if obj.sheild != 0:
+        sheildStr = str(obj.CURsheild)+'/'+str(obj.sheild)
+        sheild= SmallFont.render(sheildStr,1,SheildBlue)
+        screen.blit(sheild,(247,931))
+
+    Name = Namefont.render(Namestring,1,InfoWhite)
+    Health = SmallFont.render(healthStr,1,HealthGreen)
+    MoveRange = SmallFont.render(MoveRangeStr, 1, InfoWhite)
+    AttackRange = SmallFont.render(AttackRangeStr,1,InfoWhite)
+    Attack = SmallFont.render(AttackStr,1,InfoWhite)
+    screen.blit(Name,(358,830))
+    screen.blit(Health,(247,918))
+    screen.blit(MoveRange,(320,902))
+    screen.blit(AttackRange,(320,915))
+    screen.blit(Attack, (320,931))
 
 def drawMiniMapCell(screen,row, col,color):
     minimapCell = pygame.Surface((2,2))

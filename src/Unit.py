@@ -54,6 +54,8 @@ class Unit(object):
 
         self.health = health
         self.sheild = sheild
+        self.CURhealth = health
+        self.CURsheild = sheild
         self.sheildRegen = sheildRegen
         self.healthRegen = healthRegen
 
@@ -66,6 +68,7 @@ class Unit(object):
 
         self.AirUnit = False
         self.stealth = False
+        self.dectection = False
 
         self.image = load.load_image_smooth('Units/' + imageName, 1.5)
         self.xerror = 0
