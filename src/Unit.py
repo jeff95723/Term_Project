@@ -66,6 +66,8 @@ class Unit(object):
         self.yerror = 0
         self.Map = Unit.Map
 
+        self.tile_cache = [0] * self.sizeRow * self.sizeCol
+
 
         Unit.Units.append(self)
 
@@ -74,29 +76,97 @@ class Unit(object):
 
 
     def move(self, DestRow, DestCol):
-        if self.AirUnit:
-            dRow = DestRow - self.row
-            dCol = DestCol - self.col
-            board = Unit.Map.board
-            if dRow + dCol <= self.moveRange and board[DestRow][DestCol] == 0:
+        if self.AirUnit == True:
+            if (DestRow, DestCol) in self.checkAirMoves(self.MovRange):
+                i = 0
                 for r in xrange(self.sizeRow):
                     for c in xrange(self.sizeCol):
-                        self.Map.board[self.row+r][self.col+c] = 0
+                        self.Map.board[self.row+r][self.col+c] = self.tile_cache[i]
+                        i += 1
                 #self.undrawUnit()
                 self.row = DestRow
                 self.col = DestCol
+                # set the tile cache
+                self.tile_cache = []
+                for r in xrange(self.sizeRow):
+                    for c in xrange(self.sizeCol):
+                        self.tile_cache.append(self.Map.board[self.row+r][self.col+c])
                 self.canMove = False
 
         # ground unit
         else:
             if (DestRow,DestCol) in self.checkGroundMoves(self.MovRange):
+                i = 0
                 for r in xrange(self.sizeRow):
                     for c in xrange(self.sizeCol):
                         self.Map.board[self.row+r][self.col+c] = 0
+                        i += 1
                 #self.undrawUnit()
                 self.row = DestRow
                 self.col = DestCol
                 self.canMove = False
+
+
+    def checkAirMoves(self, range):
+        dirs = [(1,0),(-1,0),(0,1),(0,-1)]
+        AirMoves = []
+        for dir in dirs:
+            if self.sizeRow == 1 or self.sizeCol == 1:
+                result = self.checkAirMovesInDir(range-1,self.row+dir[0], self.col + dir[1], dir)
+            else:
+                result = self.checkAirMovesInDirForBigUnits(range-max(self.sizeCol,self.sizeRow),self.row + self.sizeRow * dir[0],
+                                                               self.col+ self.sizeCol* dir[1], dir)
+
+            if result != None:
+                AirMoves.extend(result)
+        AirMoves = list(set(AirMoves))
+        if (self.row, self.col) in AirMoves:
+            AirMoves.remove((self.row,self.col))
+        return sorted(AirMoves)
+
+    def checkAirMovesInDir(self, range, row, col, (drow, dcol)):
+        board = Unit.Map.board
+        if (row) >= len(board) or (row) < 0 \
+            or (col) >= len(board[0]) or (col) < 0:
+            return None
+        elif board[row][col] != 0 and board[row][col] != 1:
+            return None
+
+        elif range == 0:
+            return [(row, col)]
+
+        else:
+            possibleMoves = [ ]
+            dirs = [(1,0),(-1,0),(0,1),(0,-1)]
+            for dir in dirs:
+                if dir != (-drow,-dcol):
+                    result = self.checkAirMovesInDir(range-1,row+dir[0], col + dir[1],dir)
+                    if result != None:
+                        possibleMoves.extend(result + [(row,col)])
+            return possibleMoves
+
+    def checkAirMovesInDirForBigUnits(self, range, row, col, (drow, dcol)):
+        board = Unit.Map.board
+        legalTiles = [0,1]
+        if (row) >= len(board)-1 or (row) < 0 \
+            or (col) >= len(board[0])-1 or (col) < 0:
+            return None
+        elif board[row][col] not in legalTiles or  board[row][col+1] not in legalTiles or \
+              board[row+1][col] not in legalTiles or board[row+1][col+1] not in legalTiles:
+            return None
+
+        elif range == 0:
+            return [(row, col)]
+
+        else:
+            possibleMoves = [ ]
+            dirs = [(1,0),(-1,0),(0,1),(0,-1)]
+            for dir in dirs:
+                if dir != (-drow,-dcol):
+                    result = self.checkAirMovesInDirForBigUnits(range-1,row+dir[0], col + dir[1],dir)
+                    if result != None:
+                        possibleMoves.extend(result + [(row,col)])
+            return possibleMoves
 
 
     def checkGroundMoves(self, range):
@@ -144,7 +214,7 @@ class Unit(object):
             or (col) >= len(board[0])-1 or (col) < 0:
             return None
         elif board[row][col] != 0 or board[row][col+1] != 0 or\
-                board[row+1][col] or board[row+1][col+1]:
+                board[row+1][col] != 0 or board[row+1][col+1] != 0:
             return None
 
         elif range == 0:
@@ -171,6 +241,7 @@ class Unit(object):
             for c in xrange(self.sizeCol):
                 self.Map.board[self.row + r][self.col + c] = self
 
+
     def undrawUnit(self):
         rect = self.image.get_rect()
         cW,cH = self.Map.getCellsize()
@@ -184,13 +255,23 @@ class Unit(object):
         block = pygame.Surface((cW,cH),pygame.SRCALPHA)
         block.fill(color)
 
-        for (row,col) in self.checkGroundMoves(self.MovRange):
-            for r in xrange(self.sizeRow):
-                for c in xrange(self.sizeCol):
-                    localX = (col+c)*cW- abs(self.Map.x)
-                    localY = (row+r)*cH- abs(self.Map.y)
-                    self.screen.blit(block,(localX,localY))
+        if self.AirUnit == False:
+
+            for (row,col) in self.checkGroundMoves(self.MovRange):
+                for r in xrange(self.sizeRow):
+                    for c in xrange(self.sizeCol):
+                        localX = (col+c)*cW- abs(self.Map.x)
+                        localY = (row+r)*cH- abs(self.Map.y)
+                        self.screen.blit(block,(localX,localY))
                     #self.Map.drawBlock(row+r,col+c,color)
+
+        else:
+            for (row,col) in self.checkAirMoves(self.MovRange):
+                for r in xrange(self.sizeRow):
+                    for c in xrange(self.sizeCol):
+                        localX = (col+c)*cW- abs(self.Map.x)
+                        localY = (row+r)*cH- abs(self.Map.y)
+                        self.screen.blit(block,(localX,localY))
 
     def playSound(self,soundList):
         sound = random.choice(soundList)

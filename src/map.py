@@ -20,7 +20,7 @@ class map(object):
         self.displayWidth, self.displayHeight = pygame.Surface.get_size(self.display)
 
     def draw(self, mainScreen):
-        mainScreen.blit(self.image,(self.x,self.y))
+        mainScreen.blit(self.image,(0,0),(abs(self.x),abs(self.y),self.displayWidth, self.displayHeight))
 
     def move(self,(dx,dy)):
         self.x += dx

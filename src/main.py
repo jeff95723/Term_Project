@@ -19,6 +19,11 @@ def mousePressed(data):
             if isinstance(data.selected,Unit.Unit):
                 if data.selected.canMove:
                     data.selected.move(row,col)
+        elif data.map.board[row][col] == 1:
+            # if the previous selection is a unit, move that unit if possible
+            if isinstance(data.selected,Unit.Unit):
+                if data.selected.canMove and data.selected.AirUnit:
+                    data.selected.move(row,col)
         elif isinstance(data.map.board[row][col],Unit.Unit):
             # if the previously selected is a unit, if now display the range
             data.selected = data.map.board[row][col]
@@ -91,6 +96,7 @@ def checkMouse(data):
 
 def timerFired(data):
     data.mouseX, data.mouseY = pygame.mouse.get_pos()
+    print data.Arbiter.tile_cache
     redrawAll(data)
     data.clock.tick(30)
     checkKeys(data)
@@ -132,8 +138,8 @@ def redrawAll(data):
     if isinstance(data.selected,Unit.Unit):
         if data.selected.canMove:
             data.selected.drawMoves((0,200,0,100))
-    drawMenu(data)
     drawGrid(data)
+    drawMenu(data)
     #data.screen.blit(data.pointerImage, (data.mouseX, data.mouseY))
     pygame.display.flip()
 
@@ -160,6 +166,7 @@ def init(data):
     data.archon = ProtossUnit.Archon(3,3)
     data.darkTemplar = ProtossUnit.DarkTemplar(5,0)
     data.Dragoon = ProtossUnit.Dragoon(6,0)
+    data.Arbiter = ProtossUnit.Arbiter(0,20)
     data.Probe = ProtossUnit.Probe(8,0)
 
 def run():
