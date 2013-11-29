@@ -1,8 +1,10 @@
 import pygame
 from pygame.locals import *
+
 import load
 import random
 import Menu
+import Building
 
 class Unit(object):
     Units = []
@@ -116,6 +118,29 @@ class Unit(object):
                 self.col = DestCol
                 self.canMove = False
 
+    def Attack(self,DestRow,DestCol):
+        target = self.Map.board[DestRow][DestCol]
+        if isinstance(target,Unit) or isinstance(target,Building.building):
+            # calculate the damage
+            if target.CURsheild != 0:
+                target.CURsheild -= self.attack
+                # check if the attack did damage to both the sheild and the health
+                if target.CURsheild < 0:
+                    target.CURhealth += target.CURsheild
+                    target.CURsheild = 0
+            else:
+                target.CURhealth -= self.attack
+
+            # play the sound
+            self.playSound(self.hitSound)
+
+            # check 'injuries' XD
+            if target.CURhealth<=0:
+                target.die()
+
+    def die(self):
+        self.playSound(self.deathSound)
+        Unit.Units.remove(self)
 
     def checkAirMoves(self, range):
         dirs = [(1,0),(-1,0),(0,1),(0,-1)]

@@ -25,6 +25,9 @@ def mousePressed(data):
                     if data.selected.canMove:
                         if data.buttonStatus[0] == 1:
                             data.selected.move(row,col)
+                    elif data.selected.canAttack:
+                        if data.buttonStatus[1] == 1:
+                            data.selected.attack(row,col)
                 else:
                     data.selected = None
             elif data.map.board[row][col] == 1:
@@ -33,12 +36,28 @@ def mousePressed(data):
                     if data.selected.canMove and data.selected.AirUnit:
                         if data.buttonStatus[0] == 1:
                             data.selected.move(row,col)
+                    elif data.selected.canAttack:
+                        if data.buttonStatus[1] == 1:
+                            data.selected.attack(row,col)
                 else:
                     data.selected = None
             elif isinstance(data.map.board[row][col],Unit.Unit):
-                # if the previously selected is a unit, if now display the range
-                data.selected = data.map.board[row][col]
-                data.selected.playSound(data.selected.idleSounds)
+                # if the previously selected is a unit, attack if possible, else select the unit
+                if isinstance(data.selected,Unit.Unit):
+                    if data.selected.canAttack:
+                        if data.buttonStatus[1] == 1:
+                            print data.selected
+                            #data.selected.playSound(data.selected.hitSound)
+                            data.selected.Attack(row,col)
+                        else:
+                            data.selected = data.map.board[row][col]
+                            data.selected.playSound(data.selected.idleSounds)
+                    else:
+                        data.selected = data.map.board[row][col]
+                        data.selected.playSound(data.selected.idleSounds)
+                else:
+                    data.selected = data.map.board[row][col]
+                    data.selected.playSound(data.selected.idleSounds)
             elif isinstance(data.map.board[row][col],Building.building):
                 data.selected = data.map.board[row][col]
             else:
