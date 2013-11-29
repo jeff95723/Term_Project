@@ -196,7 +196,6 @@ class Unit(object):
             groundMoves.remove((self.row,self.col))
         return sorted(groundMoves)
 
-
     def checkGroundMovesInDir(self, range, row, col, (drow, dcol)):
         board = Unit.Map.board
         if (row) >= len(board) or (row) < 0 \
@@ -240,6 +239,25 @@ class Unit(object):
                         possibleMoves.extend(result + [(row,col)])
             return possibleMoves
 
+    def checkAttackMoves(self,range):
+        AttackMoves = []
+        board = self.Map.board
+        rows, cols = len(board), len(board[0])
+        uRow, uCol = self.row, self.col
+        for row in xrange(max(0,uRow-range-1),min(uRow+range+1,rows)+1):
+            for col in xrange(max(0,uCol - range-1),min(uCol+range+1,cols)+1):
+                if abs(row-uRow)+abs(col-uCol) <= range:
+                    for r in xrange(self.sizeRow):
+                        for c in xrange(self.sizeCol):
+                            AttackMoves.append((row+r,col+c))
+        AttackMoves = list(set(AttackMoves))
+        for r in xrange(self.sizeRow):
+            for c in xrange(self.sizeCol):
+                if (self.row+r, self.col+c) in AttackMoves:
+                    AttackMoves.remove((self.row+r,self.col+c))
+        return AttackMoves
+
+
     def drawUnit(self):
         surface = Unit.mapSurface
         cellWidth, cellHeight = self.Map.getCellsize()
@@ -252,10 +270,6 @@ class Unit(object):
                 # set the data on map board
                 self.Map.board[self.row + r][self.col + c] = self
                 # draw the unit on the mini map
-
-
-
-
 
     def undrawUnit(self):
         rect = self.image.get_rect()
@@ -287,6 +301,17 @@ class Unit(object):
                         localX = (col+c)*cW- abs(self.Map.x)
                         localY = (row+r)*cH- abs(self.Map.y)
                         self.screen.blit(block,(localX,localY))
+
+    def drawAttack(self,color):
+        cW,cH = self.Map.getCellsize()
+        screen = self.screen
+        block = pygame.Surface((cW,cH),pygame.SRCALPHA)
+        block.fill(color)
+
+        for (row,col) in self.checkAttackMoves(self.AttRange):
+            localX = (col)*cW- abs(self.Map.x)
+            localY = (row)*cH- abs(self.Map.y)
+            self.screen.blit(block,(localX,localY))
 
     def playSound(self,soundList):
         sound = random.choice(soundList)

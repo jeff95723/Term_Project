@@ -136,7 +136,7 @@ def updateMiniMap(data):
 def timerFired(data):
     data.mouseX, data.mouseY = pygame.mouse.get_pos()
     #print data.mouseX, data.mouseY
-    print data.buttonStatus
+    #print data.buttonStatus
     redrawAll(data)
     data.clock.tick(30)
     checkKeys(data)
@@ -178,6 +178,10 @@ def redrawAll(data):
         if data.selected.canMove:
             if data.buttonStatus[0] == 1:
                 data.selected.drawMoves((0,200,0,100))
+
+        if data.selected.canAttack:
+            if data.buttonStatus[1] == 1:
+                data.selected.drawAttack((200,0,0,100))
     #drawGrid(data)
     drawMenu(data)
     Menu.drawMenu(data.screen, data.selected)
