@@ -112,7 +112,7 @@ def getButtonRegionOrigin():
 def getButtonRegionEdge():
     return (944,952)
 
-def getButtonStatus(data):
+def updateButtonStatus(data):
     if checkRegion(data) == 2:
         x, y = data.mouseX, data.mouseY
         mouseStatus = pygame.mouse.get_pressed()

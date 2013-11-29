@@ -15,7 +15,6 @@ def mousePressed(data):
     row, col = mouse2RC(data)
     mouseStatus = pygame.mouse.get_pressed()
     mouseRegion = Menu.checkRegion(data)
-    Menu.getButtonStatus(data)
 
     # if in unit selection region
     if mouseRegion == 0:
@@ -24,14 +23,16 @@ def mousePressed(data):
                 # if the previous selection is a unit, move that unit if possible
                 if isinstance(data.selected,Unit.Unit):
                     if data.selected.canMove:
-                        data.selected.move(row,col)
+                        if data.buttonStatus[0] == 1:
+                            data.selected.move(row,col)
                 else:
                     data.selected = None
             elif data.map.board[row][col] == 1:
                 # if the previous selection is a unit, move that unit if possible
                 if isinstance(data.selected,Unit.Unit):
                     if data.selected.canMove and data.selected.AirUnit:
-                        data.selected.move(row,col)
+                        if data.buttonStatus[0] == 1:
+                            data.selected.move(row,col)
                 else:
                     data.selected = None
             elif isinstance(data.map.board[row][col],Unit.Unit):
@@ -45,7 +46,8 @@ def mousePressed(data):
         elif mouseStatus[2] == 1:
             data.selected = None
 
-    # if the mouse is in the minimap region
+    #update the button Status
+    Menu.updateButtonStatus(data)
 
 
 def mouse2RC(data):
