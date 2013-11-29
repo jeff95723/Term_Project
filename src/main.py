@@ -15,6 +15,7 @@ def mousePressed(data):
     row, col = mouse2RC(data)
     mouseStatus = pygame.mouse.get_pressed()
     mouseRegion = Menu.checkRegion(data)
+    Menu.getButtonStatus(data)
 
     # if in unit selection region
     if mouseRegion == 0:
@@ -132,7 +133,8 @@ def updateMiniMap(data):
 
 def timerFired(data):
     data.mouseX, data.mouseY = pygame.mouse.get_pos()
-    print data.mouseX, data.mouseY
+    #print data.mouseX, data.mouseY
+    print data.buttonStatus
     redrawAll(data)
     data.clock.tick(30)
     checkKeys(data)
@@ -158,16 +160,10 @@ def drawGrid(data):
         pygame.draw.lines(data.screen, (0,0,0),False, [(col * cW, 0),(col * cW, height)])
 
 def drawMenu(data):
-    MenuFile = 'Other/Menu/Protoss Menu.png'
-    MenuImage = load.load_image(MenuFile)
-    Menu_h = MenuImage.get_height()
-    data.MenuHeight = Menu_h
     #print Menu_h
-    ScreenHeight = data.screen.get_height()
-    data.ScreenHeight = ScreenHeight
     #print ScreenHeight
-    Menu_y = ScreenHeight - Menu_h
-    data.screen.blit(MenuImage,(0,Menu_y))
+    Menu_y = data.ScreenHeight - data.MenuHeight
+    data.screen.blit(data.MenuImage,(0,Menu_y))
     data.screen.blit(data.map.mini_map,(40,795))
 
 def redrawAll(data):
@@ -178,7 +174,8 @@ def redrawAll(data):
     data.map.draw(data.screen)
     if isinstance(data.selected,Unit.Unit):
         if data.selected.canMove:
-            data.selected.drawMoves((0,200,0,100))
+            if data.buttonStatus[0] == 1:
+                data.selected.drawMoves((0,200,0,100))
     #drawGrid(data)
     drawMenu(data)
     Menu.drawMenu(data.screen, data.selected)
@@ -191,9 +188,16 @@ def redrawAll(data):
 def init(data):
     data.mode = 'run'
 
+
+    data.ScreenHeight = data.screen.get_height()
     data.map = map.map('fastest', 64, 64,scale = 1.5)
     data.cellWidth, data.cellHeight = data.map.getCellsize()
 
+
+    MenuFile = 'Other/Menu/Protoss Menu.png'
+    data.MenuImage = load.load_image(MenuFile)
+    Menu_h = data.MenuImage.get_height()
+    data.MenuHeight = Menu_h
 
     PointerFile = 'Other/Pointer.png'
     data.pointerImage = load.load_image(PointerFile)
@@ -204,6 +208,7 @@ def init(data):
 
 
     data.selected = None
+    data.buttonStatus = [0]*9
 
     data.buildings = Building.building.buildings
     Building.building.setMap(data.map)

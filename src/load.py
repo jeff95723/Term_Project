@@ -29,6 +29,14 @@ def load_image_smooth(fileName, scale = 1):
 
     return image
 
+def load_button(filename):
+    '''Loads a button, returns a surface'''
+    imagefile = 'Other/Buttons/' + filename
+    image = load_image(imagefile,1)
+    w,h = image.get_size()
+    scale = 50.0/max(w,h)
+    return load_image_smooth(imagefile,scale)
+
 def load_dumb(fileName):
     file = os.path.join('..', 'data', 'images', fileName)
     try:

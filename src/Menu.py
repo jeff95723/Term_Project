@@ -10,6 +10,7 @@ def drawMenu(screen,obj):
         drawAvatar(screen, obj)
         drawIcon(screen,obj)
         drawText(screen, obj)
+        drawButtons(screen,obj)
 
 def getMiniMapOrigin():
     return (40, 795)
@@ -71,6 +72,23 @@ def drawMiniMapCell(screen,row, col,color):
     mapX, mapY = getMiniMapOrigin()
     screen.blit(minimapCell,(mapX+col*cellW,mapY + row*cellH))
 
+def drawButtons(screen, obj):
+    if isinstance(obj,Unit.Unit):
+        originX, originY = getButtonRegionOrigin()
+        edgeX, edgeY = getButtonRegionEdge()
+        cellW, cellH = (edgeX - originX)/3.0, (edgeY-originY)/3.0
+
+        attackB = load.load_button('Attack.png')
+        moveB = load.load_button('Move.png')
+        aRow,aCol = 0,1
+        mRow,mCol = 0,0
+        if obj.canAttack:
+            screen.blit(attackB,(originX + aCol*cellW,originY+ aRow*cellH))
+        if obj.canMove:
+            screen.blit(moveB,(originX+mCol*cellW,originY + mRow*cellH))
+
+
+
 def checkRegion(data):
     # 0 for the unit selection region, 1 for the minimap region,
     #2 for the order selection region, 3 for next round button region
@@ -81,12 +99,36 @@ def checkRegion(data):
         return 0
     elif mMapx < x < mMapx + 128 and mMapy < y < mMapy + 128:
         return  1
-    elif 756 < x < 944 and 782 < y < 952:
+    elif 753 < x < 944 and 779 < y < 952:
         return 2
     elif 106<x<201 and 726<y<756:
         return 3
     elif 626<x<714 and 831<y<854:
         return 4
+
+def getButtonRegionOrigin():
+    return (753,779)
+
+def getButtonRegionEdge():
+    return (944,952)
+
+def getButtonStatus(data):
+    if checkRegion(data) == 2:
+        x, y = data.mouseX, data.mouseY
+        mouseStatus = pygame.mouse.get_pressed()
+        originX, originY = getButtonRegionOrigin()
+        edgeX, edgeY = getButtonRegionEdge()
+        localX, localY = x-originX,y-originY
+        cellW, cellH = (edgeX - originX)/3.0, (edgeY-originY)/3.0
+        buttonStatus = [0] * 9
+        i = int(localX/cellW) + 3*int(localY/cellH)
+        if mouseStatus[0] == 1:
+            buttonStatus[i] = 1
+        else:
+            buttonStatus = [0]*9
+    else:
+        buttonStatus = [0] * 9
+    data.buttonStatus = buttonStatus
 
 class ViewBox(object):
     def __init__(self, map):

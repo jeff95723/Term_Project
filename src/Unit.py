@@ -65,6 +65,7 @@ class Unit(object):
         self.AttRange = AttRange
         self.MovRange = MovRange
         self.canMove = True
+        self.canAttack = True
 
         self.AirUnit = False
         self.stealth = False
