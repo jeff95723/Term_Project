@@ -21,6 +21,7 @@ class ProtossUnit(Unit.Unit):
         super(ProtossUnit,self).die()
 
 class Zealot(ProtossUnit):
+    image = 'Units/Protoss/Zealot.gif'
     def __init__(self,row,col):
         imageName = 'Zealot.gif'
         super(Zealot,self).__init__(row,col,1,1,100,100,5,0,32,1,6,imageName)
@@ -33,6 +34,8 @@ class Zealot(ProtossUnit):
 
 
 class Arbiter(ProtossUnit):
+    image = 'Units/Protoss/Arbiter.gif'
+
     def __init__(self,row,col):
         imageName = 'Arbiter.gif'
         super(Arbiter,self).__init__(row,col,2,2,200,150,10,0,20,5,8,imageName)
@@ -44,6 +47,7 @@ class Arbiter(ProtossUnit):
         self.AirUnit = True
 
 class Archon(ProtossUnit):
+    image = 'Units/Protoss/Archon.gif'
     def __init__(self,row,col):
         imageName = 'Archon.gif'
         super(Archon,self).__init__(row,col,2,2,10,300,15,0,60,2,6,imageName)
@@ -58,6 +62,7 @@ class Archon(ProtossUnit):
 
 
 class DarkTemplar(ProtossUnit):
+    image = 'Units/Protoss/Dark Templar.gif'
     def __init__(self,row,col):
         imageName = 'Dark Templar.gif'
         super(DarkTemplar,self).__init__(row,col,1,1,80,40,5,0,80,1,6,imageName)
@@ -73,6 +78,7 @@ class DarkTemplar(ProtossUnit):
         self.stealth = True
 
 class Dragoon(ProtossUnit):
+    image = 'Units/Protoss/Dragoon.gif'
     def __init__(self,row,col):
         imageName = 'Dragoon.gif'
         super(Dragoon,self).__init__(row,col,2,2,100,80,10,0,40,4,8,imageName)
@@ -85,6 +91,7 @@ class Dragoon(ProtossUnit):
         self.xerror = 18
 
 class Probe(ProtossUnit):
+    image = 'Units/Protoss/Probe.gif'
     def __init__(self,row,col):
         imageName = 'Probe.gif'
         super(Probe,self).__init__(row,col,1,1,20,20, 5,0,10,1,12,imageName)

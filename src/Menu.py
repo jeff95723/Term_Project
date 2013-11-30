@@ -87,6 +87,19 @@ def drawButtons(screen, obj):
         if obj.canMove:
             screen.blit(moveB,(originX+mCol*cellW,originY + mRow*cellH))
 
+    elif isinstance(obj, Building.building):
+        if obj in Building.building.finishedBuildings:
+            originX, originY = getButtonRegionOrigin()
+            edgeX, edgeY = getButtonRegionEdge()
+            cellW, cellH = (edgeX - originX)/3.0, (edgeY-originY)/3.0
+            for i in xrange(len(obj.Build)):
+                image = obj.Build[i].image
+                row = i/3
+                col = i%3
+                button = load.load_button_from_file(image)
+                screen.blit(button,(originX+col*cellW,originY+row*cellH))
+
+
 
 
 def checkRegion(data):

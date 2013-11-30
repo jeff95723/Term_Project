@@ -1,5 +1,6 @@
 import pygame
 from pygame.locals import *
+import time
 
 import load
 import random
@@ -139,6 +140,7 @@ class Unit(object):
                 target.die()
 
     def die(self):
+        time.sleep(1)
         self.playSound(self.deathSound)
         Unit.Units.remove(self)
 

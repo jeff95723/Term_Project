@@ -3,6 +3,7 @@ from pygame.locals import *
 
 import load
 import Menu
+import time
 
 class building(object):
     buildings = []
@@ -41,6 +42,12 @@ class building(object):
                 building.buildingBuildings.remove(bld)
                 bld.undrawUnfinishedBuilding()
                 building.finishedBuildings.append(bld)
+            if bld.buildQueue != []:
+                bld.currentBuildRoundLeft[-1] -= 1
+                if bld.currentBuildRoundLeft[-1] == 0:
+                    bld.build(bld.buildQueue[-1])
+                    bld.buildQueue = bld.buildQueue[:-1]
+                    bld.currentBuildRoundLeft = bld.currentBuildRoundLeft[:-1]
 
     @classmethod
     def drawAllBuildingsOnMiniMap(cls):
@@ -65,11 +72,14 @@ class building(object):
         self.xerror = 10
         self.yerror = 0
 
+        self.Build = [ ]
+        self.BuildSize = []
+        self.BuildRound = []
+        self.buildQueue = []
+        self.currentBuildRoundLeft = []
 
         building.buildings.append(self)
         building.buildingBuildings.append(self)
-
-
 
     def __eq__(self, other):
         return type(self) == type(other) and (self.row,self.col) == (other.row,other.col)
@@ -107,5 +117,38 @@ class building(object):
             for c in xrange(self.sizeCol):
                 self.Map.board[self.row + r][self.col + c] = 0
         self.undrawBuilding()
+
+    def addQueue(self,index):
+        self.buildQueue.append(index)
+        self.currentBuildRoundLeft.append(self.BuildRound[index])
+
+    def build(self,index):
+        buildSizeRow, buildSizeCol = self.BuildSize[index]
+        if self.getBuildingBorder(buildSizeRow,buildSizeCol) != []:
+            result = self.Build[index](self.getBuildingBorder(buildSizeRow,buildSizeCol)[0][0],
+                                          self.getBuildingBorder(buildSizeRow,buildSizeCol)[0][1])
+
+
+
+    def getBuildingBorder(self, sizeRow, sizeCol):
+        result = []
+        board = self.Map.board
+        originR, originC = self.row, self.col
+        edgeR, edgeC = self.row + self.sizeRow, self.col+self.sizeCol
+        rows, cols = len(board), len(board[0])
+        for r in xrange(max(0,originR-sizeRow), min(edgeR+sizeRow,rows)):
+            for c in xrange(max(0,originC-sizeCol),min(edgeC+sizeCol,cols)):
+                for sr in xrange(sizeRow):
+                    for sc in xrange(sizeCol):
+                        if board[r+sr][c+sc] == 0:
+                            result.append((r,c))
+        return result
+
+        pass
+
+    def die(self):
+        time.sleep(1)
+        self.playSound(self.deathSound)
+        building.buildings.remove(self)
 
 

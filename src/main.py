@@ -46,8 +46,6 @@ def mousePressed(data):
                 if isinstance(data.selected,Unit.Unit):
                     if data.selected.canAttack:
                         if data.buttonStatus[1] == 1:
-                            print data.selected
-                            #data.selected.playSound(data.selected.hitSound)
                             data.selected.Attack(row,col)
                         else:
                             data.selected = data.map.board[row][col]
@@ -58,8 +56,21 @@ def mousePressed(data):
                 else:
                     data.selected = data.map.board[row][col]
                     data.selected.playSound(data.selected.idleSounds)
+
             elif isinstance(data.map.board[row][col],Building.building):
-                data.selected = data.map.board[row][col]
+                if isinstance(data.selected,Unit.Unit):
+                    if data.selected.canAttack:
+                        if data.buttonStatus[1] == 1:
+                            data.selected.Attack(row,col)
+                        else:
+                            data.selected = data.map.board[row][col]
+                            data.selected.playSound(data.selected.idleSounds)
+                    else:
+                        data.selected = data.map.board[row][col]
+                        data.selected.playSound(data.selected.idleSounds)
+                else:
+                    data.selected = data.map.board[row][col]
+                    data.selected.playSound(data.selected.idleSounds)
             else:
                 data.selected = data.map.board[row][col]
         elif mouseStatus[2] == 1:
@@ -98,8 +109,6 @@ def checkKeys(data):
         Building.building.nextRound()
         Unit.Unit.nextRound()
         data.selected = None
-    if keyStatus[K_x] == 1:
-        data.zealot.undrawUnit()
 
 def checkAutoScroll(data):
 
@@ -148,6 +157,19 @@ def checkMiniMapScroll(data):
             data.map.x =  -(data.ViewBox.x)*24
             data.map.y = -(data.ViewBox.y)*24
 
+def checkBuild(data):
+    if isinstance(data.selected, Building.building):
+        if data.selected in Building.building.finishedBuildings:
+            index = None
+            if data.selected.Build != []:
+                for i in xrange(len(data.buttonStatus)):
+                    if data.buttonStatus[i] == 1:
+                        index = i
+
+                if index != None:
+                    data.selected.addQueue(index)
+                    data.buttonStatus = [0] * 9
+
 def updateMiniMap(data):
     data.ViewBox.x = -data.map.x/24.0
     data.ViewBox.y = -data.map.y/24.0
@@ -161,6 +183,7 @@ def timerFired(data):
     checkKeys(data)
     checkMiniMapScroll(data)
     updateMiniMap(data)
+    checkBuild(data)
     checkAutoScroll(data)
     for event in pygame.event.get():
         if (event.type == pygame.QUIT):

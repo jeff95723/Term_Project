@@ -1,7 +1,10 @@
 import pygame
 from pygame.locals import *
+import random
 
 import Building
+import Unit
+import ProtossUnit
 import load
 
 class ProtossBuilding(Building.building):
@@ -31,6 +34,20 @@ class ProtossBuilding(Building.building):
         super(ProtossBuilding, self).__init__(row, col, sizeRow, sizeCol, health, sheild, 0, 5, imageName)
         self.buildRound = 3
         self.Avatar = load.load_avatar('Protoss/Advisor.gif')
+        self.idleSounds = [load.load_sound('Protoss/Bldg/pneWht00.wav')]
+        self.deathSound = [load.load_sound('Misc/explo4.wav')]
+
+    def die(self):
+        ProtossBuilding.protossBuildings.remove(self)
+        if self in ProtossBuilding.buildingBuildings:
+            ProtossBuilding.buildingBuildings.remove(self)
+        elif self in ProtossBuilding.finishedBuildings:
+            ProtossBuilding.finishedBuildings.remove(self)
+        super(ProtossBuilding,self).die()
+
+    def playSound(self, soundList):
+        sound = random.choice(soundList)
+        sound.play()
 
 class Nexus(ProtossBuilding):
     def __init__(self, row, col):
@@ -40,6 +57,9 @@ class Nexus(ProtossBuilding):
         self.yerror = -40
         self.image = load.load_image_smooth('Buildings/'+imageName, scale= 1.3)
         self.buildRound = 5
+        self.Build = [ProtossUnit.Probe]
+        self.BuildSize = [(1,1)]
+        self.BuildRound = [2]
 
 class Gas(ProtossBuilding):
     def __init__(self, row, col):
