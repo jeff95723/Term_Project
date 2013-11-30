@@ -54,6 +54,19 @@ def drawText(screen, obj):
             stealth = SmallFont.render(stealthStr,1, SheildBlue)
             screen.blit(stealth,(320,869))
 
+    if isinstance(obj,Building.building):
+        if obj in Building.building.finishedBuildings:
+            if obj.buildQueue != []:
+                buildQueueStr = str(obj.Build[obj.buildQueue[0]]).split('.')[-1][:-2]
+                buildStr = 'Building: ' + buildQueueStr + ' and %d more.' %(len(obj.buildQueue)-1)
+                roundLeft = obj.currentBuildRoundLeft[0]
+                roundStr = 'Will finish %s in %d rounds.' %(buildQueueStr,roundLeft)
+                round = SmallFont.render(roundStr,1,InfoWhite)
+                screen.blit(round,(320,902))
+            else:
+                buildStr = 'Nothing is building right now.'
+            build = SmallFont.render(buildStr,1,InfoWhite)
+            screen.blit(build,(320,869))
 
     if obj.sheild != 0:
         sheildStr = str(obj.CURsheild)+'/'+str(obj.sheild)
@@ -98,9 +111,6 @@ def drawButtons(screen, obj):
                 col = i%3
                 button = load.load_button_from_file(image)
                 screen.blit(button,(originX+col*cellW,originY+row*cellH))
-
-
-
 
 def checkRegion(data):
     # 0 for the unit selection region, 1 for the minimap region,
