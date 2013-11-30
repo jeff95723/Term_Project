@@ -128,8 +128,6 @@ class building(object):
             result = self.Build[index](self.getBuildingBorder(buildSizeRow,buildSizeCol)[0][0],
                                           self.getBuildingBorder(buildSizeRow,buildSizeCol)[0][1])
 
-
-
     def getBuildingBorder(self, sizeRow, sizeCol):
         result = []
         board = self.Map.board
