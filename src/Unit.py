@@ -296,7 +296,14 @@ class Unit(object):
             for c in xrange(self.sizeCol):
                 # set the data on map board
                 self.Map.board[self.row + r][self.col + c] = self
+                self.Map.fogOfWarBoard[self.row + r][self.col + c] = 1
                 # draw the unit on the mini map
+
+        # fog of war
+
+        inSight = self.checkAttackMoves(10)
+        for (r,c) in inSight:
+            self.Map.fogOfWarBoard[r][c] = 1
 
     def undrawUnit(self):
         rect = self.image.get_rect()

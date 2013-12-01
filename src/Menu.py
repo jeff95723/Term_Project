@@ -6,6 +6,10 @@ import Unit
 import Building
 
 def drawMenu(screen,obj):
+    SmallFont= pygame.font.SysFont('monospace', 12, bold = True)
+    InfoWhite = (255,255,255)
+    nextRound = SmallFont.render('Next Round!', 1, InfoWhite)
+    screen.blit(nextRound,(113,733))
     if isinstance(obj,Unit.Unit) or isinstance(obj, Building.building):
         drawAvatar(screen, obj)
         drawIcon(screen,obj)

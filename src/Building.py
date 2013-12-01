@@ -29,6 +29,15 @@ class building(object):
     @classmethod
     def drawAllBuildings(cls):
         for bld in cls.buildings:
+        # fog of war
+            inSight = bld.checkSight(10)
+            for (r,c) in inSight:
+                bld.Map.fogOfWarBoard[r][c] = 1
+
+            for row in xrange(bld.sizeRow):
+                for col in xrange(bld.sizeCol):
+                    bld.Map.fogOfWarBoard[bld.row+row][bld.col+col] = 1
+
             if bld in cls.buildingBuildings:
                 bld.drawUnfinishedBuilding()
             else:
@@ -84,6 +93,20 @@ class building(object):
     def __eq__(self, other):
         return type(self) == type(other) and (self.row,self.col) == (other.row,other.col)
 
+    def checkSight(self,range):
+        inSight = []
+        board = self.Map.board
+        rows, cols = len(board), len(board[0])
+        uRow, uCol = self.row, self.col
+        for row in xrange(max(0,uRow-range-1),min(uRow+range+1,rows)+1):
+            for col in xrange(max(0,uCol - range-1),min(uCol+range+1,cols)+1):
+                if abs(row-uRow)+abs(col-uCol) <= range:
+                    for r in xrange(self.sizeRow):
+                        for c in xrange(self.sizeCol):
+                            inSight.append((row+r,col+c))
+        inSight = list(set(inSight))
+        return inSight
+
     def drawBuilding(self):
         surface = building.mapSurface
         cellWidth, cellHeight = self.Map.getCellsize()
@@ -94,6 +117,7 @@ class building(object):
         for r in xrange(self.sizeRow):
             for c in xrange(self.sizeCol):
                 self.Map.board[self.row + r][self.col + c] = self
+
 
     def drawUnfinishedBuilding(self, unfinishedBuildingImage):
         surface = building.mapSurface

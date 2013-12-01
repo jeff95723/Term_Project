@@ -2,6 +2,7 @@ import pygame
 from pygame.locals import *
 
 import load
+import Menu
 
 class map(object):
 
@@ -12,6 +13,7 @@ class map(object):
         self.board = load.load_map_data(fileName = mapName + '.txt')
         self.rows = rows
         self.cols = cols
+        self.fogOfWarBoard = [[0] * cols for row in xrange(rows)]
         self.x = 0
         self.y = 0
         self.rect = pygame.Surface.get_rect(self.image)
@@ -22,6 +24,32 @@ class map(object):
 
     def draw(self, mainScreen):
         mainScreen.blit(self.image,(0,0),(abs(self.x),abs(self.y),self.displayWidth, self.displayHeight))
+
+    def drawFogOfWarOnMiniMap(self,mainScreen):
+        rows, cols = len(self.fogOfWarBoard), len(self.fogOfWarBoard[0])
+        fogBlack = (1,1,1,250)
+        for row in xrange(rows):
+            for col in xrange(cols):
+                if self.fogOfWarBoard[row][col] == 0:
+                    Menu.drawMiniMapCell(mainScreen,row,col,fogBlack)
+
+    def resetFogOfWarBoard(self):
+        self.fogOfWarBoard = [[0] * self.cols for row in xrange(self.rows)]
+
+    def drawFogOfWar(self,mainScreen):
+        cW, cH = self.getCellsize()
+        onScreenRow, onScreenCol = abs(self.y)/cH, abs(self.x)/cW
+        screenRows, screenCols = self.displayHeight/cH, self.displayWidth/cW
+        fogBlack = (1,1,1,250)
+        fogCell = pygame.Surface((cW,cH),pygame.SRCALPHA)
+        fogCell.fill(fogBlack)
+        for row in xrange(onScreenRow,onScreenRow+screenRows):
+            for col in xrange(onScreenCol, onScreenCol+screenCols):
+                if self.fogOfWarBoard[row][col] == 0:
+                    localRow = row - onScreenRow
+                    localCol = col - onScreenCol
+                    mainScreen.blit(fogCell,(localCol*cW,localRow*cH))
+
 
     def move(self,(dx,dy)):
         self.x += dx

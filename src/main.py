@@ -157,6 +157,14 @@ def checkMiniMapScroll(data):
             data.map.x =  -(data.ViewBox.x)*24
             data.map.y = -(data.ViewBox.y)*24
 
+def checkNextRound(data):
+    mouseStatus = pygame.mouse.get_pressed()
+    if Menu.checkRegion(data) == 3 and mouseStatus[0] == 1:
+        print ' Next Round !'
+        Building.building.nextRound()
+        Unit.Unit.nextRound()
+        data.selected = None
+
 def checkBuild(data):
     if isinstance(data.selected, Building.building):
         if data.selected in Building.building.finishedBuildings:
@@ -179,9 +187,11 @@ def timerFired(data):
     #print data.mouseX, data.mouseY
     #print data.buttonStatus
     redrawAll(data)
+    data.map.resetFogOfWarBoard()
     data.clock.tick(30)
     checkKeys(data)
     checkMiniMapScroll(data)
+    checkNextRound(data)
     updateMiniMap(data)
     checkBuild(data)
     checkAutoScroll(data)
@@ -216,6 +226,7 @@ def redrawAll(data):
     ProtossBuildings.ProtossBuilding.drawAllBuildings()
     Unit.Unit.drawAllUnits()
     data.map.draw(data.screen)
+    data.map.drawFogOfWar(data.screen)
     if isinstance(data.selected,Unit.Unit):
         if data.selected.canMove:
             if data.buttonStatus[0] == 1:
@@ -229,6 +240,7 @@ def redrawAll(data):
     Menu.drawMenu(data.screen, data.selected)
     Unit.Unit.drawAllUnitsOnMiniMap()
     Building.building.drawAllBuildingsOnMiniMap()
+    data.map.drawFogOfWarOnMiniMap(data.screen)
     data.ViewBox.draw()
     #data.screen.blit(data.pointerImage, (data.mouseX, data.mouseY))
     pygame.display.flip()
