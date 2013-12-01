@@ -27,7 +27,7 @@ class map(object):
 
     def drawFogOfWarOnMiniMap(self,mainScreen):
         rows, cols = len(self.fogOfWarBoard), len(self.fogOfWarBoard[0])
-        fogBlack = (1,1,1,250)
+        fogBlack = (1,1,1,220)
         for row in xrange(rows):
             for col in xrange(cols):
                 if self.fogOfWarBoard[row][col] == 0:

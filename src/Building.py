@@ -65,6 +65,11 @@ class building(object):
                 for c in xrange(bld.sizeCol):
                     Menu.drawMiniMapCell(building.screen,bld.row+r, bld.col+c,(0,200,0))
 
+    @classmethod
+    def addTofinishedBuildings(cls, bld):
+        cls.buildingBuildings.remove(bld)
+        cls.finishedBuildings.append(bld)
+
     def __init__(self, row, col, sizeRow, sizeCol, health, sheild, healthRegen, sheildRegen, imageName):
         self.row = row
         self.col = col
@@ -98,12 +103,13 @@ class building(object):
         board = self.Map.board
         rows, cols = len(board), len(board[0])
         uRow, uCol = self.row, self.col
-        for row in xrange(max(0,uRow-range-1),min(uRow+range+1,rows)+1):
-            for col in xrange(max(0,uCol - range-1),min(uCol+range+1,cols)+1):
+        for row in xrange(max(0,uRow-range-1),min(uRow+range+1,rows)):
+            for col in xrange(max(0,uCol - range-1),min(uCol+range+1,cols)):
                 if ((row-uRow)**2)+((col-uCol)**2) <= range**2:
                     for r in xrange(self.sizeRow):
                         for c in xrange(self.sizeCol):
-                            inSight.append((row+r,col+c))
+                            if row + r < rows and col + c < cols:
+                                inSight.append((row+r,col+c))
         inSight = list(set(inSight))
         return inSight
 

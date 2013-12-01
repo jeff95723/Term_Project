@@ -100,6 +100,7 @@ class Probe(ProtossUnit):
         self.hitSound = sounds[0:2]
         self.idleSounds = sounds[3:]
         self.population = 1
+        self.canBuild = True
 
         self.xerror = 5
 

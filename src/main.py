@@ -10,6 +10,7 @@ import ProtossBuildings
 import ProtossUnit
 import Unit
 import Menu
+import Player
 
 def mousePressed(data):
     row, col = mouse2RC(data)
@@ -237,7 +238,7 @@ def redrawAll(data):
                 data.selected.drawAttack((200,0,0,100))
     #drawGrid(data)
     drawMenu(data)
-    Menu.drawMenu(data.screen, data.selected)
+    Menu.drawMenu(data.screen, data.selected, data)
     Unit.Unit.drawAllUnitsOnMiniMap()
     Building.building.drawAllBuildingsOnMiniMap()
     data.map.drawFogOfWarOnMiniMap(data.screen)
@@ -254,8 +255,19 @@ def init(data):
     data.cellWidth, data.cellHeight = data.map.getCellsize()
 
 
-    MenuFile = 'Other/Menu/Protoss Menu.png'
-    data.MenuImage = load.load_image(MenuFile)
+    data.buildings = Building.building.buildings
+    Building.building.setMap(data.map)
+    Unit.Unit.setMap(data.map)
+    Unit.Unit.setScreen(data.screen)
+
+    player1 = Player.player('Protoss', 8,9)
+    player2 = Player.player('Protoss', 53,51)
+
+    data.currentPlayer = player1
+    data.otherPlayer = player2
+
+    #MenuFile = 'Other/Menu/Protoss Menu.png'
+    data.MenuImage = data.currentPlayer.MenuImage #load.load_image(MenuFile)
     Menu_h = data.MenuImage.get_height()
     data.MenuHeight = Menu_h
 
@@ -270,10 +282,7 @@ def init(data):
     data.selected = None
     data.buttonStatus = [0]*9
 
-    data.buildings = Building.building.buildings
-    Building.building.setMap(data.map)
-    Unit.Unit.setMap(data.map)
-    Unit.Unit.setScreen(data.screen)
+    '''
     data.zealot = ProtossUnit.Zealot(1,1)
     data.archon = ProtossUnit.Archon(3,3)
     data.darkTemplar = ProtossUnit.DarkTemplar(5,0)
@@ -281,6 +290,7 @@ def init(data):
     data.Arbiter = ProtossUnit.Arbiter(0,20)
     data.Probe = ProtossUnit.Probe(8,0)
     data.Nexus = ProtossBuildings.Nexus(20, 20)
+    '''
 
 
 def run():

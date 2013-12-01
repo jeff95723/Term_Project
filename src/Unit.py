@@ -69,6 +69,7 @@ class Unit(object):
         self.MovRange = MovRange
         self.canMove = True
         self.canAttack = True
+        self.canBuild = False
 
         self.AirUnit = False
         self.stealth = False
@@ -271,12 +272,13 @@ class Unit(object):
         board = self.Map.board
         rows, cols = len(board), len(board[0])
         uRow, uCol = self.row, self.col
-        for row in xrange(max(0,uRow-range-1),min(uRow+range+1,rows)+1):
-            for col in xrange(max(0,uCol - range-1),min(uCol+range+1,cols)+1):
+        for row in xrange(max(0,uRow-range-1),min(uRow+range+1,rows)):
+            for col in xrange(max(0,uCol - range-1),min(uCol+range+1,cols)):
                 if abs(row-uRow)+abs(col-uCol) <= range:
                     for r in xrange(self.sizeRow):
                         for c in xrange(self.sizeCol):
-                            AttackMoves.append((row+r,col+c))
+                            if row + r < rows and col + c < cols:
+                                AttackMoves.append((row+r,col+c))
         AttackMoves = list(set(AttackMoves))
         for r in xrange(self.sizeRow):
             for c in xrange(self.sizeCol):
@@ -289,12 +291,13 @@ class Unit(object):
         board = self.Map.board
         rows, cols = len(board), len(board[0])
         uRow, uCol = self.row, self.col
-        for row in xrange(max(0,uRow-range-1),min(uRow+range+1,rows)+1):
-            for col in xrange(max(0,uCol - range-1),min(uCol+range+1,cols)+1):
+        for row in xrange(max(0,uRow-range-1),min(uRow+range+1,rows)):
+            for col in xrange(max(0,uCol - range-1),min(uCol+range+1,cols)):
                 if ((row-uRow)**2)+((col-uCol)**2) <= range**2:
                     for r in xrange(self.sizeRow):
                         for c in xrange(self.sizeCol):
-                            inSight.append((row+r,col+c))
+                            if row + r < rows and col + c < cols:
+                                inSight.append((row+r,col+c))
         inSight = list(set(inSight))
         return inSight
 

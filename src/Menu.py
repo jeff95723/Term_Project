@@ -5,7 +5,7 @@ import load
 import Unit
 import Building
 
-def drawMenu(screen,obj):
+def drawMenu(screen, obj, data):
     SmallFont= pygame.font.SysFont('monospace', 12, bold = True)
     InfoWhite = (255,255,255)
     nextRound = SmallFont.render('Next Round!', 1, InfoWhite)
@@ -14,7 +14,7 @@ def drawMenu(screen,obj):
         drawAvatar(screen, obj)
         drawIcon(screen,obj)
         drawText(screen, obj)
-        drawButtons(screen,obj)
+        drawButtons(screen, obj, data)
 
 def getMiniMapOrigin():
     return (40, 795)
@@ -89,7 +89,7 @@ def drawMiniMapCell(screen,row, col,color):
     mapX, mapY = getMiniMapOrigin()
     screen.blit(minimapCell,(mapX+col*cellW,mapY + row*cellH))
 
-def drawButtons(screen, obj):
+def drawButtons(screen, obj, data):
     if isinstance(obj,Unit.Unit):
         originX, originY = getButtonRegionOrigin()
         edgeX, edgeY = getButtonRegionEdge()
@@ -97,12 +97,20 @@ def drawButtons(screen, obj):
 
         attackB = load.load_button('Attack.png')
         moveB = load.load_button('Move.png')
+        build = load.load_button('Build.png')
+        AdvancedBuild = load.load_button('AdvancedBuild.png')
         aRow,aCol = 0,1
         mRow,mCol = 0,0
+        bRow,bCol = 2,0
+        abRow, abCol = 2,1
         if obj.canAttack:
             screen.blit(attackB,(originX + aCol*cellW,originY+ aRow*cellH))
         if obj.canMove:
             screen.blit(moveB,(originX+mCol*cellW,originY + mRow*cellH))
+        if obj.canBuild:
+            if data.buttonStatus == [0]*9:
+                screen.blit(build,(originX+bCol*cellW,originY + bRow*cellH))
+                screen.blit(AdvancedBuild,(originX+abCol*cellW,originY + abRow*cellH))
 
     elif isinstance(obj, Building.building):
         if obj in Building.building.finishedBuildings:
@@ -137,7 +145,7 @@ def getButtonRegionOrigin():
     return (753,779)
 
 def getButtonRegionEdge():
-    return (944,952)
+    return (950,958)
 
 def updateButtonStatus(data):
     if checkRegion(data) == 2:
