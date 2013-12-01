@@ -284,6 +284,19 @@ class Unit(object):
                     AttackMoves.remove((self.row+r,self.col+c))
         return AttackMoves
 
+    def checkSight(self,range):
+        inSight = []
+        board = self.Map.board
+        rows, cols = len(board), len(board[0])
+        uRow, uCol = self.row, self.col
+        for row in xrange(max(0,uRow-range-1),min(uRow+range+1,rows)+1):
+            for col in xrange(max(0,uCol - range-1),min(uCol+range+1,cols)+1):
+                if ((row-uRow)**2)+((col-uCol)**2) <= range**2:
+                    for r in xrange(self.sizeRow):
+                        for c in xrange(self.sizeCol):
+                            inSight.append((row+r,col+c))
+        inSight = list(set(inSight))
+        return inSight
 
     def drawUnit(self):
         surface = Unit.mapSurface
@@ -301,7 +314,7 @@ class Unit(object):
 
         # fog of war
 
-        inSight = self.checkAttackMoves(10)
+        inSight = self.checkSight(10)
         for (r,c) in inSight:
             self.Map.fogOfWarBoard[r][c] = 1
 

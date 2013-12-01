@@ -100,7 +100,7 @@ class building(object):
         uRow, uCol = self.row, self.col
         for row in xrange(max(0,uRow-range-1),min(uRow+range+1,rows)+1):
             for col in xrange(max(0,uCol - range-1),min(uCol+range+1,cols)+1):
-                if abs(row-uRow)+abs(col-uCol) <= range:
+                if ((row-uRow)**2)+((col-uCol)**2) <= range**2:
                     for r in xrange(self.sizeRow):
                         for c in xrange(self.sizeCol):
                             inSight.append((row+r,col+c))
