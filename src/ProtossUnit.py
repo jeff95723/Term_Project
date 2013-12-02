@@ -5,6 +5,8 @@ import copy
 
 import load
 import Unit
+import Building
+import ProtossBuildings
 
 class ProtossUnit(Unit.Unit):
     ProtossUnits = []
@@ -100,7 +102,16 @@ class Probe(ProtossUnit):
         self.hitSound = sounds[0:2]
         self.idleSounds = sounds[3:]
         self.population = 1
+
         self.canBuild = True
+        self.Build = [ProtossBuildings.Nexus,ProtossBuildings.Pylon,ProtossBuildings.Gas,
+                      ProtossBuildings.Gateway,ProtossBuildings.Forge,ProtossBuildings.Cannon,
+                      ProtossBuildings.CyberneticsCore]
+        self.AdvancedBuild = [ProtossBuildings.RoboticsFacility,ProtossBuildings.Stargate,
+                              ProtossBuildings.TwilightCouncil,
+                              ProtossBuildings.RoboticsSupportBay,ProtossBuildings.FleetBeacon,
+                              ProtossBuildings.TemplarArchives,ProtossBuildings.Observatory,
+                              ProtossBuildings.ArbiterTribunal]
 
         self.xerror = 5
 

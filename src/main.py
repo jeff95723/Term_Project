@@ -250,6 +250,7 @@ def init(data):
     data.mode = 'run'
 
 
+    data.ScreenWidth = data.screen.get_width()
     data.ScreenHeight = data.screen.get_height()
     data.map = map.map('fastest', 64, 64,scale = 1.5)
     data.cellWidth, data.cellHeight = data.map.getCellsize()

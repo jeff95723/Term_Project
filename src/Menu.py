@@ -103,14 +103,50 @@ def drawButtons(screen, obj, data):
         mRow,mCol = 0,0
         bRow,bCol = 2,0
         abRow, abCol = 2,1
+
         if obj.canAttack:
             screen.blit(attackB,(originX + aCol*cellW,originY+ aRow*cellH))
+
         if obj.canMove:
             screen.blit(moveB,(originX+mCol*cellW,originY + mRow*cellH))
+
         if obj.canBuild:
             if data.buttonStatus == [0]*9:
                 screen.blit(build,(originX+bCol*cellW,originY + bRow*cellH))
                 screen.blit(AdvancedBuild,(originX+abCol*cellW,originY + abRow*cellH))
+            else:
+                menuImage = data.MenuImage
+
+                x = originX
+                y = originY - data.ScreenHeight + data.MenuHeight
+                width = edgeX - originX
+                height = edgeY - originY
+
+                screen.blit(menuImage,(originX,originY),(x,y,width,height))
+                originX, originY = getButtonRegionOrigin()
+                edgeX, edgeY = getButtonRegionEdge()
+                cellW, cellH = (edgeX - originX)/3.0, (edgeY-originY)/3.0
+
+                # Display Build
+                if data.buttonStatus == [0,0,0,0,0,0,1,0,0]:
+                    for i in xrange(len(obj.Build)):
+                        image = obj.Build[i].image
+                        row = i/3
+                        col = i%3
+                        button = load.load_button_from_file(image)
+                        screen.blit(button,(originX+col*cellW,originY+row*cellH))
+
+                # Display Advanced Build
+                if data.buttonStatus == [0,0,0,0,0,0,0,1,0]:
+                    for i in xrange(len(obj.AdvancedBuild)):
+                        image = obj.AdvancedBuild[i].image
+                        row = i/3
+                        col = i%3
+                        button = load.load_button_from_file(image)
+                        screen.blit(button,(originX+col*cellW,originY+row*cellH))
+
+
+
 
     elif isinstance(obj, Building.building):
         if obj in Building.building.finishedBuildings:
@@ -142,10 +178,10 @@ def checkRegion(data):
         return 4
 
 def getButtonRegionOrigin():
-    return (753,779)
+    return (758,779)
 
 def getButtonRegionEdge():
-    return (950,958)
+    return (960,960)
 
 def updateButtonStatus(data):
     if checkRegion(data) == 2:
