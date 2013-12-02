@@ -140,7 +140,7 @@ class Factory(TerranBuilding):
 
     def __init__(self,row,col):
         imageName = 'Terran/Factory.gif'
-        super(Factory,self).__init__(row,col,3,3,600,0,imageName)
+        super(Factory,self).__init__(row,col,3,3,1000,0,imageName)
         self.xerror = 0
         self.yerror = 0
         self.image = load.load_image_smooth('Buildings/'+imageName, scale= 1.3)
@@ -156,7 +156,7 @@ class Starport(TerranBuilding):
 
     def __init__(self,row,col):
         imageName = 'Terran/Starport.gif'
-        super(Starport,self).__init__(row,col,3,3,600,0,imageName)
+        super(Starport,self).__init__(row,col,3,3,1000,0,imageName)
         self.xerror = 0
         self.yerror = 0
         self.image = load.load_image_smooth('Buildings/'+imageName, scale= 1.3)
@@ -172,7 +172,7 @@ class ScienceFacility(TerranBuilding):
 
     def __init__(self,row,col):
         imageName = 'Terran/Science Facility.gif'
-        super(ScienceFacility,self).__init__(row,col,3,3,600,0,imageName)
+        super(ScienceFacility,self).__init__(row,col,3,3,750,0,imageName)
         self.xerror = 0
         self.yerror = 20
         self.image = load.load_image_smooth('Buildings/'+imageName, scale= 1.3)
@@ -188,7 +188,7 @@ class EngineeringBay(TerranBuilding):
 
     def __init__(self,row,col):
         imageName = 'Terran/Engineering Bay.gif'
-        super(EngineeringBay,self).__init__(row,col,3,3,600,0,imageName)
+        super(EngineeringBay,self).__init__(row,col,3,3,850,0,imageName)
         self.xerror = -5
         self.yerror = 20
         self.image = load.load_image_smooth('Buildings/'+imageName, scale= 1.1)
@@ -204,7 +204,7 @@ class Armory(TerranBuilding):
 
     def __init__(self,row,col):
         imageName = 'Terran/Armory.gif'
-        super(Armory,self).__init__(row,col,3,3,600,0,imageName)
+        super(Armory,self).__init__(row,col,3,3,750,0,imageName)
         self.xerror = 0
         self.yerror = 0
         self.image = load.load_image_smooth('Buildings/'+imageName, scale= 1.4)
@@ -220,7 +220,7 @@ class MissileTurret(TerranBuilding):
 
     def __init__(self,row,col):
         imageName = 'Terran/Missile Turret.gif'
-        super(MissileTurret,self).__init__(row,col,2,2,600,0,imageName)
+        super(MissileTurret,self).__init__(row,col,2,2,200,0,imageName)
         self.xerror = 10
         self.yerror = 0
         self.image = load.load_image_smooth('Buildings/'+imageName, scale= 1.5)
