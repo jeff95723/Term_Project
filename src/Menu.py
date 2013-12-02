@@ -192,6 +192,8 @@ def drawBuildBuilding(screen,data):
             cW,cH = data.map.getCellsize()
             mRow = data.mouseY/cH
             mCol = data.mouseX/cW
+            sRow = data.map.y/cH
+            sCol = data.map.x/cW
             sizeRow, sizeCol = cls.sizeRow, cls.sizeCol
             y = (mRow) * cH + cls.yerror
             x = (mCol) * cW + cls.xerror
@@ -205,8 +207,8 @@ def drawBuildBuilding(screen,data):
             for r in xrange(sizeRow):
                 for c in xrange(sizeCol):
                     if (mRow+r-data.selected.row)**2 + (mCol+c-data.selected.col)**2 > 49 or \
-                            (data.selected.Map.board[mRow+r][mCol+c-1] != 0 and\
-                                    data.selected.Map.board[mRow+r][mCol+c-1] != 2):
+                            (data.selected.Map.board[mRow-sRow+r][mCol-sCol+c] != 0 and\
+                                    data.selected.Map.board[mRow-sRow+r][mCol-sCol+c] != 2):
                         screen.blit(redBlock,((mCol+c)*cW,(mRow+r)*cH))
                     else:
                         screen.blit(greenBlock,((mCol+c)*cW,(mRow+r)*cH))
