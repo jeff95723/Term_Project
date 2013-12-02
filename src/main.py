@@ -24,7 +24,7 @@ def mousePressed(data):
                 # if the previous selection is a unit, move that unit if possible
                 if isinstance(data.selected,Unit.Unit):
                     if data.selected.canMove:
-                        if data.buttonStatus[0] == 1:
+                        if data.buttonStatus[0] == 1 and data.buildMode == False:
                             data.selected.move(row,col)
                     elif data.selected.canAttack:
                         if data.buttonStatus[1] == 1:# and data.buildMode == False:
@@ -35,10 +35,10 @@ def mousePressed(data):
                 # if the previous selection is a unit, move that unit if possible
                 if isinstance(data.selected,Unit.Unit):
                     if data.selected.canMove and data.selected.AirUnit:
-                        if data.buttonStatus[0] == 1:
+                        if data.buttonStatus[0] == 1 and data.buildMode == False:
                             data.selected.move(row,col)
                     elif data.selected.canAttack:
-                        if data.buttonStatus[1] == 1:
+                        if data.buttonStatus[1] == 1 and data.buildMode == False:
                             data.selected.attack(row,col)
                 else:
                     data.selected = None
@@ -46,7 +46,7 @@ def mousePressed(data):
                 # if the previously selected is a unit, attack if possible, else select the unit
                 if isinstance(data.selected,Unit.Unit):
                     if data.selected.canAttack:
-                        if data.buttonStatus[1] == 1:
+                        if data.buttonStatus[1] == 1 and data.buildMode == False:
                             data.selected.Attack(row,col)
                         else:
                             data.selected = data.map.board[row][col]
@@ -61,7 +61,7 @@ def mousePressed(data):
             elif isinstance(data.map.board[row][col],Building.building):
                 if isinstance(data.selected,Unit.Unit):
                     if data.selected.canAttack:
-                        if data.buttonStatus[1] == 1:
+                        if data.buttonStatus[1] == 1 and data.buildMode == False:
                             data.selected.Attack(row,col)
                         else:
                             data.selected = data.map.board[row][col]
@@ -76,6 +76,22 @@ def mousePressed(data):
                 data.selected = data.map.board[row][col]
         elif mouseStatus[2] == 1:
             data.selected = None
+
+    if data.buildMode == True:
+        if mouseRegion == 2:
+            data.currentBuildIndex = Menu.getButtonStatus(data)
+        if data.currentBuildIndex != None:
+            data.placeMode = True
+
+    if data.placeMode == True:
+        if isinstance(data.selected,Unit.Unit):
+            if mouseRegion == 0:
+                mRow, mCol = mouse2RC(data)
+                data.selected.Build[data.currentBuildIndex](mRow,mCol)
+                data.placeMode = False
+                data.buildMode = False
+                data.currentBuildIndex = None
+
 
     #update the button Status
     # MUST POST UPDATE, OTHERWISE THE UNITS WONT MOVE
@@ -229,13 +245,14 @@ def redrawAll(data):
     data.map.draw(data.screen)
     data.map.drawFogOfWar(data.screen)
     if isinstance(data.selected,Unit.Unit):
-        if data.selected.canMove:
-            if data.buttonStatus[0] == 1:
-                data.selected.drawMoves((0,200,0,100))
+        if data.buildMode == False:
+            if data.selected.canMove:
+                if data.buttonStatus[0] == 1:
+                    data.selected.drawMoves((0,200,0,100))
 
-        if data.selected.canAttack:
-            if data.buttonStatus[1] == 1:
-                data.selected.drawAttack((200,0,0,100))
+            if data.selected.canAttack:
+                if data.buttonStatus[1] == 1:
+                    data.selected.drawAttack((200,0,0,100))
     drawMenu(data)
     Menu.drawMenu(data.screen, data.selected, data)
     Unit.Unit.drawAllUnitsOnMiniMap()
@@ -278,6 +295,8 @@ def init(data):
     data.ViewBox = Menu.ViewBox(data.map)
 
     data.buildMode = False
+    data.placeMode = False
+    data.currentBuildIndex = None
 
     data.selected = None
     data.buttonStatus = [0]*9

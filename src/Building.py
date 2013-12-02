@@ -48,7 +48,7 @@ class building(object):
         for bld in cls.buildings:
             bld.buildRound -= 1
             if bld.buildRound == 0:
-                if building.buildingBuildings != []:
+                if bld in building.buildingBuildings:
                     building.buildingBuildings.remove(bld)
                     bld.undrawUnfinishedBuilding()
                 building.finishedBuildings.append(bld)

@@ -51,6 +51,11 @@ class ProtossBuilding(Building.building):
 
 class Nexus(ProtossBuilding):
     image= 'Buildings/Protoss/Nexus.gif'
+    scale = 1.3
+    sizeRow = 3
+    sizeCol = 4
+    xerror = 0
+    yerror = -40
     def __init__(self, row, col):
         imageName = 'Protoss/Nexus.gif'
         super(Nexus, self).__init__(row, col, 3, 4, 750, 750, imageName)
@@ -63,8 +68,12 @@ class Nexus(ProtossBuilding):
         self.BuildRound = [2]
 
 class Gas(ProtossBuilding):
-
     image= 'Buildings/Protoss/Gas.gif'
+    scale = 1.5
+    sizeRow = 2
+    sizeCol = 4
+    xerror = 0
+    yerror = -30
     def __init__(self, row, col):
         imageName = 'Protoss/Gas.gif'
         super(Gas, self).__init__(row, col, 2, 4, 150, 150, imageName)
@@ -74,6 +83,11 @@ class Gas(ProtossBuilding):
 
 class CyberneticsCore(ProtossBuilding):
     image= 'Buildings/Protoss/Cybernetics Core.gif'
+    scale = 1.5
+    sizeRow = 3
+    sizeCol = 3
+    xerror = 5
+    yerror = 0
     def __init__(self, row, col):
         imageName = 'Protoss/Cybernetics Core.gif'
         super(CyberneticsCore, self).__init__(row, col, 3, 3, 300, 300, imageName)
@@ -82,6 +96,11 @@ class CyberneticsCore(ProtossBuilding):
 
 class FleetBeacon(ProtossBuilding):
     image= 'Buildings/Protoss/Fleet Beacon.gif'
+    scale = 1.5
+    sizeRow = 3
+    sizeCol = 3
+    xerror = -35
+    yerror = 0
     def __init__(self, row, col):
         imageName = 'Protoss/Fleet Beacon.gif'
         super(FleetBeacon, self).__init__(row, col, 3, 3, 500, 500, imageName)
@@ -90,6 +109,11 @@ class FleetBeacon(ProtossBuilding):
 
 class Forge(ProtossBuilding):
     image= 'Buildings/Protoss/Forge.gif'
+    scale = 1.5
+    sizeRow = 3
+    sizeCol = 3
+    xerror = 0
+    yerror =  15
     def __init__(self, row, col):
         imageName = 'Protoss/Forge.gif'
         super(Forge, self).__init__(row, col, 3, 3, 500, 500, imageName)
@@ -98,6 +122,11 @@ class Forge(ProtossBuilding):
 
 class Gateway(ProtossBuilding):
     image= 'Buildings/Protoss/Gateway.gif'
+    scale = 1.2
+    sizeRow = 3
+    sizeCol = 3
+    xerror = 0
+    yerror =  10
     def __init__(self, row, col):
         imageName = 'Protoss/Gateway.gif'
         super(Gateway, self).__init__(row, col, 3, 3, 500, 500, imageName)
@@ -108,6 +137,11 @@ class Gateway(ProtossBuilding):
 
 class Observatory(ProtossBuilding):
     image= 'Buildings/Protoss/Observatory.gif'
+    scale = 1.5
+    sizeRow = 3
+    sizeCol = 3
+    xerror = 0
+    yerror =  15
     def __init__(self, row, col):
         imageName = 'Protoss/Observatory.gif'
         super(Observatory, self).__init__(row, col, 3, 3, 500, 500, imageName)
@@ -116,6 +150,11 @@ class Observatory(ProtossBuilding):
 
 class Cannon(ProtossBuilding):
     image= 'Buildings/Protoss/Photon Cannon.gif'
+    scale = 1.5
+    sizeRow = 2
+    sizeCol = 2
+    xerror = 0
+    yerror = 40
     def __init__(self, row, col):
         imageName = 'Protoss/Photon Cannon.gif'
         super(Cannon, self).__init__(row, col, 2, 2, 100, 100, imageName)
@@ -125,6 +164,11 @@ class Cannon(ProtossBuilding):
 
 class Pylon(ProtossBuilding):
     image= 'Buildings/Protoss/Pylon.gif'
+    scale = 1.5
+    sizeRow = 2
+    sizeCol = 2
+    xerror = 8
+    yerror = 0
     def __init__(self, row, col):
         imageName = 'Protoss/Pylon.gif'
         super(Pylon, self).__init__(row, col, 2, 2, 100, 100, imageName)
@@ -134,6 +178,11 @@ class Pylon(ProtossBuilding):
 
 class RoboticsFacility(ProtossBuilding):
     image= 'Buildings/Protoss/Robotics Facility.gif'
+    scale = 1.5
+    sizeRow = 3
+    sizeCol = 3
+    xerror = 0
+    yerror = 0
     def __init__(self, row, col):
         imageName = 'Protoss/Robotics Facility.gif'
         super(RoboticsFacility, self).__init__(row, col, 3, 3, 500, 500, imageName)
@@ -142,6 +191,11 @@ class RoboticsFacility(ProtossBuilding):
 
 class RoboticsSupportBay(ProtossBuilding):
     image= 'Buildings/Protoss/Robotics Support Bay.gif'
+    scale = 1.5
+    sizeRow = 3
+    sizeCol = 3
+    xerror = 0
+    yerror = 10
     def __init__(self, row, col):
         imageName = 'Protoss/Robotics Support Bay.gif'
         super(RoboticsSupportBay, self).__init__(row, col, 3, 3, 500, 500, imageName)
@@ -150,6 +204,11 @@ class RoboticsSupportBay(ProtossBuilding):
 
 class Stargate(ProtossBuilding):
     image= 'Buildings/Protoss/Stargate.gif'
+    scale = 1.2
+    sizeRow = 3
+    sizeCol = 3
+    xerror = 0
+    yerror = 0
     def __init__(self, row, col):
         imageName = 'Protoss/Stargate.gif'
         super(Stargate, self).__init__(row, col, 3, 3, 500, 500, imageName)
@@ -159,6 +218,11 @@ class Stargate(ProtossBuilding):
 
 class TemplarArchives(ProtossBuilding):
     image= 'Buildings/Protoss/Templar Archives.gif'
+    scale = 1.5
+    sizeRow = 3
+    sizeCol = 3
+    xerror = -10
+    yerror = 0
     def __init__(self, row, col):
         imageName = 'Protoss/Templar Archives.gif'
         super(TemplarArchives, self).__init__(row, col, 3, 3, 500, 500, imageName)
@@ -167,6 +231,11 @@ class TemplarArchives(ProtossBuilding):
 
 class TwilightCouncil(ProtossBuilding):
     image= 'Buildings/Protoss/Citadel of Adun.gif'
+    scale = 1.5
+    sizeRow = 3
+    sizeCol = 3
+    xerror = 0
+    yerror = 10
     def __init__(self, row, col):
         imageName = 'Protoss/Citadel of Adun.gif'
         super(TwilightCouncil, self).__init__(row, col, 3, 3, 500, 500, imageName)
@@ -175,6 +244,11 @@ class TwilightCouncil(ProtossBuilding):
 
 class ArbiterTribunal(ProtossBuilding):
     image= 'Buildings/Protoss/Arbiter Tribunal.gif'
+    scale = 1.5
+    sizeRow = 3
+    sizeCol = 3
+    xerror = 0
+    yerror = 10
     def __init__(self, row, col):
         imageName = 'Protoss/Arbiter Tribunal.gif'
         super(ArbiterTribunal, self).__init__(row, col, 3, 3, 500, 500, imageName)

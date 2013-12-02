@@ -2,6 +2,7 @@ import pygame
 from pygame import *
 
 import load
+import map
 import Unit
 import Building
 
@@ -15,6 +16,10 @@ def drawMenu(screen, obj, data):
         drawIcon(screen,obj)
         drawText(screen, obj)
         drawButtons(screen, obj, data)
+        drawBuildBuilding(screen,data)
+
+    if data.buildMode:
+        print getButtonStatus(data)
 
 def getMiniMapOrigin():
     return (40, 795)
@@ -110,17 +115,6 @@ def drawButtons(screen, obj, data):
         if obj.canMove:
             screen.blit(moveB,(originX+mCol*cellW,originY + mRow*cellH))
 
-    elif isinstance(obj, Building.building):
-        if obj in Building.building.finishedBuildings:
-            originX, originY = getButtonRegionOrigin()
-            edgeX, edgeY = getButtonRegionEdge()
-            cellW, cellH = (edgeX - originX)/3.0, (edgeY-originY)/3.0
-            for i in xrange(len(obj.Build)):
-                image = obj.Build[i].image
-                row = i/3
-                col = i%3
-                button = load.load_button_from_file(image)
-                screen.blit(button,(originX+col*cellW,originY+row*cellH))
 
         if obj.canBuild:
             screen.blit(build,(originX+bCol*cellW,originY + bRow*cellH))
@@ -168,17 +162,59 @@ def drawButtons(screen, obj, data):
                     button = load.load_button_from_file(image)
                     screen.blit(button,(originX+col*cellW,originY+row*cellH))
 
+
             else:
                 data.buildMode = False
 
+    elif isinstance(obj, Building.building):
+        if obj in Building.building.finishedBuildings:
+            originX, originY = getButtonRegionOrigin()
+            edgeX, edgeY = getButtonRegionEdge()
+            cellW, cellH = (edgeX - originX)/3.0, (edgeY-originY)/3.0
+            for i in xrange(len(obj.Build)):
+                image = obj.Build[i].image
+                row = i/3
+                col = i%3
+                button = load.load_button_from_file(image)
+                screen.blit(button,(originX+col*cellW,originY+row*cellH))
 
 
-def drawBuildBuilding(screen,data, image):
+def drawBuildBuilding(screen,data):
     if data.buildMode == True:
         x,y = data.mouseX, data.mouseY
-        for i in len(data.buttonStatus):
-            if data.buttonStatus[i] == 1:
-                pass
+        index = data.currentBuildIndex
+        if index != None:
+            cls = data.selected.Build[index]
+            if pygame.key.get_pressed()[K_b] == 1:
+                image = load.load_image_smooth(cls.image, cls.scale)
+            elif pygame.key.get_pressed()[K_v] == 1:
+                image = load.load_image_smooth(cls.image,cls.scale)
+            cW,cH = data.map.getCellsize()
+            mRow = data.mouseY/cH
+            mCol = data.mouseX/cW
+            sizeRow, sizeCol = cls.sizeRow, cls.sizeCol
+            y = (mRow) * cH + cls.yerror
+            x = (mCol) * cW + cls.xerror
+
+            screen.blit(image,(x,y))
+
+            redBlock = pygame.Surface((cW,cH),pygame.SRCALPHA)
+            greenBlock = pygame.Surface((cW,cH),pygame.SRCALPHA)
+            redBlock.fill((200,0,0,120))
+            greenBlock.fill((0,200,0,120))
+            for r in xrange(sizeRow):
+                for c in xrange(sizeCol):
+                    if (mRow+r-data.selected.row)**2 + (mCol+c-data.selected.col)**2 > 49 or \
+                            (data.selected.Map.board[mRow+r][mCol+c-1] != 0 and\
+                                    data.selected.Map.board[mRow+r][mCol+c-1] != 2):
+                        screen.blit(redBlock,((mCol+c)*cW,(mRow+r)*cH))
+                    else:
+                        screen.blit(greenBlock,((mCol+c)*cW,(mRow+r)*cH))
+
+
+
+
+
 
 def checkRegion(data):
     # 0 for the unit selection region, 1 for the minimap region,
