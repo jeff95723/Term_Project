@@ -8,6 +8,8 @@ import map
 import Building
 import ProtossBuildings
 import ProtossUnit
+
+import TerrranBuildings
 import Unit
 import Menu
 import Player
@@ -24,7 +26,8 @@ def mousePressed(data):
                 # if the previous selection is a unit, move that unit if possible
                 if isinstance(data.selected,Unit.Unit):
                     if data.selected.canMove:
-                        if data.buttonStatus[0] == 1 and data.buildMode == False:
+                        if data.buttonStatus[0] == 1 and data.buildMode == False\
+                            and data.placeMode == False:
                             data.selected.move(row,col)
                     elif data.selected.canAttack:
                         if data.buttonStatus[1] == 1:# and data.buildMode == False:
@@ -35,10 +38,12 @@ def mousePressed(data):
                 # if the previous selection is a unit, move that unit if possible
                 if isinstance(data.selected,Unit.Unit):
                     if data.selected.canMove and data.selected.AirUnit:
-                        if data.buttonStatus[0] == 1 and data.buildMode == False:
+                        if data.buttonStatus[0] == 1 and data.buildMode == False\
+                            and data.placeMode == False:
                             data.selected.move(row,col)
                     elif data.selected.canAttack:
-                        if data.buttonStatus[1] == 1 and data.buildMode == False:
+                        if data.buttonStatus[1] == 1 and data.buildMode == False\
+                            and data.placeMode == False:
                             data.selected.attack(row,col)
                 else:
                     data.selected = None
@@ -46,7 +51,8 @@ def mousePressed(data):
                 # if the previously selected is a unit, attack if possible, else select the unit
                 if isinstance(data.selected,Unit.Unit):
                     if data.selected.canAttack:
-                        if data.buttonStatus[1] == 1 and data.buildMode == False:
+                        if data.buttonStatus[1] == 1 and data.buildMode == False\
+                            and data.placeMode == False:
                             data.selected.Attack(row,col)
                         else:
                             data.selected = data.map.board[row][col]
@@ -61,7 +67,8 @@ def mousePressed(data):
             elif isinstance(data.map.board[row][col],Building.building):
                 if isinstance(data.selected,Unit.Unit):
                     if data.selected.canAttack:
-                        if data.buttonStatus[1] == 1 and data.buildMode == False:
+                        if data.buttonStatus[1] == 1 and data.buildMode == False\
+                            and data.placeMode == False:
                             data.selected.Attack(row,col)
                         else:
                             data.selected = data.map.board[row][col]
@@ -240,12 +247,13 @@ def drawMenu(data):
 def redrawAll(data):
 
     data.map.resetMap()
-    ProtossBuildings.ProtossBuilding.drawAllBuildings()
+    #ProtossBuildings.ProtossBuilding.drawAllBuildings()
+    Building.building.drawAllBuildings()
     Unit.Unit.drawAllUnits()
     data.map.draw(data.screen)
     data.map.drawFogOfWar(data.screen)
     if isinstance(data.selected,Unit.Unit):
-        if data.buildMode == False:
+        if data.buildMode == False and data.placeMode == False:
             if data.selected.canMove:
                 if data.buttonStatus[0] == 1:
                     data.selected.drawMoves((0,200,0,100))
@@ -253,6 +261,7 @@ def redrawAll(data):
             if data.selected.canAttack:
                 if data.buttonStatus[1] == 1:
                     data.selected.drawAttack((200,0,0,100))
+    drawGrid(data)
     drawMenu(data)
     Menu.drawMenu(data.screen, data.selected, data)
     Unit.Unit.drawAllUnitsOnMiniMap()
@@ -300,6 +309,7 @@ def init(data):
 
     data.selected = None
     data.buttonStatus = [0]*9
+
 
     '''
     data.zealot = ProtossUnit.Zealot(1,1)
