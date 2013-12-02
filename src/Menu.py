@@ -121,7 +121,7 @@ def drawButtons(screen, obj, data):
                 col = i%3
                 button = load.load_button_from_file(image)
                 screen.blit(button,(originX+col*cellW,originY+row*cellH))
-'''
+
         if obj.canBuild:
             screen.blit(build,(originX+bCol*cellW,originY + bRow*cellH))
             screen.blit(AdvancedBuild,(originX+abCol*cellW,originY + abRow*cellH))
@@ -170,7 +170,6 @@ def drawButtons(screen, obj, data):
 
             else:
                 data.buildMode = False
-'''
 
 
 

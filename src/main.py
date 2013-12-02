@@ -13,7 +13,6 @@ import Menu
 import Player
 
 def mousePressed(data):
-    Menu.updateButtonStatus(data)
     row, col = mouse2RC(data)
     mouseStatus = pygame.mouse.get_pressed()
     mouseRegion = Menu.checkRegion(data)
@@ -79,6 +78,8 @@ def mousePressed(data):
             data.selected = None
 
     #update the button Status
+    # MUST POST UPDATE, OTHERWISE THE UNITS WONT MOVE
+    Menu.updateButtonStatus(data)
 
 
 def mouse2RC(data):
@@ -184,10 +185,8 @@ def updateMiniMap(data):
     data.ViewBox.y = -data.map.y/24.0
 
 def timerFired(data):
-    print data.buildMode
     data.mouseX, data.mouseY = pygame.mouse.get_pos()
-    #print data.mouseX, data.mouseY
-    #print data.buttonStatus
+    print data.buildMode
     redrawAll(data)
     data.map.resetFogOfWarBoard()
     data.clock.tick(30)
