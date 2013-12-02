@@ -110,11 +110,9 @@ class Unit(object):
         # ground unit
         else:
             if (DestRow,DestCol) in self.checkGroundMoves(self.MovRange):
-                i = 0
                 for r in xrange(self.sizeRow):
                     for c in xrange(self.sizeCol):
                         self.Map.board[self.row+r][self.col+c] = 0
-                        i += 1
                 #self.undrawUnit()
                 self.row = DestRow
                 self.col = DestCol

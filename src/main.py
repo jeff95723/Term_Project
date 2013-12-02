@@ -13,6 +13,7 @@ import Menu
 import Player
 
 def mousePressed(data):
+    Menu.updateButtonStatus(data)
     row, col = mouse2RC(data)
     mouseStatus = pygame.mouse.get_pressed()
     mouseRegion = Menu.checkRegion(data)
@@ -27,7 +28,7 @@ def mousePressed(data):
                         if data.buttonStatus[0] == 1:
                             data.selected.move(row,col)
                     elif data.selected.canAttack:
-                        if data.buttonStatus[1] == 1:
+                        if data.buttonStatus[1] == 1:# and data.buildMode == False:
                             data.selected.attack(row,col)
                 else:
                     data.selected = None
@@ -78,7 +79,6 @@ def mousePressed(data):
             data.selected = None
 
     #update the button Status
-    Menu.updateButtonStatus(data)
 
 
 def mouse2RC(data):
@@ -184,6 +184,7 @@ def updateMiniMap(data):
     data.ViewBox.y = -data.map.y/24.0
 
 def timerFired(data):
+    print data.buildMode
     data.mouseX, data.mouseY = pygame.mouse.get_pos()
     #print data.mouseX, data.mouseY
     #print data.buttonStatus
@@ -236,14 +237,12 @@ def redrawAll(data):
         if data.selected.canAttack:
             if data.buttonStatus[1] == 1:
                 data.selected.drawAttack((200,0,0,100))
-    #drawGrid(data)
     drawMenu(data)
     Menu.drawMenu(data.screen, data.selected, data)
     Unit.Unit.drawAllUnitsOnMiniMap()
     Building.building.drawAllBuildingsOnMiniMap()
     data.map.drawFogOfWarOnMiniMap(data.screen)
     data.ViewBox.draw()
-    #data.screen.blit(data.pointerImage, (data.mouseX, data.mouseY))
     pygame.display.flip()
 
 def init(data):
@@ -279,6 +278,7 @@ def init(data):
 
     data.ViewBox = Menu.ViewBox(data.map)
 
+    data.buildMode = False
 
     data.selected = None
     data.buttonStatus = [0]*9

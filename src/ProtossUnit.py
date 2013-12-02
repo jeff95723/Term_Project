@@ -107,6 +107,7 @@ class Probe(ProtossUnit):
         self.Build = [ProtossBuildings.Nexus,ProtossBuildings.Pylon,ProtossBuildings.Gas,
                       ProtossBuildings.Gateway,ProtossBuildings.Forge,ProtossBuildings.Cannon,
                       ProtossBuildings.CyberneticsCore]
+
         self.AdvancedBuild = [ProtossBuildings.RoboticsFacility,ProtossBuildings.Stargate,
                               ProtossBuildings.TwilightCouncil,
                               ProtossBuildings.RoboticsSupportBay,ProtossBuildings.FleetBeacon,

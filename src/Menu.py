@@ -110,11 +110,24 @@ def drawButtons(screen, obj, data):
         if obj.canMove:
             screen.blit(moveB,(originX+mCol*cellW,originY + mRow*cellH))
 
+    elif isinstance(obj, Building.building):
+        if obj in Building.building.finishedBuildings:
+            originX, originY = getButtonRegionOrigin()
+            edgeX, edgeY = getButtonRegionEdge()
+            cellW, cellH = (edgeX - originX)/3.0, (edgeY-originY)/3.0
+            for i in xrange(len(obj.Build)):
+                image = obj.Build[i].image
+                row = i/3
+                col = i%3
+                button = load.load_button_from_file(image)
+                screen.blit(button,(originX+col*cellW,originY+row*cellH))
+'''
         if obj.canBuild:
-            if data.buttonStatus == [0]*9:
-                screen.blit(build,(originX+bCol*cellW,originY + bRow*cellH))
-                screen.blit(AdvancedBuild,(originX+abCol*cellW,originY + abRow*cellH))
-            else:
+            screen.blit(build,(originX+bCol*cellW,originY + bRow*cellH))
+            screen.blit(AdvancedBuild,(originX+abCol*cellW,originY + abRow*cellH))
+            #if data.buildMode == False:
+            if pygame.key.get_pressed()[K_b] == 1:
+                data.buildMode = True
                 menuImage = data.MenuImage
 
                 x = originX
@@ -127,38 +140,46 @@ def drawButtons(screen, obj, data):
                 edgeX, edgeY = getButtonRegionEdge()
                 cellW, cellH = (edgeX - originX)/3.0, (edgeY-originY)/3.0
 
-                # Display Build
-                if data.buttonStatus == [0,0,0,0,0,0,1,0,0]:
-                    for i in xrange(len(obj.Build)):
-                        image = obj.Build[i].image
-                        row = i/3
-                        col = i%3
-                        button = load.load_button_from_file(image)
-                        screen.blit(button,(originX+col*cellW,originY+row*cellH))
+                for i in xrange(len(obj.Build)):
+                    image = obj.Build[i].image
+                    row = i/3
+                    col = i%3
+                    button = load.load_button_from_file(image)
+                    screen.blit(button,(originX+col*cellW,originY+row*cellH))
 
-                # Display Advanced Build
-                if data.buttonStatus == [0,0,0,0,0,0,0,1,0]:
-                    for i in xrange(len(obj.AdvancedBuild)):
-                        image = obj.AdvancedBuild[i].image
-                        row = i/3
-                        col = i%3
-                        button = load.load_button_from_file(image)
-                        screen.blit(button,(originX+col*cellW,originY+row*cellH))
+            elif pygame.key.get_pressed()[K_v] == 1:
+                data.buildMode = True
+                menuImage = data.MenuImage
+
+                x = originX
+                y = originY - data.ScreenHeight + data.MenuHeight
+                width = edgeX - originX
+                height = edgeY - originY
+
+                screen.blit(menuImage,(originX,originY),(x,y,width,height))
+                originX, originY = getButtonRegionOrigin()
+                edgeX, edgeY = getButtonRegionEdge()
+                cellW, cellH = (edgeX - originX)/3.0, (edgeY-originY)/3.0
+
+                for i in xrange(len(obj.AdvancedBuild)):
+                    image = obj.AdvancedBuild[i].image
+                    row = i/3
+                    col = i%3
+                    button = load.load_button_from_file(image)
+                    screen.blit(button,(originX+col*cellW,originY+row*cellH))
+
+            else:
+                data.buildMode = False
+'''
 
 
 
-
-    elif isinstance(obj, Building.building):
-        if obj in Building.building.finishedBuildings:
-            originX, originY = getButtonRegionOrigin()
-            edgeX, edgeY = getButtonRegionEdge()
-            cellW, cellH = (edgeX - originX)/3.0, (edgeY-originY)/3.0
-            for i in xrange(len(obj.Build)):
-                image = obj.Build[i].image
-                row = i/3
-                col = i%3
-                button = load.load_button_from_file(image)
-                screen.blit(button,(originX+col*cellW,originY+row*cellH))
+def drawBuildBuilding(screen,data, image):
+    if data.buildMode == True:
+        x,y = data.mouseX, data.mouseY
+        for i in len(data.buttonStatus):
+            if data.buttonStatus[i] == 1:
+                pass
 
 def checkRegion(data):
     # 0 for the unit selection region, 1 for the minimap region,
@@ -200,6 +221,20 @@ def updateButtonStatus(data):
     else:
         buttonStatus = [0] * 9
     data.buttonStatus = buttonStatus
+
+def getButtonStatus(data):
+
+    if checkRegion(data) == 2:
+        x, y = data.mouseX, data.mouseY
+        mouseStatus = pygame.mouse.get_pressed()
+        originX, originY = getButtonRegionOrigin()
+        edgeX, edgeY = getButtonRegionEdge()
+        localX, localY = x-originX,y-originY
+        cellW, cellH = (edgeX - originX)/3.0, (edgeY-originY)/3.0
+        buttonStatus = [0] * 9
+        i = int(localX/cellW) + 3*int(localY/cellH)
+        if mouseStatus[0] == 1:
+            return i
 
 class ViewBox(object):
     def __init__(self, map):

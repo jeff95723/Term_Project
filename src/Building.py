@@ -48,8 +48,9 @@ class building(object):
         for bld in cls.buildings:
             bld.buildRound -= 1
             if bld.buildRound == 0:
-                building.buildingBuildings.remove(bld)
-                bld.undrawUnfinishedBuilding()
+                if building.buildingBuildings != []:
+                    building.buildingBuildings.remove(bld)
+                    bld.undrawUnfinishedBuilding()
                 building.finishedBuildings.append(bld)
             if bld.buildQueue != []:
                 bld.currentBuildRoundLeft[-1] -= 1
