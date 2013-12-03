@@ -4,7 +4,7 @@ import random
 
 import Building
 import Unit
-import ProtossUnit
+import TerranUnit
 import load
 
 class TerranBuilding(Building.building):
@@ -63,7 +63,7 @@ class CommandCenter(TerranBuilding):
         self.yerror = 0
         self.image = load.load_image_smooth('Buildings/'+imageName, scale= 1.3)
         self.buildRound = 5
-        self.Build = [ProtossUnit.Probe]
+        self.Build = [TerranUnit.SCV]
         self.BuildSize = [(1,1)]
         self.BuildRound = [2]
 

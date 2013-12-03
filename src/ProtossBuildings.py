@@ -15,6 +15,10 @@ class ProtossBuilding(Building.building):
     def getAllProtossBuildings(cls):
         return cls.protossBuildings
 
+    @classmethod
+    def addTofinishedBuildings(cls, bld):
+        cls.buildingBuildings.remove(bld)
+        cls.finishedBuildings.append(bld)
 
     def drawUnfinishedBuilding(self):
         scale = min(self.sizeCol, self.sizeRow)/2.0
@@ -36,6 +40,8 @@ class ProtossBuilding(Building.building):
         self.Avatar = load.load_avatar('Protoss/Advisor.gif')
         self.idleSounds = [load.load_sound('Protoss/Bldg/pneWht00.wav')]
         self.deathSound = [load.load_sound('Misc/explo4.wav')]
+
+        ProtossBuilding.protossBuildings.append(self)
 
     def die(self):
         ProtossBuilding.protossBuildings.remove(self)

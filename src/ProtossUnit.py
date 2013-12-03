@@ -1,7 +1,5 @@
 import pygame
 from pygame.locals import *
-import os
-import copy
 
 import load
 import Unit

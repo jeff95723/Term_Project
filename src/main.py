@@ -9,7 +9,8 @@ import Building
 import ProtossBuildings
 import ProtossUnit
 
-import TerrranBuildings
+import TerranBuildings
+import TerranUnit
 import Unit
 import Menu
 import Player
@@ -261,7 +262,7 @@ def redrawAll(data):
             if data.selected.canAttack:
                 if data.buttonStatus[1] == 1:
                     data.selected.drawAttack((200,0,0,100))
-    drawGrid(data)
+    #drawGrid(data)
     drawMenu(data)
     Menu.drawMenu(data.screen, data.selected, data)
     Unit.Unit.drawAllUnitsOnMiniMap()
@@ -286,7 +287,7 @@ def init(data):
     Unit.Unit.setScreen(data.screen)
 
     player1 = Player.player('Protoss', 8,9)
-    player2 = Player.player('Protoss', 53,51)
+    player2 = Player.player('Terran', 53,51)
 
     data.currentPlayer = player1
     data.otherPlayer = player2
@@ -310,8 +311,13 @@ def init(data):
     data.selected = None
     data.buttonStatus = [0]*9
 
+'''
+    data.Marine = TerranUnit.Marine(1,1)
+    data.fb = TerranUnit.FireBat(2,2)
+    data.tank = TerranUnit.SiegeTank(4,0)
+    data.ghost = TerranUnit.Ghost(6,0)
+    data.bc = TerranUnit.BattleCrusier(15,15)
 
-    '''
     data.zealot = ProtossUnit.Zealot(1,1)
     data.archon = ProtossUnit.Archon(3,3)
     data.darkTemplar = ProtossUnit.DarkTemplar(5,0)
