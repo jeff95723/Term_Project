@@ -67,12 +67,15 @@ class ProtossBuilding(Building.building):
         sound.play()
 
 class Nexus(ProtossBuilding):
+
     image= 'Buildings/Protoss/Nexus.gif'
     scale = 1.3
     sizeRow = 3
     sizeCol = 4
     xerror = 0
     yerror = -40
+
+    cost = 500
     def __init__(self, row, col):
         imageName = 'Protoss/Nexus.gif'
         super(Nexus, self).__init__(row, col, 3, 4, 750, 750, imageName)
@@ -91,6 +94,8 @@ class Gas(ProtossBuilding):
     sizeCol = 4
     xerror = 0
     yerror = -30
+
+    cost = 150
     def __init__(self, row, col):
         imageName = 'Protoss/Gas.gif'
         super(Gas, self).__init__(row, col, 2, 4, 150, 150, imageName)
@@ -105,6 +110,8 @@ class CyberneticsCore(ProtossBuilding):
     sizeCol = 3
     xerror = 5
     yerror = 0
+
+    cost = 200
     def __init__(self, row, col):
         imageName = 'Protoss/Cybernetics Core.gif'
         super(CyberneticsCore, self).__init__(row, col, 3, 3, 300, 300, imageName)
@@ -118,6 +125,8 @@ class FleetBeacon(ProtossBuilding):
     sizeCol = 3
     xerror = -35
     yerror = 0
+
+    cost = 350
     def __init__(self, row, col):
         imageName = 'Protoss/Fleet Beacon.gif'
         super(FleetBeacon, self).__init__(row, col, 3, 3, 500, 500, imageName)
@@ -131,6 +140,8 @@ class Forge(ProtossBuilding):
     sizeCol = 3
     xerror = 0
     yerror =  15
+
+    cost = 200
     def __init__(self, row, col):
         imageName = 'Protoss/Forge.gif'
         super(Forge, self).__init__(row, col, 3, 3, 500, 500, imageName)
@@ -144,6 +155,8 @@ class Gateway(ProtossBuilding):
     sizeCol = 3
     xerror = 0
     yerror =  10
+
+    cost = 200
     def __init__(self, row, col):
         imageName = 'Protoss/Gateway.gif'
         super(Gateway, self).__init__(row, col, 3, 3, 500, 500, imageName)
@@ -162,6 +175,8 @@ class Observatory(ProtossBuilding):
     sizeCol = 3
     xerror = 0
     yerror =  15
+
+    cost = 200
     def __init__(self, row, col):
         imageName = 'Protoss/Observatory.gif'
         super(Observatory, self).__init__(row, col, 3, 3, 500, 500, imageName)
@@ -175,6 +190,8 @@ class Cannon(ProtossBuilding):
     sizeCol = 2
     xerror = 0
     yerror = 40
+
+    cost = 150
     def __init__(self, row, col):
         imageName = 'Protoss/Photon Cannon.gif'
         super(Cannon, self).__init__(row, col, 2, 2, 100, 100, imageName)
@@ -189,6 +206,8 @@ class Pylon(ProtossBuilding):
     sizeCol = 2
     xerror = 8
     yerror = 0
+
+    cost = 100
     def __init__(self, row, col):
         imageName = 'Protoss/Pylon.gif'
         super(Pylon, self).__init__(row, col, 2, 2, 100, 100, imageName)
@@ -203,6 +222,8 @@ class RoboticsFacility(ProtossBuilding):
     sizeCol = 3
     xerror = 0
     yerror = 0
+
+    cost = 250
     def __init__(self, row, col):
         imageName = 'Protoss/Robotics Facility.gif'
         super(RoboticsFacility, self).__init__(row, col, 3, 3, 500, 500, imageName)
@@ -219,6 +240,8 @@ class RoboticsSupportBay(ProtossBuilding):
     sizeCol = 3
     xerror = 0
     yerror = 10
+
+    cost = 200
     def __init__(self, row, col):
         imageName = 'Protoss/Robotics Support Bay.gif'
         super(RoboticsSupportBay, self).__init__(row, col, 3, 3, 500, 500, imageName)
@@ -232,6 +255,8 @@ class Stargate(ProtossBuilding):
     sizeCol = 3
     xerror = 0
     yerror = 0
+
+    cost = 250
     def __init__(self, row, col):
         imageName = 'Protoss/Stargate.gif'
         super(Stargate, self).__init__(row, col, 3, 3, 500, 500, imageName)
@@ -249,6 +274,8 @@ class TemplarArchives(ProtossBuilding):
     sizeCol = 3
     xerror = -10
     yerror = 0
+
+    cost = 300
     def __init__(self, row, col):
         imageName = 'Protoss/Templar Archives.gif'
         super(TemplarArchives, self).__init__(row, col, 3, 3, 500, 500, imageName)
@@ -265,6 +292,8 @@ class TwilightCouncil(ProtossBuilding):
     sizeCol = 3
     xerror = 0
     yerror = 10
+
+    cost = 300
     def __init__(self, row, col):
         imageName = 'Protoss/Citadel of Adun.gif'
         super(TwilightCouncil, self).__init__(row, col, 3, 3, 500, 500, imageName)
@@ -281,6 +310,8 @@ class ArbiterTribunal(ProtossBuilding):
     sizeCol = 3
     xerror = 0
     yerror = 10
+
+    cost = 200
     def __init__(self, row, col):
         imageName = 'Protoss/Arbiter Tribunal.gif'
         super(ArbiterTribunal, self).__init__(row, col, 3, 3, 500, 500, imageName)

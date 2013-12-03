@@ -69,6 +69,8 @@ class CommandCenter(TerranBuilding):
     xerror = 10
     yerror = 0
 
+    cost = 500
+
     def __init__(self,row,col):
         imageName = 'Terran/Command Center.gif'
         super(CommandCenter,self).__init__(row,col,3,4,1500,0,imageName)
@@ -88,6 +90,7 @@ class SupplyDepot(TerranBuilding):
     xerror = -5
     yerror = 0
 
+    cost = 100
     def __init__(self,row,col):
         imageName = 'Terran/Supply Depot.gif'
         super(SupplyDepot,self).__init__(row,col,2,2,500,0,imageName)
@@ -103,6 +106,8 @@ class Gas(TerranBuilding):
     sizeCol = 4
     xerror = 20
     yerror = -10
+
+    cost = 150
 
     def __init__(self,row,col):
         imageName = 'Terran/Refinery.gif'
@@ -120,6 +125,7 @@ class Barrack(TerranBuilding):
     xerror = 0
     yerror = 0
 
+    cost = 150
     def __init__(self,row,col):
         imageName = 'Terran/Barracks.gif'
         super(Barrack,self).__init__(row,col,3,3,1000,0,imageName)
@@ -127,6 +133,9 @@ class Barrack(TerranBuilding):
         self.yerror = 0
         self.image = load.load_image_smooth('Buildings/'+imageName, scale= 1.2)
         self.buildRound = 2
+        self.Build = [TerranUnit.Marine,TerranUnit.Medic,TerranUnit.FireBat]
+        self.BuildSize = [(1,1),(1,1),(1,1)]
+        self.BuildRound = [2,2,3]
 
 class Academy(TerranBuilding):
     image = 'Buildings/Terran/Academy.gif'
@@ -136,12 +145,17 @@ class Academy(TerranBuilding):
     xerror = 0
     yerror = 0
 
+    cost = 250
+
     def __init__(self,row,col):
         imageName = 'Terran/Academy.gif'
         super(Academy,self).__init__(row,col,3,3,600,0,imageName)
         self.xerror = 0
         self.yerror = 0
         self.buildRound = 3
+        self.Build = [TerranUnit.Ghost]
+        self.BuildSize = [(1,1)]
+        self.BuildRound = [4]
 
 class Factory(TerranBuilding):
     image = 'Buildings/Terran/Factory.gif'
@@ -151,6 +165,8 @@ class Factory(TerranBuilding):
     xerror = 0
     yerror = 0
 
+    cost = 300
+
     def __init__(self,row,col):
         imageName = 'Terran/Factory.gif'
         super(Factory,self).__init__(row,col,3,3,1000,0,imageName)
@@ -158,6 +174,9 @@ class Factory(TerranBuilding):
         self.yerror = 0
         self.image = load.load_image_smooth('Buildings/'+imageName, scale= 1.3)
         self.buildRound = 3
+        self.Build = [TerranUnit.SiegeTank]
+        self.BuildSize = [(2,2)]
+        self.BuildRound = [4]
 
 class Starport(TerranBuilding):
     image = 'Buildings/Terran/Starport.gif'
@@ -167,6 +186,8 @@ class Starport(TerranBuilding):
     xerror = 0
     yerror = 0
 
+    cost = 250
+
     def __init__(self,row,col):
         imageName = 'Terran/Starport.gif'
         super(Starport,self).__init__(row,col,3,3,1000,0,imageName)
@@ -174,6 +195,9 @@ class Starport(TerranBuilding):
         self.yerror = 0
         self.image = load.load_image_smooth('Buildings/'+imageName, scale= 1.3)
         self.buildRound = 3
+        self.Build = [TerranUnit.BattleCrusier]
+        self.BuildSize = [(2,2)]
+        self.BuildRound = [5]
 
 class ScienceFacility(TerranBuilding):
     image = 'Buildings/Terran/Science Facility.gif'
@@ -182,6 +206,8 @@ class ScienceFacility(TerranBuilding):
     sizeCol = 3
     xerror = 0
     yerror = 20
+
+    cost = 300
 
     def __init__(self,row,col):
         imageName = 'Terran/Science Facility.gif'
@@ -199,6 +225,7 @@ class EngineeringBay(TerranBuilding):
     xerror = -5
     yerror = 20
 
+    cost = 200
     def __init__(self,row,col):
         imageName = 'Terran/Engineering Bay.gif'
         super(EngineeringBay,self).__init__(row,col,3,3,850,0,imageName)
@@ -215,6 +242,8 @@ class Armory(TerranBuilding):
     xerror = 0
     yerror = 0
 
+    cost = 200
+
     def __init__(self,row,col):
         imageName = 'Terran/Armory.gif'
         super(Armory,self).__init__(row,col,3,3,750,0,imageName)
@@ -230,6 +259,8 @@ class MissileTurret(TerranBuilding):
     sizeCol = 2
     xerror = 10
     yerror = 0
+
+    cost = 150
 
     def __init__(self,row,col):
         imageName = 'Terran/Missile Turret.gif'

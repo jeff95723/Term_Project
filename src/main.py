@@ -96,7 +96,11 @@ def mousePressed(data):
         if isinstance(data.selected,Unit.Unit):
             if mouseRegion == 0:
                 mRow, mCol = mouse2RC(data)
-                data.currentBuildClass(mRow,mCol)
+                if data.currentBuildClass.cost <= data.currentPlayer.resources:
+                    data.currentBuildClass(mRow,mCol)
+                    data.currentPlayer.resources -= data.currentBuildClass.cost
+                else:
+                    print 'Not enough minerals'
                 data.currentBuildClass = None
                 data.placeMode = False
                 data.buildMode = False
@@ -149,7 +153,6 @@ def checkKeys(data):
         data.currentPlayer.drawFogOfWar()
         data.map.x = data.currentPlayer.xPos
         data.map.y = data.currentPlayer.yPos
-        print data.currentPlayer.getHarvesterCount()
 
 def checkAutoScroll(data):
 
@@ -223,7 +226,11 @@ def checkBuild(data):
                         index = i
 
                 if index != None:
-                    data.selected.addQueue(index)
+                    if data.currentPlayer.resources >= data.selected.Build[index].cost:
+                        data.currentPlayer.resources -= data.selected.Build[index].cost
+                        data.selected.addQueue(index)
+                    else:
+                        print 'Not enough resources!!!'
                     data.buttonStatus = [0] * 9
 
 def updateMiniMap(data):

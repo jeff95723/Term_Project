@@ -33,6 +33,7 @@ class TerranUnit(Unit.Unit):
 
 class Marine(TerranUnit):
     image = 'Units/Terran/Marine.gif'
+    cost = 50
     def __init__(self,row,col):
         imageName = 'Marine.gif'
         super(Marine,self).__init__(row,col,1,1,40,0,0,0,24,5,7,imageName)
@@ -44,9 +45,25 @@ class Marine(TerranUnit):
         self.yerror = 5
         self.population = 2
 
+class Medic(TerranUnit):
+    image = 'Units/Terran/Medic.gif'
+    cost = 75
+
+    def __init__(self,row,col):
+        imageName = 'Medic.gif'
+        super(Medic,self).__init__(row,col,1,1,40,0,0,0,-20,6,6,imageName)
+        sounds = load.load_sounds_in_Folder('Terran/Medic/')
+        self.deathSound = [sounds[0]]
+        self.hitSound = [sounds[-1]]
+        self.idleSounds = sounds[2:len(sounds)-1]
+        self.xerror =  5
+        self.yerror = 5
+        self.population = 2
+
 
 class FireBat(TerranUnit):
     image = 'Units/Terran/FireBat.gif'
+    cost = 150
 
     def __init__(self,row,col):
         imageName = 'FireBat.gif'
@@ -59,6 +76,7 @@ class FireBat(TerranUnit):
 
 class SiegeTank(TerranUnit):
     image = 'Units/Terran/Siege Tank.gif'
+    cost = 350
     def __init__(self,row,col):
         imageName = 'Siege Tank.gif'
         super(SiegeTank,self).__init__(row,col,2,2,150,0,0,0,100,10,3,imageName)
@@ -74,6 +92,7 @@ class SiegeTank(TerranUnit):
 
 class Ghost(TerranUnit):
     image = 'Units/Terran/Ghost.gif'
+    cost = 250
     def __init__(self,row,col):
         imageName = 'Ghost.gif'
         super(Ghost,self).__init__(row,col,1,1,40,0,0,0,30,8,6,imageName)
@@ -90,6 +109,7 @@ class Ghost(TerranUnit):
 
 class BattleCrusier(TerranUnit):
     image = 'Units/Terran/Battlecruiser.gif'
+    cost = 350
     def __init__(self,row,col):
         imageName = 'Battlecruiser.gif'
         super(BattleCrusier,self).__init__(row,col,2,2,500,0,0,0,60,5,8,imageName)
@@ -104,6 +124,7 @@ class BattleCrusier(TerranUnit):
 
 class SCV(TerranUnit):
     image = 'Units/Terran/SCV.gif'
+    cost = 50
     def __init__(self,row,col):
         imageName = 'SCV.gif'
         super(SCV,self).__init__(row,col,1,1,60,0,0,0,10,1,12,imageName)
