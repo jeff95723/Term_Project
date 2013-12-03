@@ -20,6 +20,10 @@ def mousePressed(data):
     mouseStatus = pygame.mouse.get_pressed()
     mouseRegion = Menu.checkRegion(data)
 
+    # due to performance issues, update the fogofwar board only when the mouse if pressed.
+
+    data.map.resetFogOfWarBoard(data.currentPlayer.index)
+    data.currentPlayer.drawFogOfWar()
     # if in unit selection region
     if mouseRegion == 0:
         if mouseStatus[0] == 1:
@@ -139,6 +143,7 @@ def checkKeys(data):
         data.currentPlayer.xPos = data.map.x
         data.currentPlayer.yPos = data.map.y
         data.currentPlayer, data.otherPlayer = data.otherPlayer, data.currentPlayer
+        data.currentPlayer.drawFogOfWar()
         data.map.x = data.currentPlayer.xPos
         data.map.y = data.currentPlayer.yPos
 
@@ -198,6 +203,7 @@ def checkNextRound(data):
         data.currentPlayer.xPos = data.map.x
         data.currentPlayer.yPos = data.map.y
         data.currentPlayer, data.otherPlayer = data.otherPlayer, data.currentPlayer
+        data.currentPlayer.drawFogOfWar()
         data.map.x = data.currentPlayer.xPos
         data.map.y = data.currentPlayer.yPos
         data.selected = None
@@ -224,9 +230,7 @@ def timerFired(data):
     data.MenuImage = data.currentPlayer.MenuImage #load.load_image(MenuFile)
     Menu_h = data.MenuImage.get_height()
     data.MenuHeight = Menu_h
-    data.currentPlayer.drawFogOfWar()
     redrawAll(data)
-    data.map.resetFogOfWarBoard(data.currentPlayer.index)
     data.clock.tick(30)
     checkKeys(data)
     checkMiniMapScroll(data)
@@ -327,6 +331,8 @@ def init(data):
 
     data.selected = None
     data.buttonStatus = [0]*9
+
+    data.currentPlayer.drawFogOfWar()
 
 '''
     data.Marine = TerranUnit.Marine(1,1)
