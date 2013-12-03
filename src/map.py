@@ -13,7 +13,7 @@ class map(object):
         self.board = load.load_map_data(fileName = mapName + '.txt')
         self.rows = rows
         self.cols = cols
-        self.fogOfWarBoard = [[0] * cols for row in xrange(rows)]
+        self.fogOfWarBoard = [[[0] * cols for row in xrange(rows)],[[0] * cols for row in xrange(rows)]]
         self.x = 0
         self.y = 0
         self.rect = pygame.Surface.get_rect(self.image)
@@ -25,18 +25,18 @@ class map(object):
     def draw(self, mainScreen):
         mainScreen.blit(self.image,(0,0),(abs(self.x),abs(self.y),self.displayWidth, self.displayHeight))
 
-    def drawFogOfWarOnMiniMap(self,mainScreen):
-        rows, cols = len(self.fogOfWarBoard), len(self.fogOfWarBoard[0])
+    def drawFogOfWarOnMiniMap(self,mainScreen,index):
+        rows, cols = len(self.fogOfWarBoard[index]), len(self.fogOfWarBoard[index][0])
         fogBlack = (1,1,1,220)
         for row in xrange(rows):
             for col in xrange(cols):
-                if self.fogOfWarBoard[row][col] == 0:
+                if self.fogOfWarBoard[index][row][col] == 0:
                     Menu.drawMiniMapCell(mainScreen,row,col,fogBlack)
 
-    def resetFogOfWarBoard(self):
-        self.fogOfWarBoard = [[0] * self.cols for row in xrange(self.rows)]
+    def resetFogOfWarBoard(self,index):
+        self.fogOfWarBoard[index] = [[0] * self.cols for row in xrange(self.rows)]
 
-    def drawFogOfWar(self,mainScreen):
+    def drawFogOfWar(self,mainScreen,index):
         cW, cH = self.getCellsize()
         onScreenRow, onScreenCol = abs(self.y)/cH, abs(self.x)/cW
         screenRows, screenCols = self.displayHeight/cH, self.displayWidth/cW
@@ -45,7 +45,7 @@ class map(object):
         fogCell.fill(fogBlack)
         for row in xrange(onScreenRow,onScreenRow+screenRows):
             for col in xrange(onScreenCol, onScreenCol+screenCols):
-                if self.fogOfWarBoard[row][col] == 0:
+                if self.fogOfWarBoard[index][row][col] == 0:
                     localRow = row - onScreenRow
                     localCol = col - onScreenCol
                     mainScreen.blit(fogCell,(localCol*cW,localRow*cH))

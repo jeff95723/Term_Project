@@ -12,6 +12,17 @@ class TerranBuilding(Building.building):
     unfinishedBuildingImage = None
 
     @classmethod
+    def drawFogOfWarBoard(cls,index):
+        for bld in cls.terranBuildings:
+            inSight = bld.checkSight(10)
+            for (r,c) in inSight:
+                bld.Map.fogOfWarBoard[index][r][c] = 1
+
+            for row in xrange(bld.sizeRow):
+                for col in xrange(bld.sizeCol):
+                    bld.Map.fogOfWarBoard[index][bld.row+row][bld.col+col] = 1
+
+    @classmethod
     def getAllTerranBuildings(cls):
         return cls.terranBuildings
 

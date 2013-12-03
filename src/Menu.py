@@ -216,11 +216,6 @@ def drawBuildBuilding(screen,data):
                     else:
                         screen.blit(greenBlock,((mCol+c)*cW,(mRow+r)*cH))
 
-
-
-
-
-
 def checkRegion(data):
     # 0 for the unit selection region, 1 for the minimap region,
     #2 for the order selection region, 3 for next round button region

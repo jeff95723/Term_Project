@@ -136,6 +136,7 @@ def checkKeys(data):
         Building.building.nextRound()
         Unit.Unit.nextRound()
         data.selected = None
+        data.currentPlayer, data.otherPlayer = data.otherPlayer, data.currentPlayer
 
 def checkAutoScroll(data):
 
@@ -190,6 +191,7 @@ def checkNextRound(data):
         print ' Next Round !'
         Building.building.nextRound()
         Unit.Unit.nextRound()
+        data.currentPlayer, data.otherPlayer = data.otherPlayer, data.currentPlayer
         data.selected = None
 
 def checkBuild(data):
@@ -211,9 +213,12 @@ def updateMiniMap(data):
 
 def timerFired(data):
     data.mouseX, data.mouseY = pygame.mouse.get_pos()
-    print data.buildMode
+    data.MenuImage = data.currentPlayer.MenuImage #load.load_image(MenuFile)
+    Menu_h = data.MenuImage.get_height()
+    data.MenuHeight = Menu_h
+    data.currentPlayer.drawFogOfWar()
     redrawAll(data)
-    data.map.resetFogOfWarBoard()
+    data.map.resetFogOfWarBoard(data.currentPlayer.index)
     data.clock.tick(30)
     checkKeys(data)
     checkMiniMapScroll(data)
@@ -253,7 +258,7 @@ def redrawAll(data):
     Building.building.drawAllBuildings()
     Unit.Unit.drawAllUnits()
     data.map.draw(data.screen)
-    data.map.drawFogOfWar(data.screen)
+    data.map.drawFogOfWar(data.screen,data.currentPlayer.index)
     if isinstance(data.selected,Unit.Unit):
         if data.buildMode == False and data.placeMode == False:
             if data.selected.canMove:
@@ -268,7 +273,7 @@ def redrawAll(data):
     Menu.drawMenu(data.screen, data.selected, data)
     Unit.Unit.drawAllUnitsOnMiniMap()
     Building.building.drawAllBuildingsOnMiniMap()
-    data.map.drawFogOfWarOnMiniMap(data.screen)
+    data.map.drawFogOfWarOnMiniMap(data.screen,data.currentPlayer.index)
     data.ViewBox.draw()
     pygame.display.flip()
 
@@ -287,8 +292,8 @@ def init(data):
     Unit.Unit.setMap(data.map)
     Unit.Unit.setScreen(data.screen)
 
-    player1 = Player.player('Protoss', 8,9)
-    player2 = Player.player('Terran', 53,51)
+    player1 = Player.player('Protoss', 8,9,0)
+    player2 = Player.player('Terran', 53,51,1)
 
     data.currentPlayer = player1
     data.otherPlayer = player2

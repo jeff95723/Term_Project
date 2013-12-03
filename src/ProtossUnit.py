@@ -9,12 +9,25 @@ import ProtossBuildings
 class ProtossUnit(Unit.Unit):
     ProtossUnits = []
 
+    @classmethod
+    def drawFogOfWarBoard(cls,index):
+        for unt in cls.ProtossUnits:
+            inSight = unt.checkSight(10)
+            for (r,c) in inSight:
+                unt.Map.fogOfWarBoard[index][r][c] = 1
+
+        for row in xrange(unt.sizeRow):
+            for col in xrange(unt.sizeCol):
+                unt.Map.fogOfWarBoard[index][unt.row+row][unt.col+col] = 1
+
+
     def __init__(self,row,col,sizeRow, sizeCol,health,sheild,sheildRegen,healthRegen, attack, AttRange, MovRange, imageName):
         imageName = 'Protoss/' + imageName
         super(ProtossUnit,self).__init__(row,col,sizeRow,sizeCol,health,sheild,sheildRegen,healthRegen,attack,AttRange,MovRange,imageName)
         self.Avatar = load.load_avatar(imageName)
 
         ProtossUnit.ProtossUnits.append(self)
+
 
     def die(self):
         ProtossUnit.ProtossUnits.remove(self)

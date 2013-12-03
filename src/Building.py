@@ -29,6 +29,7 @@ class building(object):
     @classmethod
     def drawAllBuildings(cls):
         for bld in cls.buildings:
+            '''
         # fog of war
             inSight = bld.checkSight(10)
             for (r,c) in inSight:
@@ -38,6 +39,7 @@ class building(object):
                 for col in xrange(bld.sizeCol):
                     bld.Map.fogOfWarBoard[bld.row+row][bld.col+col] = 1
 
+            '''
             if bld in cls.buildingBuildings:
                 bld.drawUnfinishedBuilding()
             else:
