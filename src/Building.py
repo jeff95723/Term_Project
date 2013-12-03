@@ -35,7 +35,7 @@ class building(object):
                 bld.drawBuilding()
 
     @classmethod
-    def nextRound(cls):
+    def nextRound(cls, data):
         for bld in cls.buildings:
             bld.buildRound -= 1
             if bld.buildRound == 0:
@@ -43,11 +43,13 @@ class building(object):
                     building.buildingBuildings.remove(bld)
                     bld.undrawUnfinishedBuilding()
                 building.finishedBuildings.append(bld)
+
+
             if bld.buildQueue != []:
-                bld.currentBuildRoundLeft[-1] -= 1
-                if bld.currentBuildRoundLeft[-1] == 0:
-                    bld.build(bld.buildQueue[-1])
-                    bld.buildQueue = bld.buildQueue[:-1]
+                bld.currentBuildRoundLeft[0] -= 1
+                if bld.currentBuildRoundLeft[0] == 0:
+                    bld.build(bld.buildQueue[0])
+                    bld.buildQueue = bld.buildQueue[1:]
                     bld.currentBuildRoundLeft = bld.currentBuildRoundLeft[:-1]
 
     @classmethod
@@ -77,6 +79,8 @@ class building(object):
         # set the x, y error for the image
         self.xerror = 10
         self.yerror = 0
+
+        self.supply = False
 
         self.Build = [ ]
         self.BuildSize = []

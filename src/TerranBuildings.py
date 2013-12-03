@@ -78,6 +78,7 @@ class CommandCenter(TerranBuilding):
         self.yerror = 0
         self.image = load.load_image_smooth('Buildings/'+imageName, scale= 1.3)
         self.buildRound = 5
+        self.supply = 12
         self.Build = [TerranUnit.SCV]
         self.BuildSize = [(1,1)]
         self.BuildRound = [2]
@@ -98,6 +99,7 @@ class SupplyDepot(TerranBuilding):
         self.yerror = 0
         self.image = load.load_image_smooth('Buildings/'+imageName, scale= 1.1)
         self.buildRound = 1
+        self.supply = 12
 
 class Gas(TerranBuilding):
     image = 'Buildings/Terran/Refinery.gif'

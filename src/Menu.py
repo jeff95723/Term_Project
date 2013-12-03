@@ -12,6 +12,7 @@ def drawMenu(screen, obj, data):
     nextRound = SmallFont.render('Next Round!', 1, InfoWhite)
     screen.blit(nextRound,(113,733))
     drawResources(screen,data)
+    drawSupply(screen,data)
     if isinstance(obj,Unit.Unit) or isinstance(obj, Building.building):
         drawAvatar(screen, obj)
         drawIcon(screen,obj)
@@ -97,6 +98,15 @@ def drawResources(screen,data):
     res = SmallFont.render('Minerals: ' + rStr,1,InfoWhite)
     screen.blit(res,(data.ScreenWidth - 110,0))
 
+def drawSupply(screen,data):
+    SmallFont= pygame.font.SysFont('monospace', 14, bold = True)
+    InfoWhite = (255,255,255)
+
+    CURsupply = data.currentPlayer.getCurrentPopulation()
+    AVBsupply = data.currentPlayer.getCurrentPopulationAvaliable()
+    sStr = str(CURsupply) + '/' + str(AVBsupply)
+    sup = SmallFont.render('Supply: ' + sStr,1,InfoWhite)
+    screen.blit(sup,(data.ScreenWidth - 110,12))
 def drawMiniMapCell(screen,row, col,color):
     minimapCell = pygame.Surface((2,2))
     minimapCell.fill(color)

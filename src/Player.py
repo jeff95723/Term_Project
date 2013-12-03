@@ -14,6 +14,7 @@ class player(object):
     def __init__(self, race, startRow, startCol,index):
         self.index = index
         self.resources = 50
+        #self.currentPopulation = 0
         if race == 'Protoss':
             nexus = ProtossBuildings.Nexus(startRow,startCol)
             Building.building.addTofinishedBuildings(nexus)
@@ -65,6 +66,20 @@ class player(object):
                 count += 1
 
         return count
+
+    def getCurrentPopulation(self):
+        pop = 0
+        for unt in self.Units:
+            pop += unt.population
+        return pop
+
+    def getCurrentPopulationAvaliable(self):
+        sup = 0
+        for bld in self.Buildings:
+            if bld.supply != None:
+                sup += bld.supply
+
+        return sup
 
     def addResources(self):
         count = self.getHarvesterCount()

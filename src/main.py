@@ -117,7 +117,6 @@ def mousePressed(data):
     data.map.resetFogOfWarBoard(data.currentPlayer.index)
     data.currentPlayer.drawFogOfWar()
 
-
 def mouse2RC(data):
     x,y = pygame.mouse.get_pos()
     row = (y - data.map.y)/data.cellHeight
@@ -144,7 +143,7 @@ def checkKeys(data):
     if keyStatus[K_z] == 1:
         print ' Next Round !'
         #print Building.building.finishedBuildings
-        Building.building.nextRound()
+        Building.building.nextRound(data)
         Unit.Unit.nextRound()
         data.selected = None
         data.currentPlayer.xPos = data.map.x
@@ -206,7 +205,7 @@ def checkNextRound(data):
     mouseStatus = pygame.mouse.get_pressed()
     if Menu.checkRegion(data) == 3 and mouseStatus[0] == 1:
         print ' Next Round !'
-        Building.building.nextRound()
+        Building.building.nextRound(data)
         Unit.Unit.nextRound()
         data.currentPlayer.xPos = data.map.x
         data.currentPlayer.yPos = data.map.y

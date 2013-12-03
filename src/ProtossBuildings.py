@@ -83,6 +83,7 @@ class Nexus(ProtossBuilding):
         self.yerror = -40
         self.image = load.load_image_smooth('Buildings/'+imageName, scale= 1.3)
         self.buildRound = 5
+        self.supply = 10
         self.Build = [ProtossUnit.Probe]
         self.BuildSize = [(1,1)]
         self.BuildRound = [2]
@@ -214,6 +215,7 @@ class Pylon(ProtossBuilding):
         self.xerror = 8
         self.yerror = 0
         self.buildRound = 1
+        self.supply = 10
 
 class RoboticsFacility(ProtossBuilding):
     image= 'Buildings/Protoss/Robotics Facility.gif'
