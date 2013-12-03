@@ -178,6 +178,28 @@ def drawButtons(screen, obj, data):
                 button = load.load_button_from_file(image)
                 screen.blit(button,(originX+col*cellW,originY+row*cellH))
 
+def drawAllBuildingsOnMiniMap(screen,data):
+    buildings = Building.building.getAllBuildings()
+    for bld in buildings:
+        if bld in data.currentPlayer.Buildings:
+            color = (0,200,0)
+        else:
+            color = (200,0,0)
+        for r in xrange(bld.sizeRow):
+            for c in xrange(bld.sizeCol):
+                drawMiniMapCell(screen,bld.row+r, bld.col+c,color)
+
+def drawAllUnitsOnMiniMap(screen,data):
+    units = Unit.Unit.getUnits()
+
+    for unt in units:
+        if unt in data.currentPlayer.Units:
+            color = (0,200,0)
+        else:
+            color = (200,0,0)
+        for r in xrange(unt.sizeRow):
+            for c in xrange(unt.sizeCol):
+                drawMiniMapCell(screen,unt.row+r, unt.col+c,color)
 
 def drawBuildBuilding(screen,data):
     if data.buildMode == True:

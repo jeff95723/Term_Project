@@ -21,9 +21,10 @@ class player(object):
             ProtossUnit.Probe(startRow+1,startCol-1)
             ProtossUnit.Probe(startRow+2,startCol-1)
             ProtossUnit.Probe(startRow+3,startCol-1)
-            self.xPos = startCol - 10
-            self.yPos = startRow - 10
+            self.xPos = 0
+            self.yPos = 0
             self.Units = ProtossUnit.ProtossUnit.ProtossUnits
+            self.Buildings = ProtossBuildings.ProtossBuilding.protossBuildings
             self.UntCls = ProtossUnit.ProtossUnit
             self.BldCls = ProtossBuildings.ProtossBuilding
 
@@ -37,9 +38,10 @@ class player(object):
             TerranUnit.SCV(startRow+1,startCol-1)
             TerranUnit.SCV(startRow+2,startCol-1)
             TerranUnit.SCV(startRow+3,startCol-1)
-            self.xPos = startCol - 10
-            self.yPos = startRow - 10
-            self.Units = ProtossUnit.ProtossUnit.ProtossUnits
+            self.xPos = 0
+            self.yPos = 0
+            self.Units = TerranUnit.TerranUnit.TerranUnits
+            self.Buildings = TerranBuildings.TerranBuilding.terranBuildings
 
             self.UntCls = TerranUnit.TerranUnit
             self.BldCls = TerranBuildings.TerranBuilding

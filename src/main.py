@@ -136,7 +136,11 @@ def checkKeys(data):
         Building.building.nextRound()
         Unit.Unit.nextRound()
         data.selected = None
+        data.currentPlayer.xPos = data.map.x
+        data.currentPlayer.yPos = data.map.y
         data.currentPlayer, data.otherPlayer = data.otherPlayer, data.currentPlayer
+        data.map.x = data.currentPlayer.xPos
+        data.map.y = data.currentPlayer.yPos
 
 def checkAutoScroll(data):
 
@@ -191,7 +195,11 @@ def checkNextRound(data):
         print ' Next Round !'
         Building.building.nextRound()
         Unit.Unit.nextRound()
+        data.currentPlayer.xPos = data.map.x
+        data.currentPlayer.yPos = data.map.y
         data.currentPlayer, data.otherPlayer = data.otherPlayer, data.currentPlayer
+        data.map.x = data.currentPlayer.xPos
+        data.map.y = data.currentPlayer.yPos
         data.selected = None
 
 def checkBuild(data):
@@ -271,8 +279,10 @@ def redrawAll(data):
     #drawGrid(data)
     drawMenu(data)
     Menu.drawMenu(data.screen, data.selected, data)
-    Unit.Unit.drawAllUnitsOnMiniMap()
-    Building.building.drawAllBuildingsOnMiniMap()
+    #Unit.Unit.drawAllUnitsOnMiniMap()
+    #Building.building.drawAllBuildingsOnMiniMap()
+    Menu.drawAllBuildingsOnMiniMap(data.screen,data)
+    Menu.drawAllUnitsOnMiniMap(data.screen,data)
     data.map.drawFogOfWarOnMiniMap(data.screen,data.currentPlayer.index)
     data.ViewBox.draw()
     pygame.display.flip()

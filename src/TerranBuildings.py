@@ -47,6 +47,8 @@ class TerranBuilding(Building.building):
         self.idleSounds = [load.load_sound('Terran/Bldg/TCsSca00.wav')]
         self.deathSound = [load.load_sound('Misc/explo5.wav')]
 
+        TerranBuilding.terranBuildings.append(self)
+
     def die(self):
         TerranBuilding.terranBuildings.remove(self)
         if self in TerranBuilding.buildingBuildings:
