@@ -101,6 +101,7 @@ def mousePressed(data):
                     data.currentPlayer.resources -= data.currentBuildClass.cost
                 else:
                     print 'Not enough minerals'
+                    data.currentPlayer.playSound(data.currentPlayer.NoMineralSound)
                 data.currentBuildClass = None
                 data.placeMode = False
                 data.buildMode = False
@@ -231,6 +232,7 @@ def checkBuild(data):
                         data.selected.addQueue(index)
                     else:
                         print 'Not enough resources!!!'
+                        data.currentPlayer.playSound(data.currentPlayer.NoMineralSound)
                     data.buttonStatus = [0] * 9
 
 def updateMiniMap(data):

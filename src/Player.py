@@ -29,6 +29,8 @@ class player(object):
             self.UntCls = ProtossUnit.ProtossUnit
             self.BldCls = ProtossBuildings.ProtossBuilding
 
+            self.NoMineralSound = load.load_sound('Protoss/PAdErr00.wav')
+
             MenuFile = 'Other/Menu/Protoss Menu.png'
             self.MenuImage = load.load_image(MenuFile)
         if race == 'Terran':
@@ -46,6 +48,8 @@ class player(object):
 
             self.UntCls = TerranUnit.TerranUnit
             self.BldCls = TerranBuildings.TerranBuilding
+
+            self.NoMineralSound = load.load_sound('Terran/tadErr00.wav')
 
             MenuFile = 'Other/Menu/Terran Menu.png'
             self.MenuImage = load.load_image(MenuFile)
@@ -65,5 +69,9 @@ class player(object):
     def addResources(self):
         count = self.getHarvesterCount()
         self.resources += count * 5
+
+    def playSound(self,sound):
+        sound.play()
+
 
 
