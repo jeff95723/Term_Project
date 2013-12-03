@@ -14,7 +14,6 @@ class player(object):
     def __init__(self, race, startRow, startCol,index):
         self.index = index
         self.resources = 50
-        #self.currentPopulation = 0
         if race == 'Protoss':
             nexus = ProtossBuildings.Nexus(startRow,startCol)
             Building.building.addTofinishedBuildings(nexus)
@@ -31,6 +30,7 @@ class player(object):
             self.BldCls = ProtossBuildings.ProtossBuilding
 
             self.NoMineralSound = load.load_sound('Protoss/PAdErr00.wav')
+            self.NoMoreSupplySound = load.load_sound('Protoss/PAdErr02.wav')
 
             MenuFile = 'Other/Menu/Protoss Menu.png'
             self.MenuImage = load.load_image(MenuFile)
@@ -51,9 +51,13 @@ class player(object):
             self.BldCls = TerranBuildings.TerranBuilding
 
             self.NoMineralSound = load.load_sound('Terran/tadErr00.wav')
+            self.NoMoreSupplySound = load.load_sound('Terran/tadErr02.wav')
 
             MenuFile = 'Other/Menu/Terran Menu.png'
             self.MenuImage = load.load_image(MenuFile)
+
+        self.updateCurrentPopulation()
+        self.updateCurrentPopulationAvaliable()
 
     def drawFogOfWar(self):
         self.UntCls.drawFogOfWarBoard(self.index)
@@ -67,19 +71,20 @@ class player(object):
 
         return count
 
-    def getCurrentPopulation(self):
+    def updateCurrentPopulation(self):
         pop = 0
         for unt in self.Units:
             pop += unt.population
-        return pop
+        self.currentPopulation = pop
 
-    def getCurrentPopulationAvaliable(self):
+    def updateCurrentPopulationAvaliable(self):
         sup = 0
-        for bld in self.Buildings:
-            if bld.supply != None:
-                sup += bld.supply
+        for bld in list(set(self.Buildings)):
+            if bld in self.BldCls.finishedBuildings:
+                if type(bld.supply) == int:
+                    sup += bld.supply
 
-        return sup
+        self.PopulationAvaliable = sup
 
     def addResources(self):
         count = self.getHarvesterCount()

@@ -10,6 +10,12 @@ class TerranUnit(Unit.Unit):
     TerranUnits = [ ]
 
     @classmethod
+    def nextRound(cls):
+        for unt in cls.TerranUnits:
+            unt.canMove = True
+        Unit.Drawed = False
+
+    @classmethod
     def drawFogOfWarBoard(cls,index):
         for unt in cls.TerranUnits:
             inSight = unt.checkSight(10)

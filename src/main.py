@@ -30,10 +30,15 @@ def mousePressed(data):
                         if data.buttonStatus[0] == 1 and data.buildMode == False\
                             and data.placeMode == False:
                             data.selected.move(row,col)
+                            data.map.resetFogOfWarBoard(data.currentPlayer.index)
+                            data.currentPlayer.drawFogOfWar()
                     elif data.selected.canAttack:
                         if data.buttonStatus[1] == 1 and data.buildMode == False\
                             and data.placeMode == False:
-                            data.selected.attack(row,col)
+                            print data.selected
+                            data.selected.Attack(row,col)
+                            data.map.resetFogOfWarBoard(data.currentPlayer.index)
+                            data.currentPlayer.drawFogOfWar()
                 else:
                     data.selected = None
             elif data.map.board[row][col] == 1:
@@ -43,10 +48,14 @@ def mousePressed(data):
                         if data.buttonStatus[0] == 1 and data.buildMode == False\
                             and data.placeMode == False:
                             data.selected.move(row,col)
+                            data.map.resetFogOfWarBoard(data.currentPlayer.index)
+                            data.currentPlayer.drawFogOfWar()
                     elif data.selected.canAttack:
                         if data.buttonStatus[1] == 1 and data.buildMode == False\
                             and data.placeMode == False:
-                            data.selected.attack(row,col)
+                            data.selected.Attack(row,col)
+                            data.map.resetFogOfWarBoard(data.currentPlayer.index)
+                            data.currentPlayer.drawFogOfWar()
                 else:
                     data.selected = None
             elif isinstance(data.map.board[row][col],Unit.Unit):
@@ -56,6 +65,8 @@ def mousePressed(data):
                         if data.buttonStatus[1] == 1 and data.buildMode == False\
                             and data.placeMode == False:
                             data.selected.Attack(row,col)
+                            data.map.resetFogOfWarBoard(data.currentPlayer.index)
+                            data.currentPlayer.drawFogOfWar()
                         else:
                             data.selected = data.map.board[row][col]
                             data.selected.playSound(data.selected.idleSounds)
@@ -72,6 +83,8 @@ def mousePressed(data):
                         if data.buttonStatus[1] == 1 and data.buildMode == False\
                             and data.placeMode == False:
                             data.selected.Attack(row,col)
+                            data.map.resetFogOfWarBoard(data.currentPlayer.index)
+                            data.currentPlayer.drawFogOfWar()
                         else:
                             data.selected = data.map.board[row][col]
                             data.selected.playSound(data.selected.idleSounds)
@@ -99,6 +112,8 @@ def mousePressed(data):
                 if data.currentBuildClass.cost <= data.currentPlayer.resources:
                     data.currentBuildClass(mRow,mCol)
                     data.currentPlayer.resources -= data.currentBuildClass.cost
+                    data.map.resetFogOfWarBoard(data.currentPlayer.index)
+                    data.currentPlayer.drawFogOfWar()
                 else:
                     print 'Not enough minerals'
                     data.currentPlayer.playSound(data.currentPlayer.NoMineralSound)
@@ -114,8 +129,6 @@ def mousePressed(data):
 
     # due to performance issues, update the fogofwar board only when the mouse if pressed.
 
-    data.map.resetFogOfWarBoard(data.currentPlayer.index)
-    data.currentPlayer.drawFogOfWar()
 
 def mouse2RC(data):
     x,y = pygame.mouse.get_pos()
@@ -143,12 +156,14 @@ def checkKeys(data):
     if keyStatus[K_z] == 1:
         print ' Next Round !'
         #print Building.building.finishedBuildings
-        Building.building.nextRound(data)
-        Unit.Unit.nextRound()
         data.selected = None
         data.currentPlayer.xPos = data.map.x
         data.currentPlayer.yPos = data.map.y
         data.currentPlayer, data.otherPlayer = data.otherPlayer, data.currentPlayer
+        data.currentPlayer.UntCls.nextRound()
+        data.currentPlayer.BldCls.nextRound(data)
+        data.currentPlayer.updateCurrentPopulation()
+        data.currentPlayer.updateCurrentPopulationAvaliable()
         data.otherPlayer.addResources()
         data.currentPlayer.drawFogOfWar()
         data.map.x = data.currentPlayer.xPos
@@ -205,16 +220,18 @@ def checkNextRound(data):
     mouseStatus = pygame.mouse.get_pressed()
     if Menu.checkRegion(data) == 3 and mouseStatus[0] == 1:
         print ' Next Round !'
-        Building.building.nextRound(data)
-        Unit.Unit.nextRound()
+        data.selected = None
         data.currentPlayer.xPos = data.map.x
         data.currentPlayer.yPos = data.map.y
         data.currentPlayer, data.otherPlayer = data.otherPlayer, data.currentPlayer
+        data.currentPlayer.UntCls.nextRound()
+        data.currentPlayer.BldCls.nextRound(data)
+        data.currentPlayer.updateCurrentPopulation()
+        data.currentPlayer.updateCurrentPopulationAvaliable()
         data.otherPlayer.addResources()
         data.currentPlayer.drawFogOfWar()
         data.map.x = data.currentPlayer.xPos
         data.map.y = data.currentPlayer.yPos
-        data.selected = None
 
 def checkBuild(data):
     if isinstance(data.selected, Building.building):

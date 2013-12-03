@@ -31,6 +31,33 @@ class ProtossBuilding(Building.building):
         cls.buildingBuildings.remove(bld)
         cls.finishedBuildings.append(bld)
 
+    @classmethod
+    def nextRound(cls, data):
+        for bld in cls.protossBuildings:
+            bld.buildRound -= 1
+            if bld.buildRound == 0:
+                if bld in Building.building.buildingBuildings:
+                    Building.building.buildingBuildings.remove(bld)
+                    bld.undrawUnfinishedBuilding()
+                Building.building.finishedBuildings.append(bld)
+
+        data.currentPlayer.updateCurrentPopulation()
+        data.currentPlayer.updateCurrentPopulationAvaliable()
+
+        for bld in cls.protossBuildings:
+            if bld.buildQueue != []:
+                CURsup = data.currentPlayer.currentPopulation
+                AVBsup = data.currentPlayer.PopulationAvaliable
+                if AVBsup-CURsup >= bld.Build[bld.buildQueue[0]].population:
+                    bld.currentBuildRoundLeft[0] -= 1
+                    if bld.currentBuildRoundLeft[0] == 0:
+                        bld.build(bld.buildQueue[0])
+                        bld.buildQueue = bld.buildQueue[1:]
+                        bld.currentBuildRoundLeft = bld.currentBuildRoundLeft[1:]
+                else:
+                    print 'No more supply!!'
+                    data.currentPlayer.playSound(data.currentPlayer.NoMoreSupplySound)
+
     def drawUnfinishedBuilding(self):
         scale = min(self.sizeCol, self.sizeRow)/2.0
         unfinishedBuildingImage = load.load_image('Buildings/Protoss/ProtossCore.png',scale = scale)

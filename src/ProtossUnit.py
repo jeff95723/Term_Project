@@ -10,6 +10,12 @@ class ProtossUnit(Unit.Unit):
     ProtossUnits = []
 
     @classmethod
+    def nextRound(cls):
+        for unt in cls.ProtossUnits:
+            unt.canMove = True
+        Unit.Drawed = False
+
+    @classmethod
     def drawFogOfWarBoard(cls,index):
         for unt in cls.ProtossUnits:
             inSight = unt.checkSight(10)

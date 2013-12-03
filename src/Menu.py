@@ -102,8 +102,8 @@ def drawSupply(screen,data):
     SmallFont= pygame.font.SysFont('monospace', 14, bold = True)
     InfoWhite = (255,255,255)
 
-    CURsupply = data.currentPlayer.getCurrentPopulation()
-    AVBsupply = data.currentPlayer.getCurrentPopulationAvaliable()
+    CURsupply = data.currentPlayer.currentPopulation
+    AVBsupply = data.currentPlayer.PopulationAvaliable
     sStr = str(CURsupply) + '/' + str(AVBsupply)
     sup = SmallFont.render('Supply: ' + sStr,1,InfoWhite)
     screen.blit(sup,(data.ScreenWidth - 110,12))
