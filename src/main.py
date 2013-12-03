@@ -20,10 +20,6 @@ def mousePressed(data):
     mouseStatus = pygame.mouse.get_pressed()
     mouseRegion = Menu.checkRegion(data)
 
-    # due to performance issues, update the fogofwar board only when the mouse if pressed.
-
-    data.map.resetFogOfWarBoard(data.currentPlayer.index)
-    data.currentPlayer.drawFogOfWar()
     # if in unit selection region
     if mouseRegion == 0:
         if mouseStatus[0] == 1:
@@ -109,6 +105,11 @@ def mousePressed(data):
     #update the button Status
     # MUST POST UPDATE, OTHERWISE THE UNITS WONT MOVE
     Menu.updateButtonStatus(data)
+
+    # due to performance issues, update the fogofwar board only when the mouse if pressed.
+
+    data.map.resetFogOfWarBoard(data.currentPlayer.index)
+    data.currentPlayer.drawFogOfWar()
 
 
 def mouse2RC(data):

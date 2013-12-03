@@ -151,6 +151,9 @@ class Gateway(ProtossBuilding):
         self.xerror = 0
         self.yerror = 10
         self.buildRound = 2
+        self.Build = [ProtossUnit.Zealot]
+        self.BuildSize = [(1,1)]
+        self.BuildRound = [2]
 
 class Observatory(ProtossBuilding):
     image= 'Buildings/Protoss/Observatory.gif'
@@ -205,6 +208,9 @@ class RoboticsFacility(ProtossBuilding):
         super(RoboticsFacility, self).__init__(row, col, 3, 3, 500, 500, imageName)
         self.xerror = 0
         self.yerror = 0
+        self.Build = [ProtossUnit.Dragoon]
+        self.BuildSize = [(2,2)]
+        self.BuildRound = [3]
 
 class RoboticsSupportBay(ProtossBuilding):
     image= 'Buildings/Protoss/Robotics Support Bay.gif'
@@ -232,6 +238,9 @@ class Stargate(ProtossBuilding):
         self.image = load.load_image_smooth('Buildings/'+imageName, scale= 1.2)
         self.xerror = 0
         self.yerror = 0
+        self.Build = [ProtossUnit.Arbiter]
+        self.BuildSize = [(2,2)]
+        self.BuildRound = [4]
 
 class TemplarArchives(ProtossBuilding):
     image= 'Buildings/Protoss/Templar Archives.gif'
@@ -245,6 +254,9 @@ class TemplarArchives(ProtossBuilding):
         super(TemplarArchives, self).__init__(row, col, 3, 3, 500, 500, imageName)
         self.xerror = -10
         self.yerror = 0
+        self.Build = [ProtossUnit.DarkTemplar]
+        self.BuildSize = [(1,1)]
+        self.BuildRound = [5]
 
 class TwilightCouncil(ProtossBuilding):
     image= 'Buildings/Protoss/Citadel of Adun.gif'
@@ -258,6 +270,9 @@ class TwilightCouncil(ProtossBuilding):
         super(TwilightCouncil, self).__init__(row, col, 3, 3, 500, 500, imageName)
         self.xerror = 0
         self.yerror = 10
+        self.Build = [ProtossUnit.Archon]
+        self.BuildSize = [(2,2)]
+        self.BuildRound = [7]
 
 class ArbiterTribunal(ProtossBuilding):
     image= 'Buildings/Protoss/Arbiter Tribunal.gif'
