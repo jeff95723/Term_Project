@@ -11,6 +11,7 @@ def drawMenu(screen, obj, data):
     InfoWhite = (255,255,255)
     nextRound = SmallFont.render('Next Round!', 1, InfoWhite)
     screen.blit(nextRound,(113,733))
+    drawResources(screen,data)
     if isinstance(obj,Unit.Unit) or isinstance(obj, Building.building):
         drawAvatar(screen, obj)
         drawIcon(screen,obj)
@@ -86,6 +87,15 @@ def drawText(screen, obj):
     Health = SmallFont.render(healthStr,1,HealthGreen)
     screen.blit(Name,(358,830))
     screen.blit(Health,(247,918))
+
+def drawResources(screen,data):
+    SmallFont= pygame.font.SysFont('monospace', 14, bold = True)
+    InfoWhite = (255,255,255)
+
+    resources = data.currentPlayer.resources
+    rStr = str(resources)
+    res = SmallFont.render('Minerals: ' + rStr,1,InfoWhite)
+    screen.blit(res,(data.ScreenWidth - 110,0))
 
 def drawMiniMapCell(screen,row, col,color):
     minimapCell = pygame.Surface((2,2))

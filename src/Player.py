@@ -13,6 +13,7 @@ import TerranBuildings
 class player(object):
     def __init__(self, race, startRow, startCol,index):
         self.index = index
+        self.resources = 50
         if race == 'Protoss':
             nexus = ProtossBuildings.Nexus(startRow,startCol)
             Building.building.addTofinishedBuildings(nexus)
@@ -52,4 +53,17 @@ class player(object):
     def drawFogOfWar(self):
         self.UntCls.drawFogOfWarBoard(self.index)
         self.BldCls.drawFogOfWarBoard(self.index)
+
+    def getHarvesterCount(self):
+        count = 0
+        for unt in self.Units:
+            if unt.canBuild:
+                count += 1
+
+        return count
+
+    def addResources(self):
+        count = self.getHarvesterCount()
+        self.resources += count * 5
+
 

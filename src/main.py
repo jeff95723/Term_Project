@@ -31,7 +31,8 @@ def mousePressed(data):
                             and data.placeMode == False:
                             data.selected.move(row,col)
                     elif data.selected.canAttack:
-                        if data.buttonStatus[1] == 1:# and data.buildMode == False:
+                        if data.buttonStatus[1] == 1 and data.buildMode == False\
+                            and data.placeMode == False:
                             data.selected.attack(row,col)
                 else:
                     data.selected = None
@@ -144,9 +145,11 @@ def checkKeys(data):
         data.currentPlayer.xPos = data.map.x
         data.currentPlayer.yPos = data.map.y
         data.currentPlayer, data.otherPlayer = data.otherPlayer, data.currentPlayer
+        data.otherPlayer.addResources()
         data.currentPlayer.drawFogOfWar()
         data.map.x = data.currentPlayer.xPos
         data.map.y = data.currentPlayer.yPos
+        print data.currentPlayer.getHarvesterCount()
 
 def checkAutoScroll(data):
 
@@ -204,6 +207,7 @@ def checkNextRound(data):
         data.currentPlayer.xPos = data.map.x
         data.currentPlayer.yPos = data.map.y
         data.currentPlayer, data.otherPlayer = data.otherPlayer, data.currentPlayer
+        data.otherPlayer.addResources()
         data.currentPlayer.drawFogOfWar()
         data.map.x = data.currentPlayer.xPos
         data.map.y = data.currentPlayer.yPos
