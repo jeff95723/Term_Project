@@ -184,10 +184,13 @@ def drawBuildBuilding(screen,data):
         x,y = data.mouseX, data.mouseY
         index = data.currentBuildIndex
         if index != None:
-            cls = data.selected.Build[index]
             if pygame.key.get_pressed()[K_b] == 1:
+                cls = data.selected.Build[index]
+                data.currentBuildClass = cls
                 image = load.load_image_smooth(cls.image, cls.scale)
             elif pygame.key.get_pressed()[K_v] == 1:
+                cls = data.selected.AdvancedBuild[index]
+                data.currentBuildClass = cls
                 image = load.load_image_smooth(cls.image,cls.scale)
             cW,cH = data.map.getCellsize()
             mRow = data.mouseY/cH

@@ -95,7 +95,8 @@ def mousePressed(data):
         if isinstance(data.selected,Unit.Unit):
             if mouseRegion == 0:
                 mRow, mCol = mouse2RC(data)
-                data.selected.Build[data.currentBuildIndex](mRow,mCol)
+                data.currentBuildClass(mRow,mCol)
+                data.currentBuildClass = None
                 data.placeMode = False
                 data.buildMode = False
                 data.currentBuildIndex = None
@@ -307,6 +308,7 @@ def init(data):
     data.buildMode = False
     data.placeMode = False
     data.currentBuildIndex = None
+    data.currentBuildClass = None
 
     data.selected = None
     data.buttonStatus = [0]*9
