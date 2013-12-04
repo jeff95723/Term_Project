@@ -232,6 +232,15 @@ def checkNextRound(data):
         data.map.x = data.currentPlayer.xPos
         data.map.y = data.currentPlayer.yPos
 
+def checkMenuClick(data):
+    mouseStatus = pygame.mouse.get_pressed()
+    if Menu.checkRegion(data) == 4 and mouseStatus[0] == 1:
+        print 'menu clicked'
+        if data.mode == 'run':
+            data.mode = 'pause'
+        elif data.mode == 'pause':
+            data.mode = 'run'
+
 def checkWin(data):
     if data.otherPlayer.Buildings == []:
         data.currentPlayer.playSound(data.currentPlayer.winSound)
@@ -254,6 +263,39 @@ def checkBuild(data):
                         data.currentPlayer.playSound(data.currentPlayer.NoMineralSound)
                     data.buttonStatus = [0] * 9
 
+def checkStartMenuButtons(data):
+    mouseStatus = pygame.mouse.get_pressed()
+    region = Menu.checkStartRegion(data)
+    if mouseStatus[0]  == 1:
+        if region == 0:
+            data.mode = 'run'
+        elif region == 1:
+            pass
+        elif region == 2:
+            # help
+            pass
+        elif region == 3:
+            # credits
+            pass
+        elif region == 4:
+            data.mode = 'quit'
+
+
+def checkPauseButtons(data):
+    mouseStatus = pygame.mouse.get_pressed()
+    region = Menu.checkPauseRegion(data)
+    if mouseStatus[0] == 1:
+        if region == 0:
+            pass
+        elif  region == 1:
+            # return to menu
+            data.mode = 'start'
+            data.frameCount = 0
+        elif region == 2:
+            data.mode = 'quit'
+        elif region == 3:
+            data.mode = 'run'
+
 def updateMiniMap(data):
     data.ViewBox.x = -data.map.x/24.0
     data.ViewBox.y = -data.map.y/24.0
@@ -261,23 +303,79 @@ def updateMiniMap(data):
 def timerFired(data):
     data.clock.tick(10)
     data.mouseX, data.mouseY = pygame.mouse.get_pos()
-    data.MenuImage = data.currentPlayer.MenuImage #load.load_image(MenuFile)
+    data.MenuImage = data.currentPlayer.MenuImage
     Menu_h = data.MenuImage.get_height()
     data.MenuHeight = Menu_h
     redrawAll(data)
-    checkKeys(data)
-    checkMiniMapScroll(data)
-    checkNextRound(data)
-    updateMiniMap(data)
-    checkWin(data)
-    checkBuild(data)
-    checkAutoScroll(data)
+    checkMenuClick(data)
+    if data.mode != 'pause':
+        checkKeys(data)
+        checkMiniMapScroll(data)
+        checkNextRound(data)
+        updateMiniMap(data)
+        checkWin(data)
+        checkBuild(data)
+        checkAutoScroll(data)
+
+    else:
+        checkPauseButtons(data)
     for event in pygame.event.get():
         if (event.type == pygame.QUIT):
             pygame.quit()
             data.mode = 'quit'
         elif (event.type == pygame.MOUSEBUTTONDOWN):
             mousePressed(data)
+
+def startMenuTimerFired(data):
+    data.mouseX, data.mouseY = pygame.mouse.get_pos()
+    print data.mouseX, data.mouseY
+    redrawAllForStartMenu(data,data.frameCount)
+    checkStartMenuButtons(data)
+    data.frameCount += 1
+
+def redrawAllForStartMenu(data,frameCount):
+    backGroundName = 'Other/backGround.png'
+    buttonName = 'Other/buttons.png'
+    exitButtonName = 'Other/exitButton.png'
+    backGround = load.load_image(backGroundName)
+    buttons = load.load_image(buttonName)
+    exitButton = load.load_image(exitButtonName)
+    exitX = 960
+    exitY = 960
+    buttonsX = 960
+    buttonsY = 75
+    data.screen.blit(backGround,(0,0))
+    eX = exitX
+    eY = exitY
+    bX = buttonsX
+    bY = buttonsY
+    if frameCount >= 6 :
+        eX = exitX - frameCount * 25
+        eY = exitY - frameCount * 25
+        bX = buttonsX - frameCount * 22
+
+    if eX <= 960 - 379:
+        eX = 960 - 379
+    if eY <= 960 - 222:
+        eY = 960 - 222
+    if bX <= 960 - 424:
+        bX = 960 - 424
+    data.screen.blit(buttons,(bX,bY))
+    data.screen.blit(exitButton,(eX,eY))
+
+    if data.mode == 'credits':
+        pass
+    elif data.mode == 'help':
+        pass
+
+
+
+    pygame.display.flip()
+
+    for event in pygame.event.get():
+        if (event.type == pygame.QUIT):
+            pygame.quit()
+            data.mode = 'quit'
 
 def drawGrid(data):
     cW, cH = data.map.getCellsize()
@@ -317,16 +415,19 @@ def redrawAll(data):
     #drawGrid(data)
     drawMenu(data)
     Menu.drawMenu(data.screen, data.selected, data)
-    #Unit.Unit.drawAllUnitsOnMiniMap()
-    #Building.building.drawAllBuildingsOnMiniMap()
     Menu.drawAllBuildingsOnMiniMap(data.screen,data)
     Menu.drawAllUnitsOnMiniMap(data.screen,data)
     data.map.drawFogOfWarOnMiniMap(data.screen,data.currentPlayer.index)
     data.ViewBox.draw()
+
+    if data.mode == 'pause':
+        data.screen.blit(data.pauseMenu,(180,150))
     pygame.display.flip()
 
 def init(data):
-    data.mode = 'run'
+    data.mode = 'start'
+
+    data.frameCount = 0
 
 
     data.ScreenWidth = data.screen.get_width()
@@ -342,6 +443,9 @@ def init(data):
 
     player1 = Player.player('Protoss', 8,9,0)
     player2 = Player.player('Terran', 53,51,1)
+
+    pMPic = 'Other/PauseMenu.png'
+    data.pauseMenu = load.load_image(pMPic)
 
     data.currentPlayer = player1
     data.otherPlayer = player2
@@ -379,14 +483,16 @@ def run():
 
     data.ViewSize = ( 960, 960)
     data.screen = pygame.display.set_mode((data.ViewSize),HWSURFACE)
-    pygame.display.set_caption('Test')
+    pygame.display.set_caption('Starcraft Tactics')
 
     data.clock = pygame.time.Clock()
     init(data)
     while 1:
         if data.mode == 'quit':
             exit()
-        elif data.mode == 'run':
+        elif data.mode == 'start' or data.mode == 'help' or data.mode == 'credits':
+            startMenuTimerFired(data)
+        elif data.mode == 'run' or data.mode == 'pause':
             timerFired(data)
 
 

@@ -275,6 +275,40 @@ def checkRegion(data):
     elif 626<x<714 and 831<y<854:
         return 4
 
+def checkStartRegion(data):
+    # 0 for single player
+    # 1 for multiplayer
+    # 2 for tech support
+    # 3 credits
+    # 4 for exit
+    x,y = data.mouseX, data.mouseY
+    if 636 < x < 928:
+        if 145<y<197 :
+            return 0
+        elif 235<y<294:
+            return 1
+        elif 330<y<391:
+            return 2
+        elif 439<y<486:
+            return 3
+
+    if 665<x<920 and 814 < y < 871:
+        return 4
+
+def checkPauseRegion(data):
+    # 0 for help, 1 for return to menu, 2 for end mission, 3 for return to game
+    x,y = data.mouseX, data.mouseY
+    mMapx, mMapy = getMiniMapOrigin()
+    if 231 < x < 731:
+        if 226<y<283 :
+            return 0
+        elif 299<y<358 :
+            return 1
+        elif 375<y<428 :
+            return 2
+        elif 475<y<536 :
+            return 3
+
 def getButtonRegionOrigin():
     return (758,779)
 
