@@ -14,6 +14,7 @@ class player(object):
     def __init__(self, race, startRow, startCol,index):
         self.index = index
         self.resources = 50
+        self.winSound = load.load_sound('Misc/YouWin.wav')
         if race == 'Protoss':
             nexus = ProtossBuildings.Nexus(startRow,startCol)
             Building.building.addTofinishedBuildings(nexus)

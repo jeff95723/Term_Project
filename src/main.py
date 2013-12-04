@@ -129,7 +129,6 @@ def mousePressed(data):
 
     # due to performance issues, update the fogofwar board only when the mouse if pressed.
 
-
 def mouse2RC(data):
     x,y = pygame.mouse.get_pos()
     row = (y - data.map.y)/data.cellHeight
@@ -233,6 +232,10 @@ def checkNextRound(data):
         data.map.x = data.currentPlayer.xPos
         data.map.y = data.currentPlayer.yPos
 
+def checkWin(data):
+    if data.otherPlayer.Buildings == []:
+        data.currentPlayer.playSound(data.currentPlayer.winSound)
+
 def checkBuild(data):
     if isinstance(data.selected, Building.building):
         if data.selected in Building.building.finishedBuildings:
@@ -256,16 +259,17 @@ def updateMiniMap(data):
     data.ViewBox.y = -data.map.y/24.0
 
 def timerFired(data):
+    data.clock.tick(10)
     data.mouseX, data.mouseY = pygame.mouse.get_pos()
     data.MenuImage = data.currentPlayer.MenuImage #load.load_image(MenuFile)
     Menu_h = data.MenuImage.get_height()
     data.MenuHeight = Menu_h
     redrawAll(data)
-    data.clock.tick(30)
     checkKeys(data)
     checkMiniMapScroll(data)
     checkNextRound(data)
     updateMiniMap(data)
+    checkWin(data)
     checkBuild(data)
     checkAutoScroll(data)
     for event in pygame.event.get():
@@ -382,7 +386,8 @@ def run():
     while 1:
         if data.mode == 'quit':
             exit()
-        timerFired(data)
+        elif data.mode == 'run':
+            timerFired(data)
 
 
 run()
