@@ -394,6 +394,24 @@ def drawGrid(data):
     for col in xrange(cols):
         pygame.draw.lines(data.screen, (0,0,0),False, [(col * cW, 0),(col * cW, height)])
 
+def drawSelected(data):
+    selected = data.selected
+    if selected!=None:
+        cW,cH = data.map.getCellsize()
+        sRow = data.map.y/cH
+        sCol = data.map.x/cW
+        row = data.selected.row
+        col = data.selected.col
+        for r in xrange(data.selected.sizeRow):
+            for c in xrange(data.selected.sizeCol):
+                y = (row+r-sRow) * cH
+                x = (col+c-sCol) * cW
+
+                blueBlock = pygame.Surface((cW,cH),pygame.SRCALPHA)
+                blueBlock.fill((0,0,200,80))
+                data.screen.blit(blueBlock,((x,y)))
+
+
 def drawMenu(data):
     #print Menu_h
     #print ScreenHeight
@@ -425,6 +443,7 @@ def redrawAll(data):
     Menu.drawAllUnitsOnMiniMap(data.screen,data)
     data.map.drawFogOfWarOnMiniMap(data.screen,data.currentPlayer.index)
     data.ViewBox.draw()
+    drawSelected(data)
 
     if data.mode == 'pause':
         data.screen.blit(data.pauseMenu,(180,150))
