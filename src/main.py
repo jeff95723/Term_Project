@@ -364,21 +364,6 @@ def init(data):
 
     data.currentPlayer.drawFogOfWar()
 
-'''
-    data.Marine = TerranUnit.Marine(1,1)
-    data.fb = TerranUnit.FireBat(2,2)
-    data.tank = TerranUnit.SiegeTank(4,0)
-    data.ghost = TerranUnit.Ghost(6,0)
-    data.bc = TerranUnit.BattleCrusier(15,15)
-
-    data.zealot = ProtossUnit.Zealot(1,1)
-    data.archon = ProtossUnit.Archon(3,3)
-    data.darkTemplar = ProtossUnit.DarkTemplar(5,0)
-    data.Dragoon = ProtossUnit.Dragoon(6,0)
-    data.Arbiter = ProtossUnit.Arbiter(0,20)
-    data.Probe = ProtossUnit.Probe(8,0)
-    data.Nexus = ProtossBuildings.Nexus(20, 20)
-    '''
 
 
 def run():
