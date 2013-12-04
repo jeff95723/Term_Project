@@ -168,6 +168,12 @@ def checkKeys(data):
         data.map.x = data.currentPlayer.xPos
         data.map.y = data.currentPlayer.yPos
 
+def checkESC(data):
+    keyStatus = pygame.key.get_pressed()
+    if keyStatus[K_ESCAPE] == 1:
+        data.mode = data.modeCache
+
+
 def checkAutoScroll(data):
 
     # check auto-scrolling
@@ -269,14 +275,15 @@ def checkStartMenuButtons(data):
     if mouseStatus[0]  == 1:
         if region == 0:
             data.mode = 'run'
+            data.modeCache = 'run'
         elif region == 1:
             pass
         elif region == 2:
             # help
-            pass
+            data.mode = 'help'
         elif region == 3:
             # credits
-            pass
+            data.mode = 'credits'
         elif region == 4:
             data.mode = 'quit'
 
@@ -286,7 +293,7 @@ def checkPauseButtons(data):
     region = Menu.checkPauseRegion(data)
     if mouseStatus[0] == 1:
         if region == 0:
-            pass
+            data.mode = 'help'
         elif  region == 1:
             # return to menu
             data.mode = 'start'
@@ -319,6 +326,7 @@ def timerFired(data):
 
     else:
         checkPauseButtons(data)
+        checkESC(data)
     for event in pygame.event.get():
         if (event.type == pygame.QUIT):
             pygame.quit()
@@ -328,9 +336,9 @@ def timerFired(data):
 
 def startMenuTimerFired(data):
     data.mouseX, data.mouseY = pygame.mouse.get_pos()
-    print data.mouseX, data.mouseY
     redrawAllForStartMenu(data,data.frameCount)
     checkStartMenuButtons(data)
+    checkESC(data)
     data.frameCount += 1
 
 def redrawAllForStartMenu(data,frameCount):
@@ -364,11 +372,9 @@ def redrawAllForStartMenu(data,frameCount):
     data.screen.blit(exitButton,(eX,eY))
 
     if data.mode == 'credits':
-        pass
+        data.screen.blit(load.load_image('Other/credits.png'),(0,0))
     elif data.mode == 'help':
-        pass
-
-
+        data.screen.blit(load.load_image('Other/Help.png'),(0,0))
 
     pygame.display.flip()
 
@@ -422,10 +428,13 @@ def redrawAll(data):
 
     if data.mode == 'pause':
         data.screen.blit(data.pauseMenu,(180,150))
+    elif data.mode == 'help':
+        data.screen.blit(load.load_image('Other/Help.png'),(0,0))
     pygame.display.flip()
 
 def init(data):
     data.mode = 'start'
+    data.modeCache = 'start'
 
     data.frameCount = 0
 
@@ -492,7 +501,7 @@ def run():
             exit()
         elif data.mode == 'start' or data.mode == 'help' or data.mode == 'credits':
             startMenuTimerFired(data)
-        elif data.mode == 'run' or data.mode == 'pause':
+        elif data.mode == 'run' or data.mode == 'pause' or data.mode == 'help':
             timerFired(data)
 
 
