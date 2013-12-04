@@ -481,8 +481,6 @@ def init(data):
 
     data.currentPlayer.drawFogOfWar()
 
-
-
 def run():
     pygame.init()
     pygame.mixer.init()
